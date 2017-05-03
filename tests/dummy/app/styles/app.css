@@ -1,0 +1,27 @@
+.dragSortList {
+}
+.dragSortItem {
+  /*border           : 1px solid rgba(255, 20, 147, 0.25);*/
+  /*background-color : rgba(255, 20, 147, 0.25);*/
+}
+
+.nestedItem {
+  border : 1px solid black;
+  position: relative;
+}
+
+.nestedItem:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color : deeppink;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.nestedItem .dragSortList.-isExpanded.-isDraggingOver {
+  padding-top: 50px;
+}

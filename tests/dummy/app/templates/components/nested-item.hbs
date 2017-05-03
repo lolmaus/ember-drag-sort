@@ -1,0 +1,17 @@
+<p>{{item.name}}</p>
+
+{{#drag-sort-list
+  items               = item.children
+  group               = group
+  tagName             = 'ul'
+  childTagName        = 'li'
+  dragEndAction       = dragEndAction
+  placeholderCssValue = '25px'
+  as |child|
+}}
+  {{nested-item
+    item          = child
+    group         = group
+    dragEndAction = dragEndAction
+  }}
+{{/drag-sort-list}}

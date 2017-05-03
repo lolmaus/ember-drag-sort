@@ -1,0 +1,7 @@
+.dragSortItem {
+  /*transition       : margin-top 0.4s ease-in-out, margin-bottom 0.4s ease-in-out;*/
+}
+
+.dragSortList.-isExpanded {
+  padding-top: 25px;
+}

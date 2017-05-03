@@ -1,0 +1,109 @@
+// ----- Ember modules -----
+import Component from 'ember-component'
+import service from 'ember-service/inject'
+import {reads} from 'ember-computed'
+import observer from 'ember-metal/observer'
+import {next} from 'ember-runloop'
+
+// ----- Ember addons -----
+// import computed from 'ember-macro-helpers/computed'
+import and from 'ember-awesome-macros/and'
+import or from 'ember-awesome-macros/or'
+import eq from 'ember-awesome-macros/eq'
+
+// ----- Own modules -----
+import layout from '../templates/components/drag-sort-list'
+
+
+
+export default Component.extend({
+
+  // ----- Arguments -----
+  items                 : undefined,
+  group                 : undefined,
+  placeholderCssValue   : '10px',
+  noPlaceholderCssValue : '0',
+  dragEndAction         : undefined,
+
+
+
+  // ----- Services -----
+  dragSort : service(),
+
+
+
+  // ----- Overridden properties -----
+  layout,
+  classNameBindings : [
+    ':dragSortList',
+    'isDraggingOver:-isDraggingOver',
+    'isExpanded2:-isExpanded',
+  ],
+
+
+
+  // ----- Static properties -----
+
+
+
+  // ----- Aliases -----
+  isDragging  : reads('dragSort.isDragging'),
+  sourceList  : reads('dragSort.sourceList'),
+  targetList  : reads('dragSort.targetList'),
+  sourceIndex : reads('dragSort.sourceIndex'),
+
+
+
+  // ----- Computed properties -----
+  isDraggingOver : and(
+    'isDragging',
+    eq('items', 'targetList'),
+  ),
+
+  isExpanded : and(
+    'isDragging',
+    or('isEmpty', 'isOnlyElementDragged')
+  ),
+
+  isExpanded2 : reads('isExpanded'),
+
+  isEmpty : eq('items.length', 0),
+
+  isOnlyElementDragged : and(
+    eq('items.length', 1),
+    eq('items', 'sourceList'),
+    eq('sourceIndex', 0)
+  ),
+
+
+
+  // ----- Overridden methods -----
+  dragEnter (event) {
+    event.stopPropagation()
+    this.dragEntering(event)
+  },
+
+
+  // ----- Custom methods -----
+  dragEntering () {
+    const group       = this.get('group')
+    const activeGroup = this.get('dragSort.group')
+    if (group !== activeGroup) return
+
+    const items    = this.get('items')
+    const dragSort = this.get('dragSort')
+
+    dragSort.dragEntering({group, items, event})
+  },
+
+
+
+  // ----- Observers -----
+  setIsExpanded2 : observer('isExpanded', function () {
+    next(() => {
+      if (this.get('isDestroying') || this.get('isDestroyed')) return
+
+      this.set('isExpanded2', this.get('isExpanded'))
+    })
+  }),
+})

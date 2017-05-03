@@ -1,0 +1,26 @@
+{{#each items as |item index|}}
+  {{#drag-sort-item
+    item                  = item
+    index                 = index
+    items                 = items
+    group                 = group
+    tagName               = childTagName
+    placeholderCssValue   = placeholderCssValue
+    noPlaceholderCssValue = noPlaceholderCssValue
+    dragEndAction         = dragEndAction
+  }}
+    {{yield item index}}
+  {{/drag-sort-item}}
+{{/each}}
+
+{{!--
+<p>
+  isDragging: {{isDragging}},
+  isExpanded: {{isExpanded}},
+  isEmpty: {{isEmpty}},
+  isOnlyElementDragged: {{isOnlyElementDragged}},
+  items.length: {{items.length}},
+  eq: {{eq items sourceList}},
+  sourceIndex: {{sourceIndex}},
+</p>
+--}}
