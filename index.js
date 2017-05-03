@@ -1,6 +1,6 @@
 /* eslint-env node */
-'use strict';
+'use strict'
 
 module.exports = {
-  name: 'ember-drag-sort'
-};
+  name : 'ember-drag-sort'
+}
