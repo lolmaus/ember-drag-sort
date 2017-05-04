@@ -38,6 +38,7 @@ export default Component.extend({
     ':dragSortList',
     'isDraggingOver:-isDraggingOver',
     'isExpanded2:-isExpanded',
+    'isEmpty:-isEmpty',
   ],
 
 
@@ -86,6 +87,7 @@ export default Component.extend({
 
   // ----- Custom methods -----
   dragEntering () {
+    // Ignore irrelevant groups
     const group       = this.get('group')
     const activeGroup = this.get('dragSort.group')
     if (group !== activeGroup) return
@@ -100,6 +102,8 @@ export default Component.extend({
 
   // ----- Observers -----
   setIsExpanded2 : observer('isExpanded', function () {
+    // The delay is necessary for HTML class to update with a delay.
+    // Otherwise, dragging is finished immediately.
     next(() => {
       if (this.get('isDestroying') || this.get('isDestroyed')) return
 

@@ -45,6 +45,9 @@ export default Component.extend({
     ':dragSortItem',
     'isDragged:-isDragged',
     'isDraggingOver:-isDraggingOver',
+    'isCollapsed:-isCollapsed',
+    'shouldShowPlaceholderAbove2:-placeholderAbove',
+    'shouldShowPlaceholderBelow2:-placeholderBelow',
   ],
 
   attributeBindings : [
@@ -58,16 +61,19 @@ export default Component.extend({
   draggable      : true,
   originalHeight : undefined,
 
+  isCollapsed: false,
+
+  shouldShowPlaceholderAbove2 : undefined,
+  shouldShowPlaceholderBelow2 : undefined,
+
 
 
   // ----- Aliases -----
-  isDragging       : reads('dragSort.isDragging'),
-  isDraggingUp     : reads('dragSort.isDraggingUp'),
-  draggedItem      : reads('dragSort.draggedItem'),
-  sourceIndex      : reads('dragSort.sourceIndex'),
-  targetIndex      : reads('dragSort.targetIndex'),
-  targetList       : reads('dragSort.targetList'),
-  previousPointerY : reads('dragSort.previousPointerY'),
+  isDragging   : reads('dragSort.isDragging'),
+  isDraggingUp : reads('dragSort.isDraggingUp'),
+  sourceIndex  : reads('dragSort.sourceIndex'),
+  targetIndex  : reads('dragSort.targetIndex'),
+  targetList   : reads('dragSort.targetList'),
 
 
 
@@ -88,8 +94,8 @@ export default Component.extend({
   isLast                     : eq('index', subtract('items.length', 1)),
   shouldShowPlaceholderAbove : and('isDraggingOver', 'isDraggingUp'),
   shouldShowPlaceholderBelow : and('isDraggingOver', not('isDraggingUp')),
-  paddingTop                 : cond('shouldShowPlaceholderAbove', 'placeholderCssValue', 'noPlaceholderCssValue'),
-  paddingBottom              : cond('shouldShowPlaceholderBelow', 'placeholderCssValue', 'noPlaceholderCssValue'),
+  // paddingTop                 : cond('shouldShowPlaceholderAbove', 'placeholderCssValue', 'noPlaceholderCssValue'),
+  // paddingBottom              : cond('shouldShowPlaceholderBelow', 'placeholderCssValue', 'noPlaceholderCssValue'),
 
 
 
@@ -140,62 +146,67 @@ export default Component.extend({
   },
 
   draggingOver (event) {
-    // console.log('dragOver',  this.get('isDraggingUp') ? 'above' : 'below', this.get('index'),)
     const group       = this.get('group')
     const activeGroup = this.get('dragSort.group')
     if (group !== activeGroup) return
 
-    const index    = this.get('index')
-    const items    = this.get('items')
-    const dragSort = this.get('dragSort')
+    const index        = this.get('index')
+    const items        = this.get('items')
+    const isDraggingUp = event.offsetY / this.$().innerHeight() < 0.5
+    const dragSort     = this.get('dragSort')
 
-    dragSort.draggingOver({group, index, items, event})
+    dragSort.draggingOver({group, index, items, isDraggingUp})
   },
 
   collapse () {
-    // this.set('originalHeight', this.$().outerHeight())
-    // this.$().css({overflow : 'hidden'})
-    //
-    // this.$().animate({height : 0}, {complete : () => {
-    //   if (this.get('isDestroying') || this.get('isDestroyed')) return
-    //   this.$().css({display : 'none'})
-    // }})
-
+    // The delay is necessary for HTML classes to update with a delay.
+    // Otherwise, dragging is finished immediately.
     next(() => {
-      this.$().css({display : 'none'})
+      if (this.get('isDestroying') || this.get('isDestroyed')) return
+      this.set('isCollapsed', true)
     })
   },
 
   restore () {
-    // const height = this.get('originalHeight')
+    // The delay is necessary for HTML class to update with a delay.
+    // Otherwise, dragging is finished immediately.
     next(() => {
       if (this.get('isDestroying') || this.get('isDestroyed')) return
-      this.$().css({display : ''})
+      this.set('isCollapsed', false)
     })
-    // this.$().animate({height},u {complete : () => {
-    //   if (this.get('isDestroying') || this.get('isDestroyed')) return
-    //   this.$().css({height : '', overflow : ''})
-    // }})
   },
 
 
 
   // ----- Observers -----
-  consumePaddingCPs : on('didInsertElement', function () {
-    this.getProperties('paddingTop', 'paddingBottom')
+  consumePlaceholderCPs : on('didInsertElement', function () {
+    this.getProperties(
+      'shouldShowPlaceholderAbove',
+      'shouldShowPlaceholderBelow'
+    )
   }),
 
-  setPaddingTop : observer('paddingTop', function () {
+  setPlaceholderrAbove : observer('shouldShowPlaceholderAbove', function () {
+    // The delay is necessary for HTML class to update with a delay.
+    // Otherwise, dragging is finished immediately.
     next(() => {
       if (this.get('isDestroying') || this.get('isDestroyed')) return
-      this.$().css({paddingTop : this.get('paddingTop')})
+      this.set(
+        'shouldShowPlaceholderAbove2',
+        this.get('shouldShowPlaceholderAbove')
+      )
     })
   }),
 
-  setPaddingBottom : observer('paddingBottom', function () {
+  setPlaceholderrBelow : observer('shouldShowPlaceholderBelow', function () {
+    // The delay is necessary for HTML class to update with a delay.
+    // Otherwise, dragging is finished immediately.
     next(() => {
       if (this.get('isDestroying') || this.get('isDestroyed')) return
-      this.$().css({paddingBottom : this.get('paddingBottom')})
+      this.set(
+        'shouldShowPlaceholderBelow2',
+        this.get('shouldShowPlaceholderBelow')
+      )
     })
   }),
 })

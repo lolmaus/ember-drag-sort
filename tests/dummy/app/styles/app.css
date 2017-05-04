@@ -1,27 +1,60 @@
-.dragSortList {
+p:first-child,
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child
+{
+  margin-top: 0;
 }
-.dragSortItem {
-  /*border           : 1px solid rgba(255, 20, 147, 0.25);*/
-  /*background-color : rgba(255, 20, 147, 0.25);*/
+
+p:last-child,
+h1:last-child,
+h2:last-child,
+h3:last-child,
+h4:last-child,
+h5:last-child,
+h6:last-child
+{
+  margin-bottom: 0;
+}
+
+.list-group {
+  display: flex;
+}
+
+.list {
+  width: 200px;
+  margin-right: 20px;
+}
+
+.list-group .dragSortItem {
+  padding: 4px;
+}
+
+
+.list-group .dragSortItem {
+  padding: 4px;
+}
+
+.the-item {
+  padding: 0.2em 0.5em;
+  background-color: deeppink;
+}
+
+.dragSortList {
+  /*border: 1px solid black;*/
+}
+.dragSortItem.-isDraggingOver {
+  /*font-weight: bold;*/
 }
 
 .nestedItem {
-  border : 1px solid black;
-  position: relative;
+  padding: 1em;
+  border: 1px solid black;
 }
 
-.nestedItem:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color : deeppink;
-  opacity: 0.2;
-  pointer-events: none;
-}
-
-.nestedItem .dragSortList.-isExpanded.-isDraggingOver {
-  padding-top: 50px;
+.nestedItem .dragSortItem {
+  padding: 4px;
 }

@@ -1,7 +1,56 @@
-.dragSortItem {
-  /*transition       : margin-top 0.4s ease-in-out, margin-bottom 0.4s ease-in-out;*/
+.dragSortList {
+  overflow: auto;
+  position: relative;
 }
 
 .dragSortList.-isExpanded {
   padding-top: 25px;
+}
+
+
+.dragSortList.-isExpanded.-isDraggingOver:before {
+  content: '🡢';
+  position: absolute;
+  line-height: 25px;
+  top: 0;
+  left: 2em;
+  z-index: 2;
+}
+
+.dragSortItem {
+  position: relative;
+  cursor: move;
+  cursor: hand;
+  cursor: -webkit-grab;
+  cursor: grab;
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+
+.dragSortItem.-isCollapsed {
+  display: none;
+}
+
+.dragSortItem.-placeholderAbove {
+  margin-top: 25px;
+}
+
+.dragSortItem.-placeholderBelow {
+  margin-bottom: 25px;
+}
+
+.dragSortItem.-placeholderAbove:before,
+.dragSortItem.-placeholderBelow:before {
+  content: '🡢';
+  position: absolute;
+  line-height: 25px;
+  left: 0;
+}
+
+.dragSortItem.-placeholderAbove:before {
+  bottom: 100%;
+}
+
+.dragSortItem.-placeholderBelow:before {
+  top: 100%;
 }

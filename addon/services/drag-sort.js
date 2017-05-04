@@ -22,8 +22,6 @@ export default Service.extend({
 
   // ----- Custom methods -----
   startDragging ({item, index, items, group, event: {clientY}}) {
-    // console.log('startDragging', item, index, event)
-
     this.setProperties({
       isDragging       : true,
       isDraggingUp     : false,
@@ -39,31 +37,38 @@ export default Service.extend({
     })
   },
 
-  draggingOver ({group, index, items, event: {clientY}}) {
+
+
+  draggingOver ({group, index, items, isDraggingUp}) {
+    // Ignore hovers over irrelevant groups
     if (group !== this.get('group')) return
+
+    // Ignore hovers over irrelevant lists
     if (items !== this.get('targetList')) return
 
-    const previousPointerY = this.get('previousPointerY')
-
-    if      (clientY < previousPointerY) this.set('isDraggingUp', true)
-    else if (clientY > previousPointerY) this.set('isDraggingUp', false)
-
+    // Remember current index and direction
     this.setProperties({
-      targetIndex      : index,
-      previousPointerY : clientY,
+      targetIndex : index,
+      isDraggingUp
     })
   },
+
+
 
   dragEntering ({group, items}) {
+    // Ignore entering irrelevant groups
     if (group !== this.get('group')) return
 
-    console.log('dragEntering', items.length)
+    // Reset index when entering a new list
+    if (items !== this.get('targetList')) {
+      this.set('targetIndex', 0)
+    }
 
-    this.setProperties({
-      targetList  : items,
-      targetIndex : 0,
-    })
+    // Remember entering a new list
+    this.set('targetList', items)
   },
+
+
 
   endDragging ({action}) {
     const sourceList   = this.get('sourceList')
@@ -72,13 +77,18 @@ export default Service.extend({
     let   targetIndex  = this.get('targetIndex')
     const isDraggingUp = this.get('isDraggingUp')
 
+    // Account for dragged item shifting indexes by one
     if (
       sourceList === targetList
       && targetIndex > sourceIndex
     ) targetIndex--
 
+    // Account for dragging down
     if (
+      // Dragging down
       !isDraggingUp
+
+      // Target index is not after the last item
       && targetIndex < targetList.get('length')
 
       // The only element in target list is not the one dragged
@@ -87,13 +97,6 @@ export default Service.extend({
         && targetList.get('firstObject') === targetList.objectAt(targetIndex)
       )
     ) targetIndex++
-
-    console.log('finish', {
-      sourceList,
-      sourceIndex,
-      targetList,
-      targetIndex
-    })
 
     this._reset()
 
@@ -122,8 +125,4 @@ export default Service.extend({
       targetIndex : null,
     })
   },
-
-  asdf: Ember.observer('targetIndex', function () {
-    console.log({targetIndex: this.get('targetIndex')})
-  })
 })

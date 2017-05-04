@@ -1,59 +1,72 @@
 <h2>List group 1</h2>
-<h4>List 1</h4>
 
-{{#drag-sort-list
-  items        = items1
-  tagName      = 'ul'
-  childTagName = 'li'
-  dragEndAction = (action 'dragEndAction')
-  as |item|
-}}
-  <span>{{item.name}}</span>
-{{/drag-sort-list}}
+<section class="list-group">
+  <article class="list">
+    <h4>List 1</h4>
+
+    {{#drag-sort-list
+      items        = items1
+      dragEndAction = (action 'dragEndAction')
+      as |item|
+    }}
+      <div class="the-item">
+        {{item.name}}
+      </div>
+    {{/drag-sort-list}}
+  </article>
+
+  <article class="list">
+    <h4>List 2</h4>
+
+    {{#drag-sort-list
+      id           = 'the2'
+      items        = items2
+      dragEndAction = (action 'dragEndAction')
+      as |item|
+    }}
+      <div class="the-item">
+        {{item.name}}
+      </div>
+    {{/drag-sort-list}}
+  </article>
+</section>
 
 
-
-<h4>List 2</h4>
-
-{{#drag-sort-list
-  id           = 'the2'
-  items        = items2
-  tagName      = 'ul'
-  childTagName = 'li'
-  dragEndAction = (action 'dragEndAction')
-  as |item|
-}}
-  <span>{{item.name}}</span>
-{{/drag-sort-list}}
 
 <h2>List group 2</h2>
-<h4>List 3</h4>
 
-{{#drag-sort-list
-  items        = items3
-  group        = 2
-  tagName      = 'ul'
-  childTagName = 'li'
-  dragEndAction = (action 'dragEndAction')
-  as |item|
-}}
-  <span>{{item.name}}</span>
-{{/drag-sort-list}}
+<section class="list-group">
+  <article class="list">
+    <h4>List 3</h4>
+
+    {{#drag-sort-list
+      items        = items3
+      group        = 2
+      dragEndAction = (action 'dragEndAction')
+      as |item|
+    }}
+      <div class="the-item">
+        {{item.name}}
+      </div>
+    {{/drag-sort-list}}
+  </article>
 
 
+  <article class="list">
+    <h4>List 4</h4>
 
-<h4>List 4</h4>
-
-{{#drag-sort-list
-  items        = items4
-  group        = 2
-  tagName      = 'ul'
-  childTagName = 'li'
-  dragEndAction = (action 'dragEndAction')
-  as |item|
-}}
-  <span>{{item.name}}</span>
-{{/drag-sort-list}}
+    {{#drag-sort-list
+      items        = items4
+      group        = 2
+      dragEndAction = (action 'dragEndAction')
+      as |item|
+    }}
+      <div class="the-item">
+        {{item.name}}
+      </div>
+    {{/drag-sort-list}}
+  </article>
+</section>
 
 
 
