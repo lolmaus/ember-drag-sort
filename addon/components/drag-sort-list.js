@@ -96,7 +96,7 @@ export default Component.extend({
     const items    = this.get('items')
     const dragSort = this.get('dragSort')
 
-    dragSort.dragEntering({group, items, event})
+    dragSort.dragEntering({group, items})
   },
 
 

@@ -7,12 +7,12 @@ import observer from 'ember-metal/observer'
 import {next} from 'ember-runloop'
 
 // ----- Ember addons -----
-import computed from 'ember-macro-helpers/computed'
+// import computed from 'ember-macro-helpers/computed'
 import and from 'ember-awesome-macros/and'
 import not from 'ember-awesome-macros/not'
 // import or from 'ember-awesome-macros/or'
 import eq from 'ember-awesome-macros/eq'
-import cond from 'ember-awesome-macros/conditional'
+// import cond from 'ember-awesome-macros/conditional'
 import subtract from 'ember-awesome-macros/subtract'
 
 // ----- Own modules -----
@@ -61,7 +61,7 @@ export default Component.extend({
   draggable      : true,
   originalHeight : undefined,
 
-  isCollapsed: false,
+  isCollapsed : false,
 
   shouldShowPlaceholderAbove2 : undefined,
   shouldShowPlaceholderBelow2 : undefined,
@@ -124,7 +124,8 @@ export default Component.extend({
 
   // ----- Custom methods -----
   startDragging (event) {
-
+    // console.log('startDragging')
+    event.dataTransfer.setData('text', 'anything')
     this.collapse()
 
     const item     = this.get('item')
@@ -137,6 +138,7 @@ export default Component.extend({
   },
 
   endDragging () {
+    // console.log('endDragging')
     this.restore()
 
     const action   = this.get('dragEndAction')
@@ -150,10 +152,13 @@ export default Component.extend({
     const activeGroup = this.get('dragSort.group')
     if (group !== activeGroup) return
 
+
     const index        = this.get('index')
     const items        = this.get('items')
     const isDraggingUp = event.offsetY / this.$().innerHeight() < 0.5
     const dragSort     = this.get('dragSort')
+
+   // console.log('draggingOver', {index, items: items.get('length'), isDraggingUp})
 
     dragSort.draggingOver({group, index, items, isDraggingUp})
   },
