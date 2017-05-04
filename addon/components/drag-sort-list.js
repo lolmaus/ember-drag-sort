@@ -63,6 +63,7 @@ export default Component.extend({
 
   isExpanded : and(
     'isDragging',
+    eq('group', 'dragSort.group'),
     or('isEmpty', 'isOnlyElementDragged')
   ),
 
