@@ -118,6 +118,11 @@ export default Component.extend({
     this.draggingOver(event)
   },
 
+  dragEnter (event) {
+    // Without this, dragOver would not fire in IE11. http://mereskin.github.io/dnd/
+    event.preventDefault()
+  },
+
 
 
 
@@ -125,7 +130,10 @@ export default Component.extend({
   // ----- Custom methods -----
   startDragging (event) {
     // console.log('startDragging')
+
+    // Required for Firefox. http://stackoverflow.com/a/32592759/901944
     event.dataTransfer.setData('text', 'anything')
+
     this.collapse()
 
     const item     = this.get('item')
