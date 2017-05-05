@@ -37,16 +37,8 @@ h6:last-child
   background-color: #eee;
 }
 
-.list-group .dragSortItem {
-  padding: 4px;
-}
-
-
-.list-group .dragSortItem {
-  padding: 4px;
-}
-
 .the-item {
+  margin: 4px;
   padding: 0.2em 0.5em;
   background-color: deeppink;
   color: white;
@@ -61,13 +53,10 @@ h6:last-child
 }
 
 .nestedItem {
+  margin: 4px;
   padding: 1em;
   border: 1px solid black;
   position: relative;
-}
-
-.nestedItem .dragSortItem {
-  padding: 4px;
 }
 
 /* Semi-transparent background */
@@ -82,4 +71,12 @@ h6:last-child
   background-color : deeppink;
   opacity: 0.2;
   pointer-events: none;
+}
+
+.nestedItem .dragSortList.-isExpanded {
+  padding-top: 55px;
+}
+
+.nestedItem .dragSortList.-isExpanded.-isDraggingOver:before {
+  top: 15px;
 }

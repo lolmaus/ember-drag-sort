@@ -7,7 +7,7 @@ import observer from 'ember-metal/observer'
 import {next} from 'ember-runloop'
 
 // ----- Ember addons -----
-// import computed from 'ember-macro-helpers/computed'
+import computed from 'ember-macro-helpers/computed'
 import and from 'ember-awesome-macros/and'
 import not from 'ember-awesome-macros/not'
 // import or from 'ember-awesome-macros/or'
@@ -25,12 +25,14 @@ export default Component.extend({
   // ----- Arguments -----
   item                  : undefined,
   index                 : undefined,
+  childClass            : '',
   items                 : undefined,
   group                 : undefined,
   childTagName          : 'div',
   placeholderCssValue   : undefined,
   noPlaceholderCssValue : undefined,
   dragEndAction         : undefined,
+  draggingEnabled       : undefined,
 
 
 
@@ -43,6 +45,7 @@ export default Component.extend({
   layout,
   classNameBindings : [
     ':dragSortItem',
+    'childClass',
     'isDragged:-isDragged',
     'isDraggingOver:-isDraggingOver',
     'isCollapsed:-isCollapsed',
@@ -58,7 +61,6 @@ export default Component.extend({
 
 
   // ----- Static properties -----
-  draggable      : true,
   originalHeight : undefined,
 
   isCollapsed : false,
@@ -69,8 +71,8 @@ export default Component.extend({
 
 
   // ----- Aliases -----
-  isDragging   : reads('dragSort.isDragging'),
   isDraggingUp : reads('dragSort.isDraggingUp'),
+  sourceList   : reads('dragSort.sourceList'),
   sourceIndex  : reads('dragSort.sourceIndex'),
   targetIndex  : reads('dragSort.targetIndex'),
   targetList   : reads('dragSort.targetList'),
@@ -78,14 +80,19 @@ export default Component.extend({
 
 
   // ----- Computed properties -----
+  draggable : computed('draggingEnabled', (draggingEnabled) => {
+    // console.log('js draggingEnabled', draggingEnabled, draggingEnabled ? true : null)
+    return draggingEnabled ? true : null
+  }),
+
   isDragged : and(
-    'isDragging',
+    'dragSort.isDragging',
     eq('items', 'sourceList'),
     eq('index', 'sourceIndex')
   ),
 
   isDraggingOver : and(
-    'isDragging',
+    'dragSort.isDragging',
     eq('items', 'targetList'),
     eq('index', 'targetIndex'),
     not('isDragged')
@@ -102,23 +109,21 @@ export default Component.extend({
 
   // ----- Overridden methods -----
   dragStart (event) {
-    event.stopPropagation()
     this.startDragging(event)
   },
 
   dragEnd (event) {
-    event.stopPropagation()
     // console.log('dragEnd', event)
     this.endDragging(event)
   },
 
   dragOver (event) {
-    event.stopPropagation()
     // console.log('dragOver')
     this.draggingOver(event)
   },
 
   dragEnter (event) {
+    if (!this.get('dragSort.isDragging')) return
     // Without this, dragOver would not fire in IE11. http://mereskin.github.io/dnd/
     event.preventDefault()
   },
@@ -130,6 +135,11 @@ export default Component.extend({
   // ----- Custom methods -----
   startDragging (event) {
     // console.log('startDragging')
+
+    // Ignore irrelevant drags
+    if (!this.get('draggingEnabled')) return
+
+    event.stopPropagation()
 
     // Required for Firefox. http://stackoverflow.com/a/32592759/901944
     event.dataTransfer.setData('text', 'anything')
@@ -145,8 +155,13 @@ export default Component.extend({
     dragSort.startDragging({item, index, items, group, event})
   },
 
-  endDragging () {
+  endDragging (event) {
     // console.log('endDragging')
+
+    // Ignore irrelevant drags
+    if (!this.get('dragSort.isDragging')) return
+
+    event.stopPropagation()
     this.restore()
 
     const action   = this.get('dragEndAction')
@@ -156,19 +171,26 @@ export default Component.extend({
   },
 
   draggingOver (event) {
+    // Ignore irrelevant drags
+    if (!this.get('dragSort.isDragging')) return
+
     const group       = this.get('group')
     const activeGroup = this.get('dragSort.group')
     if (group !== activeGroup) return
 
+    event.stopPropagation()
 
     const index        = this.get('index')
     const items        = this.get('items')
-    const isDraggingUp = event.offsetY / this.$().innerHeight() < 0.5
-    const dragSort     = this.get('dragSort')
 
-   // console.log('draggingOver', {index, items: items.get('length'), isDraggingUp})
+    const offsetY =
+      event.originalEvent
+        ? event.originalEvent.offsetY
+        : event.offsetY
 
-    dragSort.draggingOver({group, index, items, isDraggingUp})
+    const isDraggingUp = offsetY / this.$().outerHeight() < 0.5
+
+    this.get('dragSort').draggingOver({group, index, items, isDraggingUp})
   },
 
   collapse () {

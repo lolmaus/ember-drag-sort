@@ -21,6 +21,8 @@ export default Component.extend({
   // ----- Arguments -----
   items                 : undefined,
   group                 : undefined,
+  childClass            : '',
+  draggingEnabled       : true,
   placeholderCssValue   : '10px',
   noPlaceholderCssValue : '0',
   dragEndAction         : undefined,
@@ -36,6 +38,7 @@ export default Component.extend({
   layout,
   classNameBindings : [
     ':dragSortList',
+    'isDragging:-isDragging',
     'isDraggingOver:-isDraggingOver',
     'isExpanded2:-isExpanded',
     'isEmpty:-isEmpty',
@@ -48,7 +51,6 @@ export default Component.extend({
 
 
   // ----- Aliases -----
-  isDragging  : reads('dragSort.isDragging'),
   sourceList  : reads('dragSort.sourceList'),
   targetList  : reads('dragSort.targetList'),
   sourceIndex : reads('dragSort.sourceIndex'),
@@ -56,6 +58,11 @@ export default Component.extend({
 
 
   // ----- Computed properties -----
+  isDragging : and(
+    'dragSort.isDragging',
+    eq('group', 'dragSort.group')
+  ),
+
   isDraggingOver : and(
     'isDragging',
     eq('items', 'targetList'),
@@ -63,7 +70,6 @@ export default Component.extend({
 
   isExpanded : and(
     'isDragging',
-    eq('group', 'dragSort.group'),
     or('isEmpty', 'isOnlyElementDragged')
   ),
 
@@ -81,17 +87,21 @@ export default Component.extend({
 
   // ----- Overridden methods -----
   dragEnter (event) {
-    event.stopPropagation()
     this.dragEntering(event)
   },
 
 
   // ----- Custom methods -----
-  dragEntering () {
+  dragEntering (event) {
+    // Ignore irrelevant drags
+    if (!this.get('dragSort.isDragging')) return
+
     // Ignore irrelevant groups
     const group       = this.get('group')
     const activeGroup = this.get('dragSort.group')
     if (group !== activeGroup) return
+
+    event.stopPropagation()
 
     const items    = this.get('items')
     const dragSort = this.get('dragSort')

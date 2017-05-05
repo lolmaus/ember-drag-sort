@@ -19,6 +19,9 @@
 
 .dragSortItem {
   position: relative;
+}
+
+.dragSortItem[draggable] {
   cursor: move;
   cursor: hand;
   cursor: -webkit-grab;
@@ -32,11 +35,13 @@
 }
 
 .dragSortItem.-placeholderAbove {
-  margin-top: 25px;
+  /*margin-top: 25px;*/
+  padding-top: 25px;
 }
 
 .dragSortItem.-placeholderBelow {
-  margin-bottom: 25px;
+  /*margin-bottom: 25px;*/
+  padding-bottom: 25px;
 }
 
 .dragSortItem.-placeholderAbove:before,
@@ -48,9 +53,11 @@
 }
 
 .dragSortItem.-placeholderAbove:before {
-  bottom: 100%;
+  /*bottom: 100%;*/
+  top: 0;
 }
 
 .dragSortItem.-placeholderBelow:before {
-  top: 100%;
+  /*top: 100%;*/
+  bottom: 0;
 }
