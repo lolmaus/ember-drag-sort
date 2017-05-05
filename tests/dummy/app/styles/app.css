@@ -57,6 +57,31 @@ h6:last-child
   padding: 1em;
   border: 1px solid black;
   position: relative;
+  display: flex;
+}
+
+.nestedItem-title {
+  flex-shrink: 0;
+  flex-grow: 0;
+  width: 100px;
+}
+
+.nestedItem .dragSortList {
+  flex-shrink: 0;
+  flex-grow: 1;
+}
+
+.nestedItem .dragSortList.-isExpanded {
+  padding-top: 55px;
+}
+
+.nestedItem .dragSortList.-isDragging {
+  outline: 2px dashed black;
+  background-color: deepskyblue;
+}
+
+.nestedItem .dragSortList.-isExpanded.-isDraggingOver:before {
+  top: 15px;
 }
 
 /* Semi-transparent background */
@@ -67,16 +92,8 @@ h6:last-child
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: -1;
+  /*z-index: -1;*/
   background-color : deeppink;
   opacity: 0.2;
   pointer-events: none;
-}
-
-.nestedItem .dragSortList.-isExpanded {
-  padding-top: 55px;
-}
-
-.nestedItem .dragSortList.-isExpanded.-isDraggingOver:before {
-  top: 15px;
 }
