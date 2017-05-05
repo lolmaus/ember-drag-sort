@@ -44,13 +44,6 @@ h6:last-child
   background-color: #FFD0E9;
 }
 
-.dragSortList {
-  /*border: 1px solid black;*/
-}
-.dragSortItem.-isDraggingOver {
-  /*font-weight: bold;*/
-}
-
 .nestedItem {
   margin: 4px;
   padding: 1em;
