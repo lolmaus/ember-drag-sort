@@ -38,11 +38,10 @@ h6:last-child
 }
 
 .the-item {
+  border: 1px solid black;
   margin: 4px;
   padding: 0.2em 0.5em;
-  background-color: deeppink;
-  color: white;
-  font-weight: bold;
+  background-color: #FFD0E9;
 }
 
 .dragSortList {
@@ -56,7 +55,6 @@ h6:last-child
   margin: 4px;
   padding: 1em;
   border: 1px solid black;
-  position: relative;
   display: flex;
 }
 
@@ -84,16 +82,22 @@ h6:last-child
   top: 15px;
 }
 
-/* Semi-transparent background */
-.nestedItem:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  /*z-index: -1;*/
-  background-color : deeppink;
-  opacity: 0.2;
-  pointer-events: none;
+.nestedItem {
+  background-color : #FFD0E9;
+}
+.nestedItem .nestedItem {
+  background-color: #FFAAD7;
+}
+
+.nestedItem .nestedItem .nestedItem {
+  background-color: #FF8CC9;
+}
+.nestedItem .nestedItem .nestedItem .nestedItem {
+  background-color: #FF74BD;
+}
+.nestedItem .nestedItem .nestedItem .nestedItem .nestedItem {
+  background-color: #FF60B4;
+}
+.nestedItem .nestedItem .nestedItem .nestedItem .nestedItem .nestedItem {
+  background-color: #FF50AD;
 }
