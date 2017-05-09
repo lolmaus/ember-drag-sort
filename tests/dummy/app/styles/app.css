@@ -94,3 +94,7 @@ h6:last-child
 .nestedItem .nestedItem .nestedItem .nestedItem .nestedItem .nestedItem {
   background-color: #FF50AD;
 }
+
+.dragSortList:not(.-draggingEnabled) {
+  opacity: 0.66;
+}

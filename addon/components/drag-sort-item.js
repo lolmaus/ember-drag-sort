@@ -172,15 +172,17 @@ export default Component.extend({
 
     event.stopPropagation()
 
-    const index        = this.get('index')
-    const items        = this.get('items')
+    const index  = this.get('index')
+    const items  = this.get('items')
+    const top    = this.$().offset().top
+    const height = this.$().outerHeight()
 
-    const offsetY =
+    const clientY =
       event.originalEvent
-        ? event.originalEvent.offsetY
-        : event.offsetY
+        ? event.originalEvent.clientY
+        : event.clientY
 
-    const isDraggingUp = offsetY / this.$().outerHeight() < 0.5
+    const isDraggingUp = (clientY - top) < height / 2
 
     this.get('dragSort').draggingOver({group, index, items, isDraggingUp})
   },

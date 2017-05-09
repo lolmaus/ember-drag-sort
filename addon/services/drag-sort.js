@@ -173,6 +173,8 @@ export default Service.extend(EventedMixin, {
     })
   },
 
+
+
   _reset () {
     this.setProperties({
       isDragging       : false,

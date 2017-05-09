@@ -1,5 +1,6 @@
 import Controller from 'ember-controller'
 import {A} from 'ember-array/utils'
+import { task, timeout } from 'ember-concurrency'
 
 export default Controller.extend({
 
@@ -54,12 +55,29 @@ export default Controller.extend({
     ]),
   },
 
+  networkFailure : false,
+
   actions : {
     dragEndAction ({sourceList, sourceIndex, targetList, targetIndex}) {
       const item = sourceList.objectAt(sourceIndex)
 
       sourceList.removeAt(sourceIndex)
       targetList.insertAt(targetIndex, item)
+    },
+  },
+
+  dragEndTask : task(function * ({sourceList, sourceIndex, targetList, targetIndex}) {
+    const item = sourceList.objectAt(sourceIndex)
+
+    sourceList.removeAt(sourceIndex)
+    targetList.insertAt(targetIndex, item)
+
+    yield timeout(2000)
+
+    if (this.get('networkFailure')) {
+      // Rollback
+      targetList.removeAt(targetIndex)
+      sourceList.insertAt(sourceIndex, item)
     }
-  }
+  }).drop(),
 })

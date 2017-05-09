@@ -37,6 +37,7 @@ export default Component.extend({
   layout,
   classNameBindings : [
     ':dragSortList',
+    'draggingEnabled:-draggingEnabled',
     'isDragging:-isDragging',
     'isDraggingOver:-isDraggingOver',
     'isExpanded2:-isExpanded',

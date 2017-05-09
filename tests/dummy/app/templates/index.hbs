@@ -1,4 +1,26 @@
+<h1>ember-drag-sort demo</h1>
+
+<ul>
+  <li>
+    <a href="https://github.com/Deveo/ember-drag-sort">GitHub</a>
+  </li>
+
+  <li>
+    <a href="https://github.com/Deveo/ember-drag-sort/blob/gen-0/tests/dummy/app/templates/index.hbs">Demo template source</a>
+  </li>
+
+  <li>
+    <a href="https://github.com/Deveo/ember-drag-sort/blob/gen-0/tests/dummy/app/controllers/index.js">Demo controller source</a>
+  </li>
+</ul>
+
+
+
 <h2>List group 1</h2>
+
+<p>
+  Sort lists, drag between lists. Won't let you drag items from/to another groups.
+</p>
 
 <section class="list-group">
   <article class="list">
@@ -19,7 +41,6 @@
     <h4>List 2</h4>
 
     {{#drag-sort-list
-      id            = 'the2'
       items         = items2
       dragEndAction = (action 'dragEndAction')
       as |item|
@@ -35,14 +56,26 @@
 
 <h2>List group 2</h2>
 
+<p>
+  Uses async action, driven by <a href="http://ember-concurrency.com/">ember-concurrency</a>.
+</p>
+
+<p>
+  <label>
+    {{input type="checkbox" checked=networkFailure}}
+    Simulate network failure.
+  </label>
+</p>
+
 <section class="list-group">
   <article class="list">
     <h4>List 3</h4>
 
     {{#drag-sort-list
-      items         = items3
-      group         = 2
-      dragEndAction = (action 'dragEndAction')
+      items           = items3
+      group           = 2
+      draggingEnabled = (not dragEndTask.isRunning)
+      dragEndAction   = (action (perform dragEndTask))
       as |item|
     }}
       <div class="the-item">
@@ -56,9 +89,10 @@
     <h4>List 4</h4>
 
     {{#drag-sort-list
-      items         = items4
-      group         = 2
-      dragEndAction = (action 'dragEndAction')
+      items           = items4
+      group           = 2
+      draggingEnabled = (not dragEndTask.isRunning)
+      dragEndAction   = (action (perform dragEndTask))
       as |item|
     }}
       <div class="the-item">

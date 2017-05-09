@@ -157,12 +157,13 @@ Here's the reference implementation of the `dragEndAction` action:
 
 `drag-sort-list` component has HTML class `dragSortList`. It also assumes the following classes dynamically:
 
-| HTML class        | Applied when...                                                                                                                                                                   |
-|:------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `-isEmpty`        | The given list is empty.                                                                                                                                                          |
-| `-isDragging`     | Dragging is in progress and the given list is either a source list or belongs to the same group as the source list.                                                               |
-| `-isDraggingOver` | Dragging is in progress and the placeholder is within the given list. This class is removed from a list when an item is dragged into a different list.                            |
-| `-isExpanded`     | Dragging is in progress and the given list is either empty or contains only the dragged item. Used to give some height to the list, so that the item can be dragged back into it. |
+| HTML class         | Applied when...                                                                                                                                                                   |
+|:-------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `-isEmpty`         | The given list is empty.                                                                                                                                                          |
+| `-draggingEnabled` | Dragging is enabled via the `draggingEnabled` attribute.                                                                                                                         |
+| `-isDragging`      | Dragging is in progress and the given list is either a source list or belongs to the same group as the source list.                                                               |
+| `-isDraggingOver`  | Dragging is in progress and the placeholder is within the given list. This class is removed from a list when an item is dragged into a different list.                            |
+| `-isExpanded`      | Dragging is in progress and the given list is either empty or contains only the dragged item. Used to give some height to the list, so that the item can be dragged back into it. |
 
 The individual item component has HTML class `dragSortItem`. It also assumes the following classes dynamically:
 
