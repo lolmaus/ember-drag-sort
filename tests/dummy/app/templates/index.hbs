@@ -1,116 +1,145 @@
+{{fork-me "https://github.com/Deveo/ember-drag-sort/"}}
+
 <h1>ember-drag-sort demo</h1>
 
-<ul>
-  <li>
-    <a href="https://github.com/Deveo/ember-drag-sort">GitHub</a>
-  </li>
-
-  <li>
-    <a href="https://github.com/Deveo/ember-drag-sort/blob/gen-0/tests/dummy/app/templates/index.hbs">Demo template source</a>
-  </li>
-
-  <li>
-    <a href="https://github.com/Deveo/ember-drag-sort/blob/gen-0/tests/dummy/app/controllers/index.js">Demo controller source</a>
-  </li>
-</ul>
-
-
-
-<h2>List group 1</h2>
-
 <p>
-  Sort lists, drag between lists. Won't let you drag items from/to another groups.
+  See
+
+  <a href="https://github.com/Deveo/ember-drag-sort/blob/gen-0/tests/dummy/app/templates/index.hbs">
+    {{~concat~}}
+    demo template source
+    {{~concat~}}
+  </a>
+
+  and
+
+  <a href="https://github.com/Deveo/ember-drag-sort/blob/gen-0/tests/dummy/app/controllers/index.js">
+    {{~concat~}}
+    demo controller source
+    {{~concat~}}
+  </a>.
 </p>
 
-<section class="list-group">
-  <article class="list">
-    <h4>List 1</h4>
-
-    {{#drag-sort-list
-      items         = items1
-      dragEndAction = (action 'dragEndAction')
-      as |item|
-    }}
-      <div class="the-item">
-        {{item.name}}
-      </div>
-    {{/drag-sort-list}}
-  </article>
-
-  <article class="list">
-    <h4>List 2</h4>
-
-    {{#drag-sort-list
-      items         = items2
-      dragEndAction = (action 'dragEndAction')
-      as |item|
-    }}
-      <div class="the-item">
-        {{item.name}}
-      </div>
-    {{/drag-sort-list}}
-  </article>
-</section>
 
 
+<div class="list-groups">
 
-<h2>List group 2</h2>
+  <div class="list-group-wrapper">
+    <h2>List group 1</h2>
 
-<p>
-  Uses async action, driven by <a href="http://ember-concurrency.com/">ember-concurrency</a>.
+    <p>
+      Sort lists, drag between lists. Won't let you drag items from/to another groups.
+    </p>
 
-  <a href="https://github.com/Deveo/ember-drag-sort/blob/gen-0/tests/dummy/app/controllers/index.js#L69-L82">Task source</a>.
-</p>
+    <section class="list-group">
+      <article class="list">
+        <h4>List 1</h4>
 
-<p>
-  <label>
-    {{input type="checkbox" checked=networkFailure}}
-    Simulate network failure.
-  </label>
-</p>
+        {{#drag-sort-list
+          items         = items1
+          dragEndAction = (action 'dragEndAction')
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
 
-<section class="list-group">
-  <article class="list">
-    <h4>List 3</h4>
+      <article class="list">
+        <h4>List 2</h4>
 
-    {{#drag-sort-list
-      items           = items3
-      group           = 2
-      draggingEnabled = (not dragEndTask.isRunning)
-      dragEndAction   = (action (perform dragEndTask))
-      as |item|
-    }}
-      <div class="the-item">
-        {{item.name}}
-      </div>
-    {{/drag-sort-list}}
-  </article>
+        {{#drag-sort-list
+          items         = items2
+          dragEndAction = (action 'dragEndAction')
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+    </section>
+  </div>
 
 
-  <article class="list">
-    <h4>List 4</h4>
 
-    {{#drag-sort-list
-      items           = items4
-      group           = 2
-      draggingEnabled = (not dragEndTask.isRunning)
-      dragEndAction   = (action (perform dragEndTask))
-      as |item|
-    }}
-      <div class="the-item">
-        {{item.name}}
-      </div>
-    {{/drag-sort-list}}
-  </article>
-</section>
+  <div class="list-group-wrapper">
+    <h2>List group 2</h2>
+
+    <p>
+      Uses async action, driven by <a href="http://ember-concurrency.com/">ember-concurrency</a>.
+
+      See <a href="https://github.com/Deveo/ember-drag-sort/blob/gen-0/tests/dummy/app/controllers/index.js#L69-L82">task source</a>.
+    </p>
+
+    <p>
+      <label>
+        {{input type="checkbox" checked=networkFailure}}
+        Simulate network failure.
+      </label>
+    </p>
+
+
+    <p>
+      Status:
+
+      {{#if dragEndTask.isRunning}}
+        Updating...
+      {{else if dragEndTask.last.error}}
+        {{dragEndTask.last.error.message}}
+      {{else}}
+        Idle.
+      {{/if}}
+    </p>
+
+    <section class="list-group">
+      <article class="list">
+        <h4>List 3</h4>
+
+        {{#drag-sort-list
+          items           = items3
+          group           = 2
+          draggingEnabled = (not dragEndTask.isRunning)
+          dragEndAction   = (action (perform dragEndTask))
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+
+
+      <article class="list">
+        <h4>List 4</h4>
+
+        {{#drag-sort-list
+          items           = items4
+          group           = 2
+          draggingEnabled = (not dragEndTask.isRunning)
+          dragEndAction   = (action (perform dragEndTask))
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+    </section>
+  </div>
+</div>
 
 
 
 <h2>Nested list</h2>
 
 <p>
+  See
   <a href="https://github.com/Deveo/ember-drag-sort/blob/gen-0/tests/dummy/app/templates/components/nested-item.hbs">
-    Component template source
+    {{~concat~}}
+    component template source
+    {{~concat~}}
   </a>.
 </p>
 

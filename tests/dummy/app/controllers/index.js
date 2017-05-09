@@ -1,6 +1,9 @@
 import Controller from 'ember-controller'
 import {A} from 'ember-array/utils'
 import { task, timeout } from 'ember-concurrency'
+import RSVP from 'rsvp'
+
+
 
 export default Controller.extend({
 
@@ -78,6 +81,10 @@ export default Controller.extend({
       // Rollback
       targetList.removeAt(targetIndex)
       sourceList.insertAt(sourceIndex, item)
+
+      return RSVP.reject({message : "Request timed out."})
     }
+
+    return RSVP.resolve()
   }).drop(),
 })

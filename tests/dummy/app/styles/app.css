@@ -1,5 +1,13 @@
+.github-fork-ribbon {
+  position: fixed !important;
+}
+
 html, body {
   font-family: sans-serif;
+}
+
+h4 {
+  margin-bottom: 10px;
 }
 
 p:first-child,
@@ -22,6 +30,19 @@ h5:last-child,
 h6:last-child
 {
   margin-bottom: 0;
+}
+
+.list-groups {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.list-group-wrapper {
+  flex-shrink: 0;
+  flex-grow: 1;
+  min-width: 600px;
+  margin-bottom: 30px;
 }
 
 .list-group {
