@@ -4,8 +4,8 @@
 [![Ember Observer Score](http://emberobserver.com/badges/ember-drag-sort.svg?cache_bust=1)](http://emberobserver.com/addons/ember-drag-sort)
 [![npm package version](https://img.shields.io/npm/v/ember-drag-sort.svg)](https://www.npmjs.com/package/ember-drag-sort)
 [![license MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/Deveo/ember-drag-sort/blob/gen-1/LICENSE.md)
-![ember-versions 1.13+](https://img.shields.io/badge/ember--versions-2.4%2B-yellowgreen.svg)
-![node-versions 4+](https://img.shields.io/badge/node--versions-6%2B-yellowgreen.svg)
+![ember-versions 1.13+](https://img.shields.io/badge/ember--versions-1.13%2B-yellowgreen.svg)
+![node-versions 4+](https://img.shields.io/badge/node--versions-4%2B-yellowgreen.svg)
 ![ember-cli 2.13.1](https://img.shields.io/badge/uses%20ember--cli-2.11.1-blue.svg)
 
 * [About](#about)
