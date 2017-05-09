@@ -19,13 +19,12 @@ import layout from '../templates/components/drag-sort-list'
 export default Component.extend({
 
   // ----- Arguments -----
-  items                 : undefined,
-  group                 : undefined,
-  childClass            : '',
-  draggingEnabled       : true,
-  placeholderCssValue   : '10px',
-  noPlaceholderCssValue : '0',
-  dragEndAction         : undefined,
+  items           : undefined,
+  dragEndAction   : undefined,
+  group           : undefined,
+  draggingEnabled : true,
+  childClass      : '',
+  childTagName    : 'div',
 
 
 

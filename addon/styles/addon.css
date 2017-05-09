@@ -30,7 +30,7 @@
   cursor: grabbing;
 }
 
-.dragSortItem.-isCollapsed {
+.dragSortItem.-isDragged {
   display: none;
 }
 

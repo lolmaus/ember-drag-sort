@@ -23,16 +23,13 @@ import layout from '../templates/components/drag-sort-item'
 export default Component.extend({
 
   // ----- Arguments -----
-  item                  : undefined,
-  index                 : undefined,
-  childClass            : '',
-  items                 : undefined,
-  group                 : undefined,
-  childTagName          : 'div',
-  placeholderCssValue   : undefined,
-  noPlaceholderCssValue : undefined,
-  dragEndAction         : undefined,
-  draggingEnabled       : undefined,
+  item            : undefined,
+  index           : undefined,
+  items           : undefined,
+  group           : undefined,
+  childTagName    : 'div',
+  dragEndAction   : undefined,
+  draggingEnabled : undefined,
 
 
 
@@ -45,10 +42,8 @@ export default Component.extend({
   layout,
   classNameBindings : [
     ':dragSortItem',
-    'childClass',
-    'isDragged:-isDragged',
+    'isDragged2:-isDragged',
     'isDraggingOver:-isDraggingOver',
-    'isCollapsed:-isCollapsed',
     'shouldShowPlaceholderAbove2:-placeholderAbove',
     'shouldShowPlaceholderBelow2:-placeholderBelow',
   ],
@@ -63,7 +58,7 @@ export default Component.extend({
   // ----- Static properties -----
   originalHeight : undefined,
 
-  isCollapsed : false,
+  isDragged2 : false,
 
   shouldShowPlaceholderAbove2 : undefined,
   shouldShowPlaceholderBelow2 : undefined,
@@ -101,9 +96,6 @@ export default Component.extend({
   isLast                     : eq('index', subtract('items.length', 1)),
   shouldShowPlaceholderAbove : and('isDraggingOver', 'isDraggingUp'),
   shouldShowPlaceholderBelow : and('isDraggingOver', not('isDraggingUp')),
-  // paddingTop                 : cond('shouldShowPlaceholderAbove', 'placeholderCssValue', 'noPlaceholderCssValue'),
-  // paddingBottom              : cond('shouldShowPlaceholderBelow', 'placeholderCssValue', 'noPlaceholderCssValue'),
-
 
 
 
@@ -198,7 +190,7 @@ export default Component.extend({
     // Otherwise, dragging is finished immediately.
     next(() => {
       if (this.get('isDestroying') || this.get('isDestroyed')) return
-      this.set('isCollapsed', true)
+      this.set('isDragged2', true)
     })
   },
 
@@ -207,7 +199,7 @@ export default Component.extend({
     // Otherwise, dragging is finished immediately.
     next(() => {
       if (this.get('isDestroying') || this.get('isDestroyed')) return
-      this.set('isCollapsed', false)
+      this.set('isDragged2', false)
     })
   },
 

@@ -41,9 +41,9 @@ export default Service.extend(EventedMixin, {
     next(() => {
       this.trigger('start', {
         group,
+        draggedItem : item,
         sourceList  : items,
         sourceIndex : index,
-        draggedItem : item,
       })
     })
   },
