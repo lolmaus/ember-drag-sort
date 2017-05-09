@@ -1,17 +1,32 @@
 {
   "name": "ember-drag-sort",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "A sortable list component with support for multiple and nested lists.",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "drag n drop",
+    "drag-n-drop",
+    "drag'n'drop",
+    "drag",
+    "drop",
+    "sort",
+    "sorting",
+    "component",
+    "ember-component",
+    "sortable",
+    "sortable-list",
+    "sortable list"
   ],
   "license": "MIT",
-  "author": "",
-  "directories": {
-    "doc": "doc",
-    "test": "tests"
+  "author": "Andrey Mikhaylov @lolmaus <lolmaus@gmail.com> (http://lolma.us)",
+  "contributors": [
+    "Deveo (https://github.com/Deveo)"
+  ],
+  "homepage": "https://github.com/Deveo/ember-drag-sort",
+  "bugs": {
+    "url": "https://github.com/Deveo/ember-drag-sort/issues"
   },
-  "repository": "",
+  "repository": "Deveo/ember-drag-sort",
   "scripts": {
     "build": "ember build",
     "start": "ember server",
@@ -57,6 +72,7 @@
     "node": ">= 4"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "demoURL": "https://deveo.github.io/ember-drag-sort/"
   }
 }
