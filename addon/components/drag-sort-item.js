@@ -172,17 +172,12 @@ export default Component.extend({
 
     event.stopPropagation()
 
-    const index  = this.get('index')
-    const items  = this.get('items')
-    const top    = this.$().offset().top
-    const height = this.$().outerHeight()
-
-    const clientY =
-      event.originalEvent
-        ? event.originalEvent.clientY
-        : event.clientY
-
-    const isDraggingUp = (clientY - top) < height / 2
+    const index        = this.get('index')
+    const items        = this.get('items')
+    const top          = this.$().offset().top
+    const height       = this.$().outerHeight()
+    const pageY        = event.originalEvent ? event.originalEvent.pageY : event.pageY
+    const isDraggingUp = (pageY - top) < height / 2
 
     this.get('dragSort').draggingOver({group, index, items, isDraggingUp})
   },
@@ -215,7 +210,7 @@ export default Component.extend({
     )
   }),
 
-  setPlaceholderrAbove : observer('shouldShowPlaceholderAbove', function () {
+  setPlaceholderAbove : observer('shouldShowPlaceholderAbove', function () {
     // The delay is necessary for HTML class to update with a delay.
     // Otherwise, dragging is finished immediately.
     next(() => {
@@ -227,7 +222,7 @@ export default Component.extend({
     })
   }),
 
-  setPlaceholderrBelow : observer('shouldShowPlaceholderBelow', function () {
+  setPlaceholderBelow : observer('shouldShowPlaceholderBelow', function () {
     // The delay is necessary for HTML class to update with a delay.
     // Otherwise, dragging is finished immediately.
     next(() => {
