@@ -100,7 +100,7 @@
         {{#drag-sort-list
           items           = items3
           group           = 2
-          draggingEnabled = (not dragEndTask.isRunning)
+          draggingEnabled = dragEndTask.isIdle
           dragEndAction   = (action (perform dragEndTask))
           as |item|
         }}
