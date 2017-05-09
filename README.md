@@ -37,7 +37,7 @@
 A drag'n'drop sortable list addon.
 
 
-#### Features
+### Features
 
 * Dragging between lists.
 * Nested lists (tree-like structures).
@@ -45,7 +45,7 @@ A drag'n'drop sortable list addon.
 
 
 
-#### Planned features
+### Planned features
 
 Not in active development. PRs welcome!
 
@@ -54,7 +54,7 @@ Not in active development. PRs welcome!
 
 
 
-#### Browser support
+### Browser support
 
 Tested manually.
 
@@ -83,7 +83,7 @@ Does not work on mobile browsers:
 
 ## Usage
 
-#### Basic usage
+### Basic usage
 
 The `drag-sort-list` component accepts two mandatory arguments:
 
@@ -102,7 +102,7 @@ The component accepts a block representing an individual item (the block is rend
 {{/drag-sort-list}}
 ```
 
-#### The drag end action
+### The drag end action
 
 The `dragEndAction` action *must* be a closure action.
 
@@ -140,7 +140,7 @@ Here's the reference implementation of the `dragEndAction` action:
 
 
 
-#### drag-sort-list arguments reference
+### drag-sort-list arguments reference
 
 | Argument          | Type           | Default value | Description                                                                                       |
 |:------------------|:---------------|:--------------|:--------------------------------------------------------------------------------------------------|
@@ -153,7 +153,7 @@ Here's the reference implementation of the `dragEndAction` action:
 
 
 
-#### HTML classes
+### HTML classes
 
 `drag-sort-list` component has HTML class `dragSortList`. It also assumes the following classes dynamically:
 
