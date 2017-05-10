@@ -62,6 +62,8 @@ export default Controller.extend({
 
   actions : {
     dragEndAction ({sourceList, sourceIndex, targetList, targetIndex}) {
+      if (sourceList === targetList && sourceIndex === targetIndex) return
+
       const item = sourceList.objectAt(sourceIndex)
 
       sourceList.removeAt(sourceIndex)
@@ -70,6 +72,8 @@ export default Controller.extend({
   },
 
   dragEndTask : task(function * ({sourceList, sourceIndex, targetList, targetIndex}) {
+    if (sourceList === targetList && sourceIndex === targetIndex) return RSVP.resolve()
+
     const item = sourceList.objectAt(sourceIndex)
 
     sourceList.removeAt(sourceIndex)

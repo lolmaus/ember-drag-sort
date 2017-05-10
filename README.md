@@ -130,6 +130,8 @@ Here's the reference implementation of the `dragEndAction` action:
 ```js
   actions : {
     dragEndAction ({sourceList, sourceIndex, targetList, targetIndex}) {
+      if (sourceList === targetList && sourceIndex === targetIndex) return
+
       const item = sourceList.objectAt(sourceIndex)
 
       sourceList.removeAt(sourceIndex)

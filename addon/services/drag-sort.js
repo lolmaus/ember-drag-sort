@@ -35,7 +35,7 @@ export default Service.extend(EventedMixin, {
       sourceList  : items,
       targetList  : items,
       sourceIndex : index,
-      targetIndex : index - 1,
+      targetIndex : index,
     })
 
     next(() => {
@@ -120,8 +120,6 @@ export default Service.extend(EventedMixin, {
     const isDraggingUp = this.get('isDraggingUp')
     const group        = this.get('group')
     const draggedItem  = this.get('draggedItem')
-
-    // console.log('targetIndex1', targetIndex)
 
     // Account for dragged item shifting indexes by one
     if (
