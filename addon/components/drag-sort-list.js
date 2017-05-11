@@ -87,12 +87,6 @@ export default Component.extend({
 
   // ----- Overridden methods -----
   dragEnter (event) {
-    this.dragEntering(event)
-  },
-
-
-  // ----- Custom methods -----
-  dragEntering (event) {
     // Ignore irrelevant drags
     if (!this.get('dragSort.isDragging')) return
 
@@ -103,6 +97,13 @@ export default Component.extend({
 
     event.stopPropagation()
 
+    this.dragEntering()
+  },
+
+
+  // ----- Custom methods -----
+  dragEntering () {
+    const group    = this.get('group')
     const items    = this.get('items')
     const dragSort = this.get('dragSort')
 

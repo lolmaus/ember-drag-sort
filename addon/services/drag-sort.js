@@ -8,9 +8,8 @@ import {next} from 'ember-runloop'
 export default Service.extend(EventedMixin, {
 
   // ----- Static properties -----
-  isDragging       : false,
-  isDraggingUp     : null,
-  previousPointerY : null,
+  isDragging   : false,
+  isDraggingUp : null,
 
   draggedItem : null,
   group       : null,
@@ -23,11 +22,10 @@ export default Service.extend(EventedMixin, {
 
 
   // ----- Custom methods -----
-  startDragging ({item, index, items, group, event: {clientY}}) {
+  startDragging ({item, index, items, group}) {
     this.setProperties({
-      isDragging       : true,
-      isDraggingUp     : false,
-      previousPointerY : clientY,
+      isDragging   : true,
+      isDraggingUp : false,
 
       draggedItem : item,
       group,
@@ -76,8 +74,6 @@ export default Service.extend(EventedMixin, {
       targetIndex : index,
       isDraggingUp
     })
-
-    // console.log('draggingOver targetIndex', index)
   },
 
 
@@ -102,8 +98,6 @@ export default Service.extend(EventedMixin, {
       })
 
       this.set('targetIndex', 0)
-
-      // console.log('dragEntering: targetIndex set to 0')
     }
 
     // Remember entering a new list
@@ -127,8 +121,6 @@ export default Service.extend(EventedMixin, {
       && targetIndex > sourceIndex
     ) targetIndex--
 
-    // console.log('targetIndex2', targetIndex)
-
     // Account for dragging down
     if (
       // Dragging down
@@ -143,8 +135,6 @@ export default Service.extend(EventedMixin, {
         && targetList.get('firstObject') === draggedItem
       )
     ) targetIndex++
-
-    // console.log('targetIndex3', targetIndex)
 
     this._reset()
 
@@ -175,9 +165,8 @@ export default Service.extend(EventedMixin, {
 
   _reset () {
     this.setProperties({
-      isDragging       : false,
-      isDraggingUp     : null,
-      previousPointerY : null,
+      isDragging   : false,
+      isDraggingUp : null,
 
       draggedItem : null,
       group       : null,

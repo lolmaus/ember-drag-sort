@@ -9,17 +9,22 @@
 ![ember-cli 2.13.1](https://img.shields.io/badge/uses%20ember--cli-2.11.1-blue.svg)
 
 * [About](#about)
-    * [Features](#features)
-    * [Planned features](#planned-features)
-    * [Browser support](#browser-support)
+  * [Features](#features)
+  * [Planned features](#planned-features)
+  * [Browser support](#browser-support)
 * [Installation](#installation)
 * [Usage](#usage)
-    * [Basic usage](#basic-usage)
-    * [The drag end action](#the-drag-end-action)
-    * [drag-sort-list arguments reference](#drag-sort-list-arguments-reference)
-    * [HTML classes](#html-classes)
+  * [Basic usage](#basic-usage)
+  * [The drag end action](#the-drag-end-action)
+  * [drag-sort-list arguments reference](#drag-sort-list-arguments-reference)
+  * [HTML classes](#html-classes)
   * [CSS concerns](#css-concerns)
   * [Events](#events)
+* [Test helpers](#test-helpers)
+  * [Component integration tests](#component-integration-tests)
+  * [Acceptance testing](#acceptance-testing)
+    * [Page object component](#page-object-component)
+    * [Sorting a page object component](#sorting-a-page-object-component)
 * [Development](#development)
   * [Do not use npm, use yarn](#do-not-use-npm-use-yarn)
   * [Installation for development](#installation-for-development)
@@ -206,6 +211,152 @@ Each event is called with as single argument, which is an object with properties
 
 
 
+## Test helpers
+
+### Component integration tests
+
+There's a low-level test helper `trigger` that can be imported like this:
+
+```js
+import trigger from 'ember-drag-sort/utils/trigger'
+```
+
+It accepts three arguments:
+
+| Argument    | Type                                     | Description                                                                                    |
+|:------------|:-----------------------------------------|:-----------------------------------------------------------------------------------------------|
+| `element`   | String, DOM element or jQuery collection | Selector or element to trigger an operation on.                                                |
+| `eventName` | String                                   | For list: `dragenter`; for list item: `dragstart`, `dragover` or `dragend`.                    |
+| `above`     | Boolean                                  | Only for `dragover`. Whether to put placeholder above (`true`) or below (`false`) target item. |
+
+The order of operations is the following:
+
+1. `dragstart` on the element to drag.
+2. `dragenter` on target list that the dragged element should be moved into (optional).
+3. `dragover` on target element, the one that the dragged element should be dropped next to. Provide third argument to indicate above or below.
+4. `dragover` on the dragged element.
+
+After performing the operations, you must [wait for async behavior](https://guides.emberjs.com/v2.13.0/testing/testing-components/#toc_waiting-on-asynchronous-behavior).
+ 
+See this addon's integration test for example.
+
+
+
+### Acceptance testing
+
+This addon provides a [page object](http://ember-cli-page-object.js.org) component.
+
+#### Page object component
+
+Here's how you include the sortable list page object component into your page object:
+
+```js
+import {create, visitable} from 'ember-cli-page-object'
+import dragSortList from 'dummy/tests/pages/components/drag-sort-list'
+
+export default create({
+  visit:        visitable('/'),
+  sortableList: dragSortList
+})
+```
+
+If you want to provide custom descriptors for the pageObject, use the spread operator:
+
+```
+import {create, hasClass, visitable} from 'ember-cli-page-object'
+import dragSortList from 'dummy/tests/pages/components/drag-sort-list'
+
+export default create({
+  visit:        visitable('/'),
+  sortableList: {
+    ...dragSortList,
+    isActive: hasClass('active')
+  }
+})
+```
+
+If you would like to describe the content of sortable items, import the page object component factory from `{dragSortList}` and pass your item description into it:
+
+```
+import {create, visitable} from 'ember-cli-page-object'
+import {dragSortList} from 'dummy/tests/pages/components/drag-sort-list'
+
+export default create({
+  visit:        visitable('/'),
+  sortableList: dragSortList({
+    title : text()
+  })
+})
+```
+
+Items are available as `sortableList.items()`. Item content is available as `sortableList.items(index).content`. For example, to assert the title of the first item in a list, using the page object from the last example, you can do this:
+
+```js
+assert.equal(sortableList.items(0).content.title, "Foo")
+```
+
+#### Sorting a page object component
+
+Inside your acceptance test, you can use the `sort` method on the `dragSortList` page object component.
+
+To **rearrange items within a single list**, call `dragSortList.sort()` with three arguments:
+
+| Argument      | Type    | Description                                                                                                                     |
+|:--------------|:--------|:--------------------------------------------------------------------------------------------------------------------------------|
+| `sourceIndex` | Integer | Zero-based index of the item to pick up.                                                                                        |
+| `targetIndex` | Integer | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. |
+| `above`       | Boolean | Whether to drop picked item above (`true`) or below (`false`) target item.                                                      |
+
+After executing `sort`, perform a wait using `await` or `andThen()`.
+
+Example:
+
+```js
+test('sorting a list', async function (assert) {
+  await page.visit()
+  
+  const list = page.sortableList
+  
+  await list.sort(0, 1, false)
+
+  const expectedTitles = ['Bar', 'Foo', 'Baz', 'Quux']
+
+  assert.equal(list.items().count, 4)
+
+  expectedTitles.forEach((expectedTitle, k) => {
+    m = `List #0 item #${k} content title`
+    expect(list.items(k).content.title, m).equal(expectedTitle)
+  })
+}))
+```
+
+
+
+To **move an item from one list to another**, call `dragSortList.sort()` with four arguments:
+
+| Argument      | Type                  | Description                                                                                                                     |
+|:--------------|:----------------------|:--------------------------------------------------------------------------------------------------------------------------------|
+| `sourceIndex` | Integer               | Zero-based index of the item to pick up.                                                                                        |
+| `targetList`  | Page object component | The page object of the other sortable list component.                                                                           |
+| `targetIndex` | Integer               | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. |
+| `above`       | Boolean               | Whether to drop picked item above (`true`) or below (`false`) target item.                                                      |
+
+After executing `sort`, perform a wait using `await` or `andThen()`.
+
+Example:
+
+```js  
+const list1 = page.sortableList1
+const list2 = page.sortableList2
+
+await list1.sort(0, list2, 1, false)
+```
+
+This will pick the first item from `list1` and drop it below the second item of `list2`.
+
+See this addon's acceptance test for example.
+
+
 
 ## Development
 
@@ -264,6 +415,10 @@ This command will deploy the app to https://deveo.github.io/ember-drag-sort/ :
 Proudly built in [@Deveo](https://github.com/Deveo) by [@lolmaus](https://github.com/lolmaus) and [contributors](https://github.com/Deveo/ember-drag-sort/graphs/contributors).
 
 https://deveo.com
+
+Contains code fragments borrowed from:
+
+* [jgwhite/ember-sortable](https://github.com/jgwhite/ember-sortable) ([MIT](https://github.com/jgwhite/ember-sortable/blob/master/LICENSE.md))
 
 
 ## License

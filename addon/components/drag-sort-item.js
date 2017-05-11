@@ -76,7 +76,6 @@ export default Component.extend({
 
   // ----- Computed properties -----
   draggable : computed('draggingEnabled', (draggingEnabled) => {
-    // console.log('js draggingEnabled', draggingEnabled, draggingEnabled ? true : null)
     return draggingEnabled ? true : null
   }),
 
@@ -101,17 +100,39 @@ export default Component.extend({
 
   // ----- Overridden methods -----
   dragStart (event) {
+    // Ignore irrelevant drags
+    if (!this.get('draggingEnabled')) return
+
+    event.stopPropagation()
+
+    // Required for Firefox. http://stackoverflow.com/a/32592759/901944
+    if (event.dataTransfer) event.dataTransfer.setData('text', 'anything')
+
     this.startDragging(event)
   },
 
   dragEnd (event) {
-    // console.log('dragEnd', event)
+    // Ignore irrelevant drags
+    if (!this.get('dragSort.isDragging')) return
+
+    event.stopPropagation()
+
     this.endDragging(event)
   },
 
   dragOver (event) {
-    // console.log('dragOver')
-    this.draggingOver(event)
+    // Ignore irrelevant drags
+    if (!this.get('dragSort.isDragging')) return
+
+    const group       = this.get('group')
+    const activeGroup = this.get('dragSort.group')
+    if (group !== activeGroup) return
+
+    event.stopPropagation()
+
+    const pageY = event.originalEvent ? event.originalEvent.pageY : event.pageY
+
+    this.draggingOver({pageY})
   },
 
   dragEnter (event) {
@@ -125,17 +146,7 @@ export default Component.extend({
 
 
   // ----- Custom methods -----
-  startDragging (event) {
-    // console.log('startDragging')
-
-    // Ignore irrelevant drags
-    if (!this.get('draggingEnabled')) return
-
-    event.stopPropagation()
-
-    // Required for Firefox. http://stackoverflow.com/a/32592759/901944
-    event.dataTransfer.setData('text', 'anything')
-
+  startDragging () {
     this.collapse()
 
     const item     = this.get('item')
@@ -144,16 +155,10 @@ export default Component.extend({
     const group    = this.get('group')
     const dragSort = this.get('dragSort')
 
-    dragSort.startDragging({item, index, items, group, event})
+    dragSort.startDragging({item, index, items, group})
   },
 
-  endDragging (event) {
-    // console.log('endDragging')
-
-    // Ignore irrelevant drags
-    if (!this.get('dragSort.isDragging')) return
-
-    event.stopPropagation()
+  endDragging () {
     this.restore()
 
     const action   = this.get('dragEndAction')
@@ -162,21 +167,12 @@ export default Component.extend({
     dragSort.endDragging({action})
   },
 
-  draggingOver (event) {
-    // Ignore irrelevant drags
-    if (!this.get('dragSort.isDragging')) return
-
-    const group       = this.get('group')
-    const activeGroup = this.get('dragSort.group')
-    if (group !== activeGroup) return
-
-    event.stopPropagation()
-
+  draggingOver ({pageY}) {
+    const group        = this.get('group')
     const index        = this.get('index')
     const items        = this.get('items')
     const top          = this.$().offset().top
     const height       = this.$().outerHeight()
-    const pageY        = event.originalEvent ? event.originalEvent.pageY : event.pageY
     const isDraggingUp = (pageY - top) < height / 2
 
     this.get('dragSort').draggingOver({group, index, items, isDraggingUp})
