@@ -59,8 +59,6 @@ test('sorting a list', withChai(async function (expect) {
 
 
 
-
-
 test('sorting between lists', withChai(async function (expect) {
   await page.visit()
 
@@ -88,5 +86,4 @@ test('sorting between lists', withChai(async function (expect) {
     expect(list1.items(k).content.title, m).equal(expectedTitle)
   })
 
-  // await new Promise(() =>{})
 }))

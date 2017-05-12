@@ -2,61 +2,72 @@ import Controller from 'ember-controller'
 import {A} from 'ember-array/utils'
 import { task, timeout } from 'ember-concurrency'
 import RSVP from 'rsvp'
+import computed from 'ember-computed'
 
 
 
 export default Controller.extend({
 
-  items1 : A([
-    {name : 'Foo'},
-    {name : 'Bar'},
-    {name : 'Baz'},
-    {name : 'Quux'},
-  ]),
+  items1 : computed(() =>
+    A([
+      {name : 'Foo'},
+      {name : 'Bar'},
+      {name : 'Baz'},
+      {name : 'Quux'},
+    ])
+  ),
 
-  items2 : A([
-    {name : 'Zomg'},
-    {name : 'Lol'},
-  ]),
+  items2 : computed(() =>
+    A([
+      {name : 'Zomg'},
+      {name : 'Lol'},
+    ])
+  ),
 
-  items3 : A([
-    {name : 'Foo'},
-    {name : 'Bar'},
-    {name : 'Baz'},
-    {name : 'Quux'},
-  ]),
+  items3 : computed(() =>
+    A([
+      {name : 'Foo'},
+      {name : 'Bar'},
+      {name : 'Baz'},
+      {name : 'Quux'},
+    ])
+  ),
 
-  items4 : A([
-    {name : 'Zomg'},
-    {name : 'Lol'},
-  ]),
+  items4 : computed(() =>
+    A([
+      {name : 'Zomg'},
+      {name : 'Lol'},
+    ])
+  ),
 
-  nestedItem : {
-    name     : 'Foo',
-    children : A([
-      {
-        name     : 'Bar',
-        children : A([
-          {
-            name     : 'Baz',
-            children : A([])
-          },
-          {
-            name     : 'Quuz',
-            children : A([])
-          },
-        ])
-      },
-      {
-        name     : 'Zomg',
-        children : A([])
-      },
-      {
-        name     : 'Lol',
-        children : A([])
-      },
-    ]),
-  },
+  nestedItem : computed(() => (
+    {
+      name     : 'Foo',
+      children : A([
+        {
+          name     : 'Bar',
+          children : A([
+            {
+              name     : 'Baz',
+              children : A([])
+            },
+            {
+              name     : 'Quuz',
+              children : A([])
+            },
+          ])
+        },
+        {
+          name     : 'Zomg',
+          children : A([])
+        },
+        {
+          name     : 'Lol',
+          children : A([])
+        },
+      ]),
+    }
+  )),
 
   networkFailure : false,
 
