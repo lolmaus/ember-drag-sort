@@ -85,5 +85,4 @@ test('sorting between lists', withChai(async function (expect) {
     m = `List #1 item #${k} content title`
     expect(list1.items(k).content.title, m).equal(expectedTitle)
   })
-
 }))

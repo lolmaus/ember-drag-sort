@@ -133,7 +133,7 @@ When sorting within one list, `targetIndex` assumes that the dragged item is not
 Here's the reference implementation of the `dragEndAction` action:
 
 ```js
-  actions : {
+  actions: {
     dragEndAction ({sourceList, sourceIndex, targetList, targetIndex}) {
       if (sourceList === targetList && sourceIndex === targetIndex) return
 
@@ -213,9 +213,9 @@ Each event is called with as single argument, which is an object with properties
 
 ## Test helpers
 
-### Component integration tests
+### trigger
 
-There's a low-level test helper `trigger` that can be imported like this:
+`trigger` is a low-level test helper that can be imported like this:
 
 ```js
 import trigger from 'ember-drag-sort/utils/trigger'
@@ -242,15 +242,138 @@ See this addon's integration test for example.
 
 
 
-### Acceptance testing
+### sort
 
-This addon provides a [page object](http://ember-cli-page-object.js.org) component.
-
-#### Page object component
-
-Here's how you include the sortable list page object component into your page object:
+`sort` is a high-level test helper that can be imported like this:
 
 ```js
+import {sort} from 'ember-drag-sort/utils/trigger'
+```
+
+To **rearrange items within a single list**, call `sort` with four arguments:
+
+| Argument      | Type                                     | Description                                                                                                                     |
+|:--------------|:-----------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------|
+| `sourceList`  | String, DOM element or jQuery collection | Selector or element of the `drag-sort-list` component.                                                                          |
+| `sourceIndex` | Integer                                  | Zero-based index of the item to pick up.                                                                                        |
+| `targetIndex` | Integer                                  | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. |
+| `above`       | Boolean                                  | Whether to drop picked item above (`true`) or below (`false`) target item.                                                      |
+
+After executing `sort`, perform a wait using `await` or `andThen()`.
+
+Example:
+
+```js
+import {sort} from 'ember-drag-sort/utils/trigger'
+
+test('sorting a list', async function (assert) {
+  await visit('/')
+  
+  const $list = $('.dragSortList')
+  
+  await sort($list, 0, 1, false)
+
+  const expectedTitles = ['Bar', 'Foo', 'Baz', 'Quux']
+
+  assert.equal($list.children().length, 4)
+
+  expectedTitles.forEach((expectedTitle, k) => {
+    m = `List #0 item #${k} content title`
+    expect($list.children().eq(k).text(), m).equal(expectedTitle)
+  })
+}))
+```
+
+
+
+To **move an item from one list to another**, call `sort` with five arguments:
+
+| Argument      | Type                                     | Description                                                                                                                     |
+|:--------------|:-----------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------|
+| `sourceList`  | String, DOM element or jQuery collection | Selector or element of the source `drag-sort-list` component.                                                                   |
+| `sourceIndex` | Integer                                  | Zero-based index of the item to pick up.                                                                                        |
+| `targetList`  | String, DOM element or jQuery collection | Selector or element of the target `drag-sort-list` component.                                                                   |
+| `targetIndex` | Integer                                  | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. |
+| `above`       | Boolean                                  | Whether to drop picked item above (`true`) or below (`false`) target item.                                                      |
+
+After executing `sort`, perform a wait using `await` or `andThen()`.
+
+Example:
+
+```js  
+  const $list0 = $('.dragSortList').eq(0)
+  const $list1 = $('.dragSortList').eq(1)
+  
+  await sort($list0, 0, $list1, 1, false)
+```
+
+This will pick the first item from `$list0` and drop it below the second item of `$list1`.
+
+See this addon's acceptance test for example.
+
+
+
+
+
+### Page object components
+
+This addon provides [page object](http://ember-cli-page-object.js.org) components, mixed into your app's `tests/pages/components/` directory:
+
+```
+import dragSortList from '<your-app-name>/tests/pages/components/drag-sort-list'
+import dragSortItem from '<your-app-name>/tests/pages/components/drag-sort-item'
+```
+
+When used in a test, **the `dragSortList` page object component offers the following properties and methods**:
+
+| Property          | Type                                                                                     | Description                                                       |
+|:------------------|:-----------------------------------------------------------------------------------------|:------------------------------------------------------------------|
+| `items`           | [Page Object Collection](http://ember-cli-page-object.js.org/docs/v1.8.x/api/collection) | Each item is a `dragSortItem` page object component.              |
+| `draggingEnabled` | Boolean                                                                                  | Checks for `-draggingEnabled` class on the component (see above). |
+| `isDragging`      | Boolean                                                                                  | Checks for `-isDragging` class on the component (see above).      |
+| `isDraggingOver`  | Boolean                                                                                  | Checks for `-isDraggingOver` class on the component (see above).  |
+| `isEmpty`         | Boolean                                                                                  | Checks for `-isEmpty` class on the component (see above).         |
+| `isExpanded`      | Boolean                                                                                  | Checks for `-isExpanded` class on the component (see above).      |
+| `dragEnter()`     | Method                                                                                   | Equivalent of `trigger('dragenter', $list)`.                      |
+| `sort(...)`       | Method                                                                                   | Equivalent of `sort` helper. See below for arguments.             |
+
+
+**The `dragSortItem` page object component offers the following properties and methods**:
+
+| Property           | Type                  | Description                                                                                                    |
+|:-------------------|:----------------------|:---------------------------------------------------------------------------------------------------------------|
+| `content`          | Page Object Component | Represents the content of every `dragSortItem`. Available only via the factory imported from `{dragSortList}`. |
+| `draggable`        | Boolean               | Whether the item is draggable                                                                                  |
+| `isDragged`        | Boolean               | Checks for `-isDragged` class on the component (see above).                                                    |
+| `isDraggingOver`   | Boolean               | Checks for `-isDraggingOver` class on the component (see above).                                               |
+| `placeholderAbove` | Boolean               | Checks for `-placeholderAbove` class on the component (see above).                                             |
+| `placeholderBelow` | Boolean               | Checks for `-placeholderBelow` class on the component (see above).                                             |
+| `dragStart()`      | Method                | Equivalent of `trigger('dragstart', $item)`.                                                                   |
+| `dragOver(above)`  | Method                | Equivalent of `trigger('dragover', $item, above)`.                                                             |
+| `dragEnd()`        | Method                | Equivalent of `trigger('dragend', $item)`.                                                                     |
+
+Additionally, **both page object components offer the following properties and methods**:
+
+| Property                      | Type              | Description                                                                                                                               |
+|:------------------------------|:------------------|:------------------------------------------------------------------------------------------------------------------------------------------|
+| `$`                           | jQuery Collection | Current element wrapped in jQuery.                                                                                                        |
+| `empty`                       | Boolean           | Whether current element is empty, ignoring whitespace.                                                                                    |
+| `exists`                      | Boolean           | Whether current element exists. When element does not exist, returns `false` without raising an exception.                                |
+| `index`                       | Integer           | Index of current element within its parent.                                                                                               |
+| `visible`                     | Boolean           | [PageObject.isVisible](http://ember-cli-page-object.js.org/docs/v1.8.x/api/isVisible).                                                    |
+| `attr(string)`                | Method            | Returns given attribute value on current element ([PageObject.attribute](http://ember-cli-page-object.js.org/docs/v1.8.x/api/attribute)). |
+| `click()`                     | Method            | [PageObject.clickable](http://ember-cli-page-object.js.org/docs/v1.8.x/api/clickable).                                                    |
+| `contains(selectorOrElement)` | Method            | Returns whether given element exists inside current element.                                                                              |
+| `hasClass(string)`            | Method            | Returns whether current element has given class.                                                                                          |
+| `text()`                      | Method            | Returns text of current element ([PageObject.text](http://ember-cli-page-object.js.org/docs/v1.8.x/api/text)).                            |
+
+
+
+Here's how you include `dragSortList` into your page object:
+
+```js
+// tests/pages/index.js
+
 import {create, visitable} from 'ember-cli-page-object'
 import dragSortList from 'dummy/tests/pages/components/drag-sort-list'
 
@@ -260,7 +383,7 @@ export default create({
 })
 ```
 
-If you want to provide custom descriptors for the pageObject, use the spread operator:
+If you want to provide custom descriptors for the `dragSortList` page object component, use the spread operator:
 
 ```
 import {create, hasClass, visitable} from 'ember-cli-page-object'
@@ -275,7 +398,23 @@ export default create({
 })
 ```
 
-If you would like to describe the content of sortable items, import the page object component factory from `{dragSortList}` and pass your item description into it:
+You can not provide custom descriptor for `dragSortItem`s. But you can describe item content. For example, you can describe following template:
+
+```handlebars
+{{#drag-sort-list
+  items         = items
+  dragEndAction = (action 'dragEndAction')
+  as |item|
+}}
+  <div class = 'drag-sort-item-content'>
+    {{item.name}}
+  </div>
+{{/drag-sort-list}}
+```
+```
+
+
+...by importing the page object component factory from `{dragSortList}` and passing your item description into it like this:
 
 ```
 import {create, visitable} from 'ember-cli-page-object'
@@ -284,18 +423,23 @@ import {dragSortList} from 'dummy/tests/pages/components/drag-sort-list'
 export default create({
   visit:        visitable('/'),
   sortableList: dragSortList({
-    title : text()
+    scope: '.drag-sort-item-content',
+    title: text()
   })
 })
 ```
 
-Items are available as `sortableList.items()`. Item content is available as `sortableList.items(index).content`. For example, to assert the title of the first item in a list, using the page object from the last example, you can do this:
+In a test, list items are available as `sortableList.items()`. Item content is available as `sortableList.items(index).content`.
+
+For example, to assert the title of the first item in a list, using the page object from the last example, you can do this:
 
 ```js
 assert.equal(sortableList.items(0).content.title, "Foo")
 ```
 
-#### Sorting a page object component
+
+
+#### Sorting the dragSortList page object component
 
 Inside your acceptance test, you can use the `sort` method on the `dragSortList` page object component.
 

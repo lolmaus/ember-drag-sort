@@ -1,10 +1,8 @@
 import {
-    attribute,
-    clickable,
-    findElement,
-    hasClass,
-    isVisible,
-    text,
+  clickable,
+  findElement,
+  isVisible,
+  text,
 } from '../../page-object'
 
 
@@ -38,16 +36,16 @@ export default function component (scope = "", descriptor = {}) {
   return {
     ...(scope ? { scope, itemScope : scope } : {}), // inject the scope only if it was provided
 
-    $         : jquery(($el) => $el),
-    attribute : attribute(),
-    click     : clickable(),
-    contains  : jquery(($el) => (selector) => $el.find(selector).length > 0, false),
-    empty     : jquery(($el) => $el.is(":empty") || !$el.children().length && !$el.text().trim().length),
-    exists    : jquery(($el) => $el.length > 0, false), // false: don't spit an error if element isn't found
-    index     : jquery(($el) => $el.index()),
-    hasClass  : jquery(($el) => (className) => $el.hasClass(className)),
-    visible   : isVisible(),
-    text      : text(),
+    $        : jquery(($el) => $el),
+    attr     : jquery(($el) => (attrName) => $el.attr(attrName)),
+    click    : clickable(),
+    contains : jquery(($el) => (selector) => $el.find(selector).length > 0, false),
+    empty    : jquery(($el) => $el.is(":empty") || !$el.children().length && !$el.text().trim().length),
+    exists   : jquery(($el) => $el.length > 0, false), // false: don't spit an error if element isn't found
+    index    : jquery(($el) => $el.index()),
+    hasClass : jquery(($el) => (className) => $el.hasClass(className)),
+    visible  : isVisible(),
+    text     : text(),
 
     ...descriptor
   }
