@@ -42,8 +42,9 @@ export function sort (sourceList, sourceIndex, targetList, targetIndex, above) {
   )
 
   if (arguments.length === 4) {
+    above       = targetIndex
     targetIndex = targetList
-    targetList = sourceList
+    targetList  = sourceList
   }
 
   const $sourceList = $(sourceList)

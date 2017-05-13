@@ -37,8 +37,9 @@ export function dragSortList (content = {}) {
       )
 
       if (arguments.length === 3) {
+        above       = targetIndex
         targetIndex = targetList
-        targetList = this
+        targetList  = this
       }
 
       return sort(this.$, sourceIndex, targetList.$, targetIndex, above)
