@@ -21,10 +21,10 @@
   * [CSS concerns](#css-concerns)
   * [Events](#events)
 * [Test helpers](#test-helpers)
-  * [Component integration tests](#component-integration-tests)
-  * [Acceptance testing](#acceptance-testing)
-    * [Page object component](#page-object-component)
-    * [Sorting a page object component](#sorting-a-page-object-component)
+  * [trigger](#trigger)
+  * [sort](#sort)
+  * [Page object components](#page-object-components)
+    * [Sorting the dragSortList page object component](#sorting-the-dragsortlist-page-object-component)
 * [Development](#development)
   * [Do not use npm, use yarn](#do-not-use-npm-use-yarn)
   * [Installation for development](#installation-for-development)
@@ -34,6 +34,7 @@
   * [Demo deployment](#demo-deployment)
 * [Credits](#credits)
 * [License](#license)
+
 
 
 
