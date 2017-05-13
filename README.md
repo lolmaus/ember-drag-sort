@@ -325,6 +325,8 @@ import dragSortList from '<your-app-name>/tests/pages/components/drag-sort-list'
 import dragSortItem from '<your-app-name>/tests/pages/components/drag-sort-item'
 ```
 
+Normally, you only need to import `dragSortList`. `dragSortItem` is available as part of `dragSortList`.
+
 When used in a test, **the `dragSortList` page object component offers the following properties and methods**:
 
 | Property          | Type                                                                                     | Description                                                       |
