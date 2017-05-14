@@ -65,7 +65,7 @@ test('sorting between lists', withChai(async function (expect) {
   const list0 = page.listGroups(0).lists(0)
   const list1 = page.listGroups(0).lists(1)
 
-  await list0.sort(0, list1, 1, false)
+  await list0.move(0, list1, 1, false)
 
   const expectedTitles0 = ['Bar',  'Baz', 'Quux']
   const expectedTitles1 = ['Zomg', 'Lol', 'Foo']

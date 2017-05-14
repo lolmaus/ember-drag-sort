@@ -8,6 +8,8 @@
 ![node-versions 4+](https://img.shields.io/badge/node--versions-4%2B-yellowgreen.svg)
 ![ember-cli 2.13.1](https://img.shields.io/badge/uses%20ember--cli-2.11.1-blue.svg)
 
+
+
 * [About](#about)
   * [Features](#features)
   * [Planned features](#planned-features)
@@ -23,6 +25,7 @@
 * [Test helpers](#test-helpers)
   * [trigger](#trigger)
   * [sort](#sort)
+  * [move](#move)
   * [Page object components](#page-object-components)
     * [Sorting the dragSortList page object component](#sorting-the-dragsortlist-page-object-component)
 * [Development](#development)
@@ -300,13 +303,13 @@ import {sort} from 'ember-drag-sort/utils/trigger'
 
 It accepts the following arguments:
 
-| Argument      | Type                                     | Required?                       | Description                                                                                                                                                                            |
-|:--------------|:-----------------------------------------|:--------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `sourceList`  | String, DOM element or jQuery collection | yes                             | Selector or element of the source `drag-sort-list` component.                                                                                                                          |
-| `sourceIndex` | Integer                                  | yes                             | Zero-based index of the item to pick up.                                                                                                                                               |
-| `targetList`  | String, DOM element or jQuery collection | yes                             | Selector or element of the target `drag-sort-list` component.                                                                                                                          |
-| `targetIndex` | Integer                                  | no                              | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. When omitted, adds item to the end of the target list. |
-| `above`       | Boolean                                  | yes if `targetList` is provided | Whether to drop picked item above (`true`) or below (`false`) target item.                                                                                                             |
+| Argument      | Type                                     | Required?                       | Description                                                                                                                                                                                                                                |
+|:--------------|:-----------------------------------------|:--------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `sourceList`  | String, DOM element or jQuery collection | yes                             | Selector or element of the source `drag-sort-list` component.                                                                                                                                                                              |
+| `sourceIndex` | Integer                                  | yes                             | Zero-based index of the item to pick up.                                                                                                                                                                                                   |
+| `targetList`  | String, DOM element or jQuery collection | yes                             | Selector or element of the target `drag-sort-list` component.                                                                                                                                                                              |
+| `targetIndex` | Integer                                  | no                              | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. When omitted, adds item to the end of the target list. **Must** be omitted when moving into an empty list. |
+| `above`       | Boolean                                  | yes if `targetList` is provided | Whether to drop picked item above (`true`) or below (`false`) target item.                                                                                                                                                                 |
 
 After executing `sort`, perform a wait using `wait`, `andThen` or `await`.
 
@@ -493,12 +496,12 @@ test('sorting a list', async function (assert) {
 
 To **move an item from one list to another**, call `dragSortList.move()` with four arguments:
 
-| Argument      | Type                  | Required                        | Description                                                                                                                                                                            |
-|:--------------|:----------------------|:--------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `sourceIndex` | Integer               | yes                             | Zero-based index of the item to pick up.                                                                                                                                               |
-| `targetList`  | Page object component | yes                             | The page object of the other sortable list component.                                                                                                                                  |
-| `targetIndex` | Integer               | no                              | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. When omitted, adds item to the end of the target list. |
-| `above`       | Boolean               | yes if `targetList` is provided | Whether to drop picked item above (`true`) or below (`false`) target item.                                                                                                             |
+| Argument      | Type                  | Required                        | Description                                                                                                                                                                                                                                |
+|:--------------|:----------------------|:--------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `sourceIndex` | Integer               | yes                             | Zero-based index of the item to pick up.                                                                                                                                                                                                   |
+| `targetList`  | Page object component | yes                             | The page object of the other sortable list component.                                                                                                                                                                                      |
+| `targetIndex` | Integer               | no                              | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. When omitted, adds item to the end of the target list. **Must** be omitted when moving into an empty list. |
+| `above`       | Boolean               | yes if `targetList` is provided | Whether to drop picked item above (`true`) or below (`false`) target item.                                                                                                                                                                 |
 
 After executing `sort`, perform a wait using `await` or `andThen()`.
 
