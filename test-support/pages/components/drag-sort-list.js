@@ -1,7 +1,6 @@
 import component from './_component'
 import dragSortItem from './drag-sort-item'
-import trigger, {sort} from 'ember-drag-sort/utils/trigger'
-import {assert} from 'ember-metal/utils'
+import trigger, {sort, move} from 'ember-drag-sort/utils/trigger'
 
 import {
   collection,
@@ -30,19 +29,12 @@ export function dragSortList (content = {}) {
       trigger(this.$, 'dragenter')
     },
 
-    sort (sourceIndex, targetList, targetIndex, above) {
-      assert(
-        `the \`sort\` method of \`dragSortList\` page object component accepts 3 or 4 arguments, but ${arguments.length} was given`,
-        arguments.length === 3 || arguments.length === 4
-      )
+    sort (sourceIndex, targetIndex, above) {
+      return sort(this.$, sourceIndex, targetIndex, above)
+    },
 
-      if (arguments.length === 3) {
-        above       = targetIndex
-        targetIndex = targetList
-        targetList  = this
-      }
-
-      return sort(this.$, sourceIndex, targetList.$, targetIndex, above)
+    move (sourceIndex, targetList, targetIndex, above) {
+      return move(this.$, sourceIndex, targetList.$, targetIndex, above)
     },
   })
 }

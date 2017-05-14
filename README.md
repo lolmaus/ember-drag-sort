@@ -245,22 +245,24 @@ See this addon's integration test for example.
 
 ### sort
 
-`sort` is a high-level test helper that can be imported like this:
+`sort` is a high-level test helper that **moves an item to a new position within the same list**.
+ 
+It can be imported like this:
 
 ```js
 import {sort} from 'ember-drag-sort/utils/trigger'
 ```
 
-To **rearrange items within a single list**, call `sort` with four arguments:
+It accepts the following arguments:
 
-| Argument      | Type                                     | Description                                                                                                                     |
-|:--------------|:-----------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------|
-| `sourceList`  | String, DOM element or jQuery collection | Selector or element of the `drag-sort-list` component.                                                                          |
-| `sourceIndex` | Integer                                  | Zero-based index of the item to pick up.                                                                                        |
-| `targetIndex` | Integer                                  | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. |
-| `above`       | Boolean                                  | Whether to drop picked item above (`true`) or below (`false`) target item.                                                      |
+| Argument      | Type                                     | Required? | Description                                                                                                                     |
+|:--------------|:-----------------------------------------|:----------|:--------------------------------------------------------------------------------------------------------------------------------|
+| `sourceList`  | String, DOM element or jQuery collection | yes       | Selector or element of the `drag-sort-list` component.                                                                          |
+| `sourceIndex` | Integer                                  | yes       | Zero-based index of the item to pick up.                                                                                        |
+| `targetIndex` | Integer                                  | yes       | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. |
+| `above`       | Boolean                                  | yes       | Whether to drop picked item above (`true`) or below (`false`) target item.                                                      |
 
-After executing `sort`, perform a wait using `await` or `andThen()`.
+After executing `sort` in a test, perform a wait using `wait`, `andThen` or `await`.
 
 Example:
 
@@ -286,18 +288,27 @@ test('sorting a list', async function (assert) {
 ```
 
 
+### move
 
-To **move an item from one list to another**, call `sort` with five arguments:
+`move` is a high-level test helper that **moves an item from one list into another**.
+ 
+It can be imported like this:
 
-| Argument      | Type                                     | Description                                                                                                                     |
-|:--------------|:-----------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------|
-| `sourceList`  | String, DOM element or jQuery collection | Selector or element of the source `drag-sort-list` component.                                                                   |
-| `sourceIndex` | Integer                                  | Zero-based index of the item to pick up.                                                                                        |
-| `targetList`  | String, DOM element or jQuery collection | Selector or element of the target `drag-sort-list` component.                                                                   |
-| `targetIndex` | Integer                                  | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. |
-| `above`       | Boolean                                  | Whether to drop picked item above (`true`) or below (`false`) target item.                                                      |
+```js
+import {sort} from 'ember-drag-sort/utils/trigger'
+```
 
-After executing `sort`, perform a wait using `await` or `andThen()`.
+It accepts the following arguments:
+
+| Argument      | Type                                     | Required?                       | Description                                                                                                                                                                            |
+|:--------------|:-----------------------------------------|:--------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `sourceList`  | String, DOM element or jQuery collection | yes                             | Selector or element of the source `drag-sort-list` component.                                                                                                                          |
+| `sourceIndex` | Integer                                  | yes                             | Zero-based index of the item to pick up.                                                                                                                                               |
+| `targetList`  | String, DOM element or jQuery collection | yes                             | Selector or element of the target `drag-sort-list` component.                                                                                                                          |
+| `targetIndex` | Integer                                  | no                              | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. When omitted, adds item to the end of the target list. |
+| `above`       | Boolean                                  | yes if `targetList` is provided | Whether to drop picked item above (`true`) or below (`false`) target item.                                                                                                             |
+
+After executing `sort`, perform a wait using `wait`, `andThen` or `await`.
 
 Example:
 
@@ -305,7 +316,7 @@ Example:
   const $list0 = $('.dragSortList').eq(0)
   const $list1 = $('.dragSortList').eq(1)
   
-  await sort($list0, 0, $list1, 1, false)
+  await move($list0, 0, $list1, 1, false)
 ```
 
 This will pick the first item from `$list0` and drop it below the second item of `$list1`.
@@ -337,8 +348,9 @@ When used in a test, **the `dragSortList` page object component offers the follo
 | `isDraggingOver`  | Boolean                                                                                  | Checks for `-isDraggingOver` class on the component (see above).  |
 | `isEmpty`         | Boolean                                                                                  | Checks for `-isEmpty` class on the component (see above).         |
 | `isExpanded`      | Boolean                                                                                  | Checks for `-isExpanded` class on the component (see above).      |
-| `dragEnter()`     | Method                                                                                   | Equivalent of `trigger('dragenter', $list)`.                      |
-| `sort(...)`       | Method                                                                                   | Equivalent of `sort` helper. See below for arguments.             |
+| `dragEnter()`     | Method                                                                                   | Calls `trigger` helper on current list with `'dragenter'`.        |
+| `sort(...)`       | Method                                                                                   | Calls `sort` helper on current list. See below for arguments.     |
+| `move(...)`       | Method                                                                                   | Calls `move` helper on current list. See below for arguments.     |
 
 
 **The `dragSortItem` page object component offers the following properties and methods**:
@@ -351,9 +363,9 @@ When used in a test, **the `dragSortList` page object component offers the follo
 | `isDraggingOver`   | Boolean               | Checks for `-isDraggingOver` class on the component (see above).                                               |
 | `placeholderAbove` | Boolean               | Checks for `-placeholderAbove` class on the component (see above).                                             |
 | `placeholderBelow` | Boolean               | Checks for `-placeholderBelow` class on the component (see above).                                             |
-| `dragStart()`      | Method                | Equivalent of `trigger('dragstart', $item)`.                                                                   |
-| `dragOver(above)`  | Method                | Equivalent of `trigger('dragover', $item, above)`.                                                             |
-| `dragEnd()`        | Method                | Equivalent of `trigger('dragend', $item)`.                                                                     |
+| `dragStart()`      | Method                | Calls `trigger` helper on current item with `'dragstart'`.                                                     |
+| `dragOver(above)`  | Method                | Calls `trigger` helper on current item with `'dragover'` and `above`.                                          |
+| `dragEnd()`        | Method                | Calls `trigger` helper on current item with `'dragend'`.                                                       |
 
 Additionally, **both page object components offer the following properties and methods**:
 
@@ -448,11 +460,11 @@ Inside your acceptance test, you can use the `sort` method on the `dragSortList`
 
 To **rearrange items within a single list**, call `dragSortList.sort()` with three arguments:
 
-| Argument      | Type    | Description                                                                                                                     |
-|:--------------|:--------|:--------------------------------------------------------------------------------------------------------------------------------|
-| `sourceIndex` | Integer | Zero-based index of the item to pick up.                                                                                        |
-| `targetIndex` | Integer | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. |
-| `above`       | Boolean | Whether to drop picked item above (`true`) or below (`false`) target item.                                                      |
+| Argument      | Type    | Required | Description                                                                                                                     |
+|:--------------|:--------|:---------|:--------------------------------------------------------------------------------------------------------------------------------|
+| `sourceIndex` | Integer | yes      | Zero-based index of the item to pick up.                                                                                        |
+| `targetIndex` | Integer | yes      | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. |
+| `above`       | Boolean | yes      | Whether to drop picked item above (`true`) or below (`false`) target item.                                                      |
 
 After executing `sort`, perform a wait using `await` or `andThen()`.
 
@@ -479,14 +491,14 @@ test('sorting a list', async function (assert) {
 
 
 
-To **move an item from one list to another**, call `dragSortList.sort()` with four arguments:
+To **move an item from one list to another**, call `dragSortList.move()` with four arguments:
 
-| Argument      | Type                  | Description                                                                                                                     |
-|:--------------|:----------------------|:--------------------------------------------------------------------------------------------------------------------------------|
-| `sourceIndex` | Integer               | Zero-based index of the item to pick up.                                                                                        |
-| `targetList`  | Page object component | The page object of the other sortable list component.                                                                           |
-| `targetIndex` | Integer               | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. |
-| `above`       | Boolean               | Whether to drop picked item above (`true`) or below (`false`) target item.                                                      |
+| Argument      | Type                  | Required                        | Description                                                                                                                                                                            |
+|:--------------|:----------------------|:--------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `sourceIndex` | Integer               | yes                             | Zero-based index of the item to pick up.                                                                                                                                               |
+| `targetList`  | Page object component | yes                             | The page object of the other sortable list component.                                                                                                                                  |
+| `targetIndex` | Integer               | no                              | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. When omitted, adds item to the end of the target list. |
+| `above`       | Boolean               | yes if `targetList` is provided | Whether to drop picked item above (`true`) or below (`false`) target item.                                                                                                             |
 
 After executing `sort`, perform a wait using `await` or `andThen()`.
 
