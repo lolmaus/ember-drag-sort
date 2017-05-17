@@ -36,6 +36,16 @@ export default Service.extend(EventedMixin, {
       targetIndex : index,
     })
 
+    if (items.length > 1) {
+      if (index === 0) {
+        this.set("targetIndex", index + 1)
+        this.set("isDraggingUp", true)
+
+      } else {
+        this.set("targetIndex", index - 1)
+      }
+    }
+
     next(() => {
       this.trigger('start', {
         group,
