@@ -115,41 +115,45 @@ export default Service.extend(EventedMixin, {
     const group        = this.get('group')
     const draggedItem  = this.get('draggedItem')
 
-    // Account for dragged item shifting indexes by one
-    if (
-      sourceList === targetList
-      && targetIndex > sourceIndex
-    ) targetIndex--
+    if (sourceList !== targetList || sourceIndex !== targetIndex) {
+      // Account for dragged item shifting indexes by one
+      if (
+        sourceList === targetList
+        && targetIndex > sourceIndex
+      ) targetIndex--
 
-    // Account for dragging down
-    if (
-      // Dragging down
-      !isDraggingUp
+      // Account for dragging down
+      if (
+        // Dragging down
+        !isDraggingUp
 
-      // Target index is not after the last item
-      && targetIndex < targetList.get('length')
+        // Target index is not after the last item
+        && targetIndex < targetList.get('length')
 
-      // The only element in target list is not the one dragged
-      && !(
-        targetList.get('length') === 1
-        && targetList.get('firstObject') === draggedItem
-      )
-    ) targetIndex++
+        // The only element in target list is not the one dragged
+        && !(
+          targetList.get('length') === 1
+          && targetList.get('firstObject') === draggedItem
+        )
+      ) targetIndex++
+
+      if (typeof action === 'function') {
+        next(() => {
+          action({
+            group,
+            draggedItem,
+            sourceList,
+            sourceIndex,
+            targetList,
+            targetIndex
+          })
+        })
+      }
+    }
 
     this._reset()
 
     next(() => {
-      if (typeof action === 'function') {
-        action({
-          group,
-          draggedItem,
-          sourceList,
-          sourceIndex,
-          targetList,
-          targetIndex
-        })
-      }
-
       this.trigger('end', {
         group,
         draggedItem,
