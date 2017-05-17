@@ -147,7 +147,13 @@ export default Service.extend(EventedMixin, {
         )
       ) targetIndex++
 
-      if (typeof action === 'function') {
+      if (
+        (
+          sourceList !== targetList
+          || sourceIndex !== targetIndex
+        )
+        && typeof action === 'function'
+      ) {
         next(() => {
           action({
             group,
