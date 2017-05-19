@@ -5,6 +5,7 @@ import {reads} from 'ember-computed'
 import on from 'ember-evented/on'
 import observer from 'ember-metal/observer'
 import {next} from 'ember-runloop'
+import $ from 'jquery'
 
 // ----- Ember addons -----
 import computed from 'ember-macro-helpers/computed'
@@ -56,9 +57,9 @@ export default Component.extend({
 
 
   // ----- Static properties -----
-  originalHeight : undefined,
-
-  isDragged2 : false,
+  isDragged2     : false,
+  originalHeight : null,
+  $cloneParent   : null,
 
   shouldShowPlaceholderAbove2 : undefined,
   shouldShowPlaceholderBelow2 : undefined,
@@ -106,7 +107,10 @@ export default Component.extend({
     event.stopPropagation()
 
     // Required for Firefox. http://stackoverflow.com/a/32592759/901944
-    if (event.dataTransfer) event.dataTransfer.setData('text', 'anything')
+    if (event.dataTransfer) {
+      event.dataTransfer.setData('text', 'anything')
+      this.setClone(event)
+    }
 
     this.startDragging(event)
   },
@@ -165,6 +169,8 @@ export default Component.extend({
     const dragSort = this.get('dragSort')
 
     dragSort.endDragging({action})
+
+    this.removeClone()
   },
 
   draggingOver ({pageY}) {
@@ -196,6 +202,28 @@ export default Component.extend({
     })
   },
 
+  setClone (event) {
+    const $cloneParent = $("<div style='transform: translate(-99999px, -99999px);'></div>")
+    $cloneParent.appendTo('body')
+    this.setProperties({$cloneParent})
+
+    const $element = this.$()
+    const $clone   = $element.clone()
+    const css      = $element.css(['width', 'height'])
+
+    $clone.css(css)
+    $clone.appendTo($cloneParent)
+
+    event.dataTransfer.setDragImage($clone.get(0), 0, 0)
+  },
+
+  removeClone () {
+    const $cloneParent = this.get('$cloneParent')
+    if (!$cloneParent) return
+    $cloneParent.remove()
+    this.set('$cloneParent', null)
+  },
+
 
 
   // ----- Observers -----
@@ -204,6 +232,10 @@ export default Component.extend({
       'shouldShowPlaceholderAbove',
       'shouldShowPlaceholderBelow'
     )
+  }),
+
+  removeCloneOnDestroy : on('willDestroyElement', function () {
+    this.removeClone() // Probably won't necessary, but won't hurt either
   }),
 
   setPlaceholderAbove : observer('shouldShowPlaceholderAbove', function () {
