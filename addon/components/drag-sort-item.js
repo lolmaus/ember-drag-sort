@@ -104,8 +104,8 @@ export default Component.extend({
 
     // Required for Firefox. http://stackoverflow.com/a/32592759/901944
     if (event.dataTransfer) {
-      event.dataTransfer.setData('text', 'anything')
-      event.dataTransfer.setDragImage(this.$().get(0), 0, 0)
+      if (event.dataTransfer.setData) event.dataTransfer.setData('text', 'anything')
+      if (event.dataTransfer.setDragImage) event.dataTransfer.setDragImage(this.$().get(0), 0, 0)
     }
 
     this.startDragging(event)
