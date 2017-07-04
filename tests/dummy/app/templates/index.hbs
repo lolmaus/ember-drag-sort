@@ -25,10 +25,10 @@
 <div class="list-groups">
 
   <div class="list-group-wrapper">
-    <h2>List group 1</h2>
+    <h2>Simple usage</h2>
 
     <p>
-      Sort lists, drag between lists. Won't let you drag items from/to another groups.
+      Sort lists, drag between lists. Won't let you drag items from/to other groups.
     </p>
 
     <section class="list-group">
@@ -37,7 +37,7 @@
 
         {{#drag-sort-list
           items         = items1
-          dragEndAction = (action 'dragEndAction')
+          dragEndAction = (action 'dragEnd')
           as |item|
         }}
           <div class="the-item">
@@ -51,7 +51,7 @@
 
         {{#drag-sort-list
           items         = items2
-          dragEndAction = (action 'dragEndAction')
+          dragEndAction = (action 'dragEnd')
           as |item|
         }}
           <div class="the-item">
@@ -65,7 +65,7 @@
 
 
   <div class="list-group-wrapper">
-    <h2>List group 2</h2>
+    <h2>Async action</h2>
 
     <p>
       Uses async action, driven by <a href="http://ember-concurrency.com/">ember-concurrency</a>.
@@ -131,6 +131,109 @@
 </div>
 
 
+<div class="list-groups">
+
+  <div class="list-group-wrapper">
+    <h2>Unsortable list</h2>
+
+    <p>
+      Use `determineForeignPositionAction` to prevent user from rearranging a list, while still letting them drag in and out of the list
+    </p>
+
+    <section class="list-group">
+      <article class="list">
+        <h4>List 5 (always sorted alphabetically)</h4>
+
+        {{#drag-sort-list
+          items = items5
+          group = 3
+
+          dragEndAction                  = (action 'dragEnd')
+          determineForeignPositionAction = (action 'determineForeignPosition')
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+
+      <article class="list">
+        <h4>List 6 (sorted by user)</h4>
+
+        {{#drag-sort-list
+          items                           = items6
+          group                           = 3
+          dragEndAction                   = (action 'dragEnd')
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+    </section>
+  </div>
+
+  <div class="list-group-wrapper">
+    <h2>Create copies of items by dragging out, delete by dragging in</h2>
+
+    <p>
+      Drag out of source list to create copies of items. Drag back into the source list to remove copies. The source list can't be modified.
+    </p>
+
+    <section class="list-group">
+      <article class="list">
+        <h4>List 7 (source, always sorted alphabetically)</h4>
+
+        {{#drag-sort-list
+          items = items7
+          group = 3
+
+          dragEndAction                  = (action 'dragEnd2')
+          determineForeignPositionAction = (action 'determineForeignPosition2')
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+
+      <article class="list">
+        <h4>List 8 (target, sorted by user)</h4>
+
+        {{#drag-sort-list
+          items         = items8
+          group         = 3
+          dragEndAction = (action 'dragEnd2')
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+
+      <article class="list">
+        <h4>List 9 (target, sorted by user)</h4>
+
+        {{#drag-sort-list
+          items         = items9
+          group         = 3
+          dragEndAction = (action 'dragEnd2')
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+    </section>
+  </div>
+</div>
+
+
 
 <h2>Nested list</h2>
 
@@ -145,5 +248,5 @@
 
 {{nested-item
   item          = nestedItem
-  dragEndAction = (action 'dragEndAction')
+  dragEndAction = (action 'dragEnd')
 }}

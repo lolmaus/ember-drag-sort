@@ -18,6 +18,7 @@
 * [Usage](#usage)
   * [Basic usage](#basic-usage)
   * [The drag end action](#the-drag-end-action)
+  * [The determine foreign position action](#the-determine-foreign-position-action)
   * [drag-sort-list arguments reference](#drag-sort-list-arguments-reference)
   * [HTML classes](#html-classes)
   * [CSS concerns](#css-concerns)
@@ -104,7 +105,7 @@ The component accepts a block representing an individual item (the block is rend
 ```handlebars
 {{#drag-sort-list
   items         = items1
-  dragEndAction = (action 'dragEndAction')
+  dragEndAction = (action 'dragEnd')
   as |item|
 }}
   {{item.name}}
@@ -112,8 +113,6 @@ The component accepts a block representing an individual item (the block is rend
 ```
 
 ### The drag end action
-
-The `dragEndAction` action *must* be a closure action.
 
 It is called on the source list component when the drag'n'drop operation is complete. It's called with a single argument -- an object with the following properties:
 
@@ -149,18 +148,92 @@ Here's the reference implementation of the `dragEndAction` action:
   }
 ```
 
+The `dragEndAction` action *must* be a closure action.
+
+Correct:
+
+    dragEndAction = (action 'dragEnd')
+   
+Incorrect:
+
+    dragEndAction = 'dragEnd'
+
+
+
+### The determine foreign position action
+
+You may want to let the user drag items in and out of a list, without letting him rearrange items within a list. In that case the order of items is determined by the app.
+
+Here's a use case. Your CMS allows the admin to put widgets in page areas. The admin panel has a number of lists representing page header, sidebar, footer, etc. The admin is allowed to rearrange widgets to his liking. And there's a list of unused widgets, the admin can drag items to and from that list, but unused items should always be sorted alphabetically.
+
+To achieve that, pass a closure action `determineForeignPositionAction` into the list of unused items. This will prevent the user from sorting items in that list.
+
+When the user drags a foreign items into such a list, the action will be called to determine the position of the item. Essentially, by running that action the `ember-drag-sort` addon asks the host app to suggest desired position of the dragged item.
+
+The action is only called for foreign items. When the user drags an item out of the unsortable list but then drags the item back, it will appear on its original position.
+
+The `determineForeignPositionAction` is called with with a single argument -- an object with the following properties:
+
+| Property      | Type  | Description                                   |
+|:--------------|:------|:----------------------------------------------|
+| `draggedItem` |       | The item being dragged.                       |
+| `items`       | Array | The list where the item should be positioned. |
+
+This action must return an **integer** -- the desired position of the item.
+
+The simplest implementation is to always put the item into the end of the list:
+
+```js
+determineForeignPosition ({/* draggedItem,  */items}) {
+  return items.length
+}
+```
+
+To sort items alphabetically, you  can use lodash:
+
+```js
+determineForeignPosition ({draggedItem, items}) {
+  return _.sortedIndex(items.toArray(), draggedItem)
+}
+```
+
+Or do it by hand:
+
+```js
+determineForeignPosition ({draggedItem, items}) {
+  items = A(items.slice()) // make sure not to mutate the list!
+  items.addObject(draggedItem)
+  items = items.sortBy('name')
+  return items.indexOf(draggedItem)
+}
+```
+
+**`determineForeignPositionAction` must not actually sort the list**. It's only purpose is to suggest desired item position, which is necessary to display the placeholder.
+
+**`determineForeignPositionAction` must passed as a closure action**.
+
+Correct:
+
+    determineForeignPositionAction = (action 'determineForeignPosition')
+   
+Incorrect:
+
+    determineForeignPositionAction = 'determineForeignPosition'
+
+
 
 
 ### drag-sort-list arguments reference
 
-| Argument          | Type           | Default value | Description                                                                                       |
-|:------------------|:---------------|:--------------|:--------------------------------------------------------------------------------------------------|
-| `items`           | Ember Array    | <required>    | An array of items to display and offer sorting.                                                   |
-| `dragEndAction`   | Closure action | <required>    | This callback will be called on source list when sorting is complete.                             |
-| `group`           | <any>          | `undefined`   | Used to restrict dragging between multiple lists to only some of those lists. Typically a string. |
-| `draggingEnabled` | Boolean        | `true`        | Disables sorting. Useful when `dragEndAction` is an async operation.                              |
-| `childClass`      | String         | `""`          | HTML class applied to list item components.                                                       |
-| `childTagName`    | String         | `"div"`       | `tagName` applied to list item components.                                                        |
+| Argument                         | Type                          | Default value | Description                                                                                                                                                                                     |
+|:---------------------------------|:------------------------------|:--------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `items`                          | Ember Array                   | <required>    | An array of items to display and offer sorting.                                                                                                                                                 |
+| `dragEndAction`                  | Closure action                | <required>    | This callback will be called on source list when sorting is complete. See above for details.                                                                                                    |
+| `determineForeignPositionAction` | Closure action or `undefined` | `undefined`   | When provided, used to determine the position of the placeholder when dragging a foreign item into the list. When not provided, the user is able to determine the order. See above for details. |
+| `group`                          | <any>                         | `undefined`   | Used to restrict dragging between multiple lists to only some of those lists. Typically a string.                                                                                               |
+| `draggingEnabled`                | Boolean                       | `true`        | Disables sorting. Useful when `dragEndAction` is an async operation.                                                                                                                            |
+| `childClass`                     | String                        | `""`          | HTML class applied to list item components.                                                                                                                                                     |
+| `childTagName`                   | String                        | `"div"`       | `tagName` applied to list item components.                                                                                                                                                      |
 
 
 
