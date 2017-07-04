@@ -86,3 +86,31 @@ test('sorting between lists', withChai(async function (expect) {
     expect(list1.items(k).content.title, m).equal(expectedTitle)
   })
 }))
+
+
+
+test('disable sorting within a list', withChai(async function (expect) {
+  await page.visit()
+
+  const list0 = page.listGroups(2).lists(0)
+  const list1 = page.listGroups(2).lists(1)
+
+  await list0.sort(0, 1, false)
+  await list0.sort(2, 3, false)
+  await list1.sort(0, 1, false)
+
+  const expectedTitles0 = ['Foo', 'Bar', 'Baz', 'Quux']
+  const expectedTitles1 = ['Lol', 'Zomg']
+
+  // List with disabled sorting
+  expectedTitles0.forEach((expectedTitle, k) => {
+    m = `List #0 item #${k} content title`
+    expect(list0.items(k).content.title, m).equal(expectedTitle)
+  })
+
+  // List without disabled sorting
+  expectedTitles1.forEach((expectedTitle, k) => {
+    m = `List #1 item #${k} content title`
+    expect(list1.items(k).content.title, m).equal(expectedTitle)
+  })
+}))

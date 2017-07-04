@@ -131,6 +131,50 @@
 </div>
 
 
+<div class="list-groups">
+
+  <div class="list-group-wrapper">
+    <h2>List group 3</h2>
+
+    <p>
+      Make lists unsortable within themselves with the disableSorting property. List 5 is not sortable within itself, list 6 is
+    </p>
+
+    <section class="list-group">
+      <article class="list">
+        <h4>List 5</h4>
+
+        {{#drag-sort-list
+          items          = items5
+		  group          = 3
+          dragEndAction  = (action 'dragEndAction')
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+
+      <article class="list">
+        <h4>List 6</h4>
+
+        {{#drag-sort-list
+          items          = items6
+		  group          = 3
+          dragEndAction  = (action 'dragEndAction')
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+    </section>
+  </div>
+</div>
+
+
 
 <h2>Nested list</h2>
 
