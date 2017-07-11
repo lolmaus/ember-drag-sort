@@ -28,6 +28,7 @@ export default Component.extend({
   childTagName    : 'div',
   dragEndAction   : undefined,
   draggingEnabled : undefined,
+  disableSorting  : undefined,
 
 
 
@@ -75,6 +76,12 @@ export default Component.extend({
   draggable : computed('draggingEnabled', (draggingEnabled) => {
     return draggingEnabled ? true : null
   }),
+
+
+  listHasDisabledSorting : computed('disableSorting', (disableSorting) => {
+    return disableSorting ? true : null
+  }),
+
 
   isDragged : and(
     'dragSort.isDragging',
@@ -127,6 +134,9 @@ export default Component.extend({
     const group       = this.get('group')
     const activeGroup = this.get('dragSort.group')
     if (group !== activeGroup) return
+    if (this.get('listHasDisabledSorting')) {
+      if (this.get('sourceList') === this.get('targetList')) return
+    }
 
     event.stopPropagation()
 
