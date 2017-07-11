@@ -1,7 +1,7 @@
-import run, {next}  from 'ember-runloop'
+import run from 'ember-runloop'
 import $ from 'jquery'
 import {assert} from 'ember-metal/utils'
-import RSVP from 'rsvp'
+import wait from 'ember-test-helpers/wait'
 
 
 
@@ -36,7 +36,7 @@ export default function trigger (elementOrSelector, eventName, isDraggingUp) {
 
 
 
-export function sort (sourceList, sourceIndex, targetIndex, above) {
+export async function sort (sourceList, sourceIndex, targetIndex, above) {
   const $sourceList = $(sourceList)
   const $sourceItem = $sourceList.children().eq(sourceIndex)
   const $targetItem = $sourceList.children().eq(targetIndex)
@@ -50,13 +50,13 @@ export function sort (sourceList, sourceIndex, targetIndex, above) {
   trigger($targetItem, 'dragover', above)
   trigger($sourceItem, 'dragend')
 
-  return new RSVP.Promise(resolve => next(resolve))
+  await wait()
 }
 
 
 
 
-export function move (sourceList, sourceIndex, targetList, targetIndex, above) {
+export async function move (sourceList, sourceIndex, targetList, targetIndex, above) {
   const $sourceList      = $(sourceList)
   const $sourceItem      = $sourceList.children().eq(sourceIndex)
   const $targetList      = $(targetList)
@@ -90,5 +90,5 @@ export function move (sourceList, sourceIndex, targetList, targetIndex, above) {
     trigger($sourceItem, 'dragend')
   }
 
-  return new RSVP.Promise(resolve => next(resolve))
+  await wait()
 }

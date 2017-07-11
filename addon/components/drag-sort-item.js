@@ -78,10 +78,6 @@ export default Component.extend({
   }),
 
 
-  listHasDisabledSorting : computed('disableSorting', (disableSorting) => {
-    return disableSorting ? true : null
-  }),
-
 
   isDragged : and(
     'dragSort.isDragging',
@@ -131,12 +127,20 @@ export default Component.extend({
     // Ignore irrelevant drags
     if (!this.get('dragSort.isDragging')) return
 
-    const group       = this.get('group')
-    const activeGroup = this.get('dragSort.group')
-    if (group !== activeGroup) return
-    if (this.get('listHasDisabledSorting')) {
-      if (this.get('sourceList') === this.get('targetList')) return
-    }
+    const group           = this.get('group')
+    const activeGroup     = this.get('dragSort.group')
+    const disableSorting  = this.get('disableSorting')
+    const sourceList      = this.get('sourceList')
+    const targetList      = this.get('targetList')
+
+    if (
+      group !== activeGroup
+      || (
+        disableSorting
+        && sourceList === targetList
+      )
+    ) return
+
 
     event.stopPropagation()
 

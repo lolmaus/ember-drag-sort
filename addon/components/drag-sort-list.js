@@ -25,6 +25,7 @@ export default Component.extend({
   draggingEnabled : true,
   childClass      : '',
   childTagName    : 'div',
+  disableSorting  : undefined,
 
 
 
