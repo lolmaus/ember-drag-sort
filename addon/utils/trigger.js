@@ -50,7 +50,7 @@ export async function sort (sourceList, sourceIndex, targetIndex, above) {
   trigger($targetItem, 'dragover', above)
   trigger($sourceItem, 'dragend')
 
-  await wait()
+  return wait()
 }
 
 
@@ -90,5 +90,5 @@ export async function move (sourceList, sourceIndex, targetList, targetIndex, ab
     trigger($sourceItem, 'dragend')
   }
 
-  await wait()
+  return wait()
 }

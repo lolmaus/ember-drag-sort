@@ -90,14 +90,14 @@ test('sorting between lists', withChai(async function (expect) {
 
 
 
-test('disable sorting within a list when the disableSorting parameter is true', withChai(async function (expect) {
+test('disable sorting within a list when the determineForeignPositionAction parameter is given', withChai(async function (expect) {
   await page.visit()
 
   const list0 = page.listGroups(2).lists(0)
 
   await list0.sort(0, 1, false)
 
-  const expectedTitles0 = ['Foo', 'Bar', 'Baz', 'Quux']
+  const expectedTitles0 = ['Bar', 'Baz', 'Foo', 'Quux']
 
   // List with disabled sorting
   expectedTitles0.forEach((expectedTitle, k) => {
@@ -108,7 +108,7 @@ test('disable sorting within a list when the disableSorting parameter is true', 
 
 
 
-test('dragging into a sortable list when the sourcelist has disableSorting parameter as true', withChai(async function (expect) {
+test('dragging into a sortable list when the sourcelist has the determineForeignPositionAction parameter', withChai(async function (expect) {
   await page.visit()
 
   const list0 = page.listGroups(2).lists(0)
@@ -116,8 +116,8 @@ test('dragging into a sortable list when the sourcelist has disableSorting param
 
   await list0.move(0, list1, 0, true)
 
-  const expectedTitles0 = ['Bar', 'Baz', 'Quux']
-  const expectedTitles1 = ['Foo', 'Zomg', 'Lol']
+  const expectedTitles0 = ['Baz', 'Foo', 'Quux']
+  const expectedTitles1 = ['Bar', 'Zomg', 'Lol']
 
   // List with disabled sorting
   m = "List #0 items count"
@@ -140,7 +140,7 @@ test('dragging into a sortable list when the sourcelist has disableSorting param
 
 
 
-test('sort into a list that has the disableSorting parameter as true', withChai(async function (expect) {
+test('sort into a list that has the determineForeignPositionAction parameter', withChai(async function (expect) {
   await page.visit()
 
   const list0 = page.listGroups(2).lists(0)
@@ -148,7 +148,7 @@ test('sort into a list that has the disableSorting parameter as true', withChai(
 
   await list1.move(0, list0, 0, false)
 
-  const expectedTitles0 = ['Foo', 'Zomg', 'Bar', 'Baz', 'Quux']
+  const expectedTitles0 = ['Bar', 'Baz', 'Foo', 'Quux', 'Zomg']
   const expectedTitles1 = ['Lol']
 
   // List with disabled sorting
@@ -187,7 +187,7 @@ test('sorting from an unsortable list to a sortable list, and then back into an 
 
   await wait()
 
-  const expectedTitles0 = ['Foo', 'Bar', 'Baz', 'Quux']
+  const expectedTitles0 = ['Bar', 'Baz', 'Foo', 'Quux']
   const expectedTitles1 = ['Zomg', 'Lol']
 
   // List with disabled sorting

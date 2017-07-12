@@ -42,9 +42,9 @@ export default Controller.extend({
 
   items5 : computed(() =>
     A([
-      {name : 'Foo'},
       {name : 'Bar'},
       {name : 'Baz'},
+      {name : 'Foo'},
       {name : 'Quux'},
     ])
   ),
@@ -96,6 +96,13 @@ export default Controller.extend({
       sourceList.removeAt(sourceIndex)
       targetList.insertAt(targetIndex, item)
     },
+
+    determineForeignPositionAction ({draggedItem, targetList}) {
+      targetList = targetList.slice() // create a copy of the list
+      targetList.addObject(draggedItem)
+      targetList = targetList.sortBy('name')
+      return targetList.indexOf(draggedItem)
+    }
   },
 
   dragEndTask : task(function * ({sourceList, sourceIndex, targetList, targetIndex}) {

@@ -28,7 +28,6 @@ export default Component.extend({
   childTagName    : 'div',
   dragEndAction   : undefined,
   draggingEnabled : undefined,
-  disableSorting  : undefined,
 
 
 
@@ -129,17 +128,8 @@ export default Component.extend({
 
     const group           = this.get('group')
     const activeGroup     = this.get('dragSort.group')
-    const disableSorting  = this.get('disableSorting')
-    const sourceList      = this.get('sourceList')
-    const targetList      = this.get('targetList')
 
-    if (
-      group !== activeGroup
-      || (
-        disableSorting
-        && sourceList === targetList
-      )
-    ) return
+    if (group !== activeGroup) return
 
 
     event.stopPropagation()
