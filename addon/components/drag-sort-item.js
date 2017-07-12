@@ -76,6 +76,8 @@ export default Component.extend({
     return draggingEnabled ? true : null
   }),
 
+
+
   isDragged : and(
     'dragSort.isDragging',
     eq('items', 'sourceList'),
@@ -124,9 +126,11 @@ export default Component.extend({
     // Ignore irrelevant drags
     if (!this.get('dragSort.isDragging')) return
 
-    const group       = this.get('group')
-    const activeGroup = this.get('dragSort.group')
+    const group           = this.get('group')
+    const activeGroup     = this.get('dragSort.group')
+
     if (group !== activeGroup) return
+
 
     event.stopPropagation()
 

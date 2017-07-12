@@ -40,6 +40,22 @@ export default Controller.extend({
     ])
   ),
 
+  items5 : computed(() =>
+    A([
+      {name : 'Bar'},
+      {name : 'Baz'},
+      {name : 'Foo'},
+      {name : 'Quux'},
+    ])
+  ),
+
+  items6 : computed(() =>
+    A([
+      {name : 'Zomg'},
+      {name : 'Lol'},
+    ])
+  ),
+
   nestedItem : computed(() => (
     {
       name     : 'Foo',
@@ -80,6 +96,13 @@ export default Controller.extend({
       sourceList.removeAt(sourceIndex)
       targetList.insertAt(targetIndex, item)
     },
+
+    determineForeignPositionAction ({draggedItem, targetList}) {
+      targetList = targetList.slice() // create a copy of the list
+      targetList.addObject(draggedItem)
+      targetList = targetList.sortBy('name')
+      return targetList.indexOf(draggedItem)
+    }
   },
 
   dragEndTask : task(function * ({sourceList, sourceIndex, targetList, targetIndex}) {
