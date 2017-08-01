@@ -19,6 +19,8 @@ export default Service.extend(EventedMixin, {
   sourceIndex : null,
   targetIndex : null,
 
+  lastDragEnteredList : null,
+
 
 
   // ----- Custom methods -----
@@ -111,7 +113,10 @@ export default Service.extend(EventedMixin, {
     }
 
     // Remember entering a new list
-    this.set('targetList', items)
+    this.setProperties({
+      targetList          : items,
+      lastDragEnteredList : items,
+    })
   },
 
 
@@ -195,6 +200,8 @@ export default Service.extend(EventedMixin, {
       targetList  : null,
       sourceIndex : null,
       targetIndex : null,
+
+      lastDragEnteredList : null,
     })
   },
 })

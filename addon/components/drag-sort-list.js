@@ -2,6 +2,7 @@
 import Component from 'ember-component'
 import service from 'ember-service/inject'
 import {reads} from 'ember-computed'
+import get from 'ember-metal/get'
 import observer from 'ember-metal/observer'
 import {next} from 'ember-runloop'
 
@@ -20,11 +21,13 @@ export default Component.extend({
 
   // ----- Arguments -----
   items           : undefined,
-  dragEndAction   : undefined,
   group           : undefined,
   draggingEnabled : true,
   childClass      : '',
   childTagName    : 'div',
+
+  dragEndAction                  : undefined,
+  determineForeignPositionAction : undefined,
 
 
 
@@ -51,9 +54,11 @@ export default Component.extend({
 
 
   // ----- Aliases -----
-  sourceList  : reads('dragSort.sourceList'),
-  targetList  : reads('dragSort.targetList'),
-  sourceIndex : reads('dragSort.sourceIndex'),
+  sourceList          : reads('dragSort.sourceList'),
+  targetList          : reads('dragSort.targetList'),
+  sourceIndex         : reads('dragSort.sourceIndex'),
+  draggedItem         : reads('dragSort.draggedItem'),
+  lastDragEnteredList : reads('dragSort.lastDragEnteredList'),
 
 
 
@@ -95,9 +100,18 @@ export default Component.extend({
     const activeGroup = this.get('dragSort.group')
     if (group !== activeGroup) return
 
+    // Ignore duplicate events (explanation: https://github.com/lolmaus/jquery.dragbetter#what-this-is-all-about )
+    const items               = this.get('items')
+    const lastDragEnteredList = this.get('lastDragEnteredList')
+    if (items === lastDragEnteredList) return
+
     event.stopPropagation()
 
     this.dragEntering()
+
+    if (this.get('determineForeignPositionAction')) {
+      this.forceDraggingOver()
+    }
   },
 
 
@@ -108,6 +122,30 @@ export default Component.extend({
     const dragSort = this.get('dragSort')
 
     dragSort.dragEntering({group, items})
+  },
+
+  forceDraggingOver () {
+    const determineForeignPositionAction = this.get('determineForeignPositionAction')
+
+    const group       = this.get('group')
+    const items       = this.get('items')
+    const itemsLength = get(items, 'length')
+    const draggedItem = this.get('draggedItem')
+    const sourceList  = this.get('sourceList')
+
+    let isDraggingUp = true
+
+    let index =
+      items === sourceList
+      ? items.indexOf(draggedItem) + 1
+      : determineForeignPositionAction({draggedItem, items})
+
+    if (index >= itemsLength) {
+      index        = itemsLength - 1
+      isDraggingUp = false
+    }
+
+    this.get('dragSort').draggingOver({group, index, items, isDraggingUp})
   },
 
 

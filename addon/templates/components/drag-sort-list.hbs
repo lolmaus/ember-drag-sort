@@ -1,13 +1,14 @@
 {{#each items as |item index|}}
   {{#drag-sort-item
-    item            = item
-    index           = index
-    items           = items
-    group           = group
-    class           = childClass
-    tagName         = childTagName
-    draggingEnabled = draggingEnabled
-    dragEndAction   = dragEndAction
+    item                           = item
+    index                          = index
+    items                          = items
+    group                          = group
+    class                          = childClass
+    tagName                        = childTagName
+    draggingEnabled                = draggingEnabled
+    dragEndAction                  = dragEndAction
+    determineForeignPositionAction = determineForeignPositionAction
   }}
     {{yield item index}}
   {{/drag-sort-item}}
