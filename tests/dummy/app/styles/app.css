@@ -58,6 +58,10 @@ h6:last-child
   background-color: #eee;
 }
 
+.dragSortItem {
+  overflow: auto;
+}
+
 .the-item {
   border: 1px solid black;
   margin: 4px;

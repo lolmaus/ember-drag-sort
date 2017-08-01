@@ -52,15 +52,16 @@ A drag'n'drop sortable list addon.
 * Dragging between lists.
 * Nested lists (tree-like structures).
 * Strict DDAU: does not mutate the lists while dragging. On drag end, calls an action for you to handle list mutation.
+* Disable sorting within a list while still allowing dragging in and out of the list (sort order is determined by host app instead of the user).
 
 
 
-### Planned features
+### Missing features
 
 Not in active development. PRs welcome!
 
-* Drag handle.
-* Support for horizontal lists.
+* Drag handle ([#5](https://github.com/Deveo/ember-drag-sort/issues/5)).
+* Support for horizontal lists ([#6](https://github.com/Deveo/ember-drag-sort/issues/6)).
 
 
 
@@ -270,6 +271,8 @@ The placeholder (drop target) is shown via the `-placeholderAbove` or `-placehol
 For sorting to work correctly, you must not apply padding to the list HTML element. If you need some padding on the list, apply it to its parent element.
 
 You must not apply any padding or margin to list item elements either. If you need padding between list items, apply it to HTML elements that you pass into list items.
+
+Avoid collapsing margins between list items and between list item and list. Collapsing margins may cause a [jumping glitch](https://github.com/Deveo/ember-drag-sort/issues/7).
 
 
 
