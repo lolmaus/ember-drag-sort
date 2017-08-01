@@ -114,10 +114,10 @@ export default Controller.extend({
     },
 
     determineForeignPosition ({draggedItem, items}) {
-      items = A(items.slice()) // create a copy of the list
-      items.addObject(draggedItem)
-      items = items.sortBy('name')
-      return items.indexOf(draggedItem)
+      return A(items.slice()) // create a copy of the list
+        .addObject(draggedItem)
+        .sortBy('name')
+        .indexOf(draggedItem)
     },
 
     dragEnd2 ({sourceList, sourceIndex, targetList, targetIndex}) {
@@ -129,8 +129,6 @@ export default Controller.extend({
 
       if (sourceList === unsortableList) item = {...item} // shallow clone
       else sourceList.removeAt(sourceIndex)
-
-      console.log(targetList,  unsortableList, targetList === unsortableList)
 
       if (targetList !== unsortableList) targetList.insertAt(targetIndex, item)
     },

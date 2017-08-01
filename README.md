@@ -201,10 +201,10 @@ Or do it by hand:
 
 ```js
 determineForeignPosition ({draggedItem, items}) {
-  items = A(items.slice()) // make sure not to mutate the list!
-  items.addObject(draggedItem)
-  items = items.sortBy('name')
-  return items.indexOf(draggedItem)
+    return Ember.A(items.slice()) // make sure not to mutate the list; `Ember.A()` is typically redundant
+      .addObject(draggedItem)
+      .sortBy('name')
+      .indexOf(draggedItem)
 }
 ```
 
