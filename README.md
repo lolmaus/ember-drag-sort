@@ -12,7 +12,7 @@
 
 * [About](#about)
   * [Features](#features)
-  * [Planned features](#planned-features)
+  * [Missing features](#missing-features)
   * [Browser support](#browser-support)
 * [Installation](#installation)
 * [Usage](#usage)
@@ -38,6 +38,7 @@
   * [Demo deployment](#demo-deployment)
 * [Credits](#credits)
 * [License](#license)
+
 
 
 
