@@ -47,14 +47,16 @@
       </article>
 
       <article class="list">
-        <h4>List 2</h4>
+        <h4>List 2 with drag handles</h4>
 
         {{#drag-sort-list
           items         = items2
+          handle        = '.handle'
           dragEndAction = (action 'dragEnd')
           as |item|
         }}
           <div class="the-item">
+            <span class="handle" draggable="true">☰</span>
             {{item.name}}
           </div>
         {{/drag-sort-list}}

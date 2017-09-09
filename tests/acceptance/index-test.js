@@ -22,7 +22,7 @@ test('visiting /index', withChai(async function (expect) {
 
   const expectedTitleGroups = [
     ['Foo',  'Bar', 'Baz', 'Quux'],
-    ['Zomg', 'Lol'],
+    ['☰ Zomg', '☰ Lol'],
   ]
 
   expectedTitleGroups.forEach((expectedTitles, i) => {
@@ -69,7 +69,7 @@ test('sorting between lists', withChai(async function (expect) {
   await list0.move(0, list1, 1, false)
 
   const expectedTitles0 = ['Bar',  'Baz', 'Quux']
-  const expectedTitles1 = ['Zomg', 'Lol', 'Foo']
+  const expectedTitles1 = ['☰ Zomg', '☰ Lol', '☰ Foo']
 
   m = "List #0 items count"
   expect(list0.items().count, m).equal(3)

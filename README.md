@@ -51,6 +51,7 @@ A drag'n'drop sortable list addon.
 ### Features
 
 * Dragging between lists.
+* Drag handle.
 * Nested lists (tree-like structures).
 * Strict DDAU: does not mutate the lists while dragging. On drag end, calls an action for you to handle list mutation.
 * Disable sorting within a list while still allowing dragging in and out of the list (sort order is determined by host app instead of the user).
@@ -61,7 +62,6 @@ A drag'n'drop sortable list addon.
 
 Not in active development. PRs welcome!
 
-* Drag handle ([#5](https://github.com/Deveo/ember-drag-sort/issues/5)).
 * Support for horizontal lists ([#6](https://github.com/Deveo/ember-drag-sort/issues/6)).
 
 
@@ -236,6 +236,7 @@ Incorrect:
 | `draggingEnabled`                | Boolean                       | `true`        | Disables sorting. Useful when `dragEndAction` is an async operation.                                                                                                                            |
 | `childClass`                     | String                        | `""`          | HTML class applied to list item components.                                                                                                                                                     |
 | `childTagName`                   | String                        | `"div"`       | `tagName` applied to list item components.                                                                                                                                                      |
+| `handle`                         | String or null                | `null`        | Selector of the drag handle element. When provided, items can only be dragged by handle.                                                                                                        |
 
 
 

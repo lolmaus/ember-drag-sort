@@ -4,6 +4,7 @@
     index                          = index
     items                          = items
     group                          = group
+    handle                         = handle
     class                          = childClass
     tagName                        = childTagName
     draggingEnabled                = draggingEnabled
@@ -13,15 +14,3 @@
     {{yield item index}}
   {{/drag-sort-item}}
 {{/each}}
-
-{{!--
-<p>
-  isDragging: {{isDragging}},
-  isExpanded: {{isExpanded}},
-  isEmpty: {{isEmpty}},
-  isOnlyElementDragged: {{isOnlyElementDragged}},
-  items.length: {{items.length}},
-  eq: {{eq items sourceList}},
-  sourceIndex: {{sourceIndex}},
-</p>
---}}
