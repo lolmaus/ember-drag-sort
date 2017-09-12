@@ -236,7 +236,7 @@ Incorrect:
 | `draggingEnabled`                | Boolean                       | `true`        | Disables sorting. Useful when `dragEndAction` is an async operation.                                                                                                                            |
 | `childClass`                     | String                        | `""`          | HTML class applied to list item components.                                                                                                                                                     |
 | `childTagName`                   | String                        | `"div"`       | `tagName` applied to list item components.                                                                                                                                                      |
-| `handle`                         | String or null                | `null`        | Selector of the drag handle element. When provided, items can only be dragged by handle.                                                                                                        |
+| `handle`                         | String or null                | `null`        | Selector of the drag handle element. When provided, items can only be dragged by handle. The handle element must have `draggable="true"` attribute.                                                                                                       |
 
 
 
