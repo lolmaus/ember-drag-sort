@@ -13,6 +13,9 @@ import not from 'ember-awesome-macros/not'
 import eq from 'ember-awesome-macros/eq'
 import subtract from 'ember-awesome-macros/subtract'
 
+// ----- Third-party modules -----
+import $ from 'jquery'
+
 // ----- Own modules -----
 import layout from '../templates/components/drag-sort-item'
 
@@ -27,6 +30,7 @@ export default Component.extend({
   group           : undefined,
   childTagName    : 'div',
   draggingEnabled : undefined,
+  handle          : null,
 
   dragEndAction                  : undefined,
   determineForeignPositionAction : undefined,
@@ -74,11 +78,9 @@ export default Component.extend({
 
 
   // ----- Computed properties -----
-  draggable : computed('draggingEnabled', (draggingEnabled) => {
-    return draggingEnabled ? true : null
+  draggable : computed('draggingEnabled', 'handle', (draggingEnabled, handle) => {
+    return !handle && draggingEnabled ? true : null
   }),
-
-
 
   isDragged : and(
     'dragSort.isDragging',
@@ -93,6 +95,10 @@ export default Component.extend({
     not('isDragged')
   ),
 
+  $handle : computed('handle', function (handleClass) {
+    return this.$(handleClass)
+  }),
+
   isLast                     : eq('index', subtract('items.length', 1)),
   shouldShowPlaceholderAbove : and('isDraggingOver', 'isDraggingUp'),
   shouldShowPlaceholderBelow : and('isDraggingOver', not('isDraggingUp')),
@@ -103,6 +109,11 @@ export default Component.extend({
   dragStart (event) {
     // Ignore irrelevant drags
     if (!this.get('draggingEnabled')) return
+
+    if (!this.isHandleUsed(event.target)) {
+      event.preventDefault()
+      return
+    }
 
     event.stopPropagation()
 
@@ -202,6 +213,21 @@ export default Component.extend({
       if (this.get('isDestroying') || this.get('isDestroyed')) return
       this.set('isDragged2', false)
     })
+  },
+
+  isHandleUsed (target) {
+    const handle = this.get('handle')
+
+    if (!handle) return true
+
+    const $target = $(target)
+
+    if ($target.is(handle)) return true
+
+    return $target
+      .parentsUntil(this.$())
+      .toArray()
+      .some(el => $(el).is(handle))
   },
 
 

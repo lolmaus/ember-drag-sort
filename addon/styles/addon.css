@@ -21,7 +21,7 @@
   position: relative;
 }
 
-.dragSortItem[draggable] {
+.dragSortItem[draggable], .dragSortItem [draggable] {
   cursor: move;
   cursor: hand;
   cursor: -webkit-grab;
