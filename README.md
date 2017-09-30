@@ -537,7 +537,6 @@ import {dragSortList} from '<your-app-name>/tests/pages/components/drag-sort-lis
 export default create({
   visit:        visitable('/'),
   sortableList: dragSortList({
-    scope: '.drag-sort-item-content',
     title: text()
   })
 })
