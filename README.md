@@ -491,7 +491,7 @@ Here's how you include `dragSortList` into your page object:
 // tests/pages/index.js
 
 import {create, visitable} from 'ember-cli-page-object'
-import dragSortList from 'dummy/tests/pages/components/drag-sort-list'
+import dragSortList from '<your-app-name>/tests/pages/components/drag-sort-list'
 
 export default create({
   visit:        visitable('/'),
@@ -503,7 +503,7 @@ If you want to provide custom descriptors for the `dragSortList` page object com
 
 ```js
 import {create, hasClass, visitable} from 'ember-cli-page-object'
-import dragSortList from 'dummy/tests/pages/components/drag-sort-list'
+import dragSortList from '<your-app-name>/tests/pages/components/drag-sort-list'
 
 export default create({
   visit:        visitable('/'),
@@ -532,7 +532,7 @@ You can not provide custom descriptor for `dragSortItem`s. But you can describe 
 
 ```js
 import {create, visitable} from 'ember-cli-page-object'
-import {dragSortList} from 'dummy/tests/pages/components/drag-sort-list'
+import {dragSortList} from '<your-app-name>/tests/pages/components/drag-sort-list'
 
 export default create({
   visit:        visitable('/'),
