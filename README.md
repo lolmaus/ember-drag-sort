@@ -426,11 +426,15 @@ See this addon's acceptance test for example.
 
 
 
-
-
 ### Page object components
 
-This addon provides [page object](http://ember-cli-page-object.js.org) components, mixed into your app's `tests/pages/components/` directory:
+This addon provides [page object](http://ember-cli-page-object.js.org) components.
+
+
+
+#### Importing page object components
+
+Page object components mixed into your app's `tests/pages/components/` directory
 
 ```
 import dragSortList from '<your-app-name>/tests/pages/components/drag-sort-list'
@@ -485,6 +489,9 @@ Additionally, **both page object components offer the following properties and m
 
 
 
+
+#### Including page object components into your page objects 
+
 Here's how you include `dragSortList` into your page object:
 
 ```js
@@ -498,6 +505,10 @@ export default create({
   sortableList: dragSortList
 })
 ```
+
+
+
+#### Extending the dragSortList page object component
 
 If you want to provide custom descriptors for the `dragSortList` page object component, use the spread operator:
 
@@ -514,7 +525,11 @@ export default create({
 })
 ```
 
-You can not provide custom descriptor for `dragSortItem`s. But you can describe item content. For example, you can describe following template:
+
+
+#### Extending the dragSortItem page object component
+
+You can not provide a custom descriptor for `dragSortItem`, but you can describe its content. For example, you can describe the following template:
 
 ```handlebars
 {{#drag-sort-list
@@ -549,6 +564,30 @@ For example, to assert the title of the first item in a list, using the page obj
 ```js
 assert.equal(sortableList.items(0).content.title, "Foo")
 ```
+
+
+
+#### Providing the drag handle selector
+
+If you're using drag handles, you must pass a drag handle selector to the factory as the second argument:
+
+```js
+import {create, visitable} from 'ember-cli-page-object'
+import {dragSortList} from '<your-app-name>/tests/pages/components/drag-sort-list'
+
+export default create({
+  visit:        visitable('/'),
+  sortableList: dragSortList({}, '.my-component--drag-handle')
+})
+```
+
+If you don't want to provide custom list item content, pass an empty object.
+
+This assumes that every list item has a handle with the same selector.
+
+The selector must be discoverable within list item content. In other words, the handle is accessed via `$listItem.find(handleSelector)`.
+
+If you're describing a nested list, use the `>` combinator in your drag handle selector, so that drag handles of child items aren't selected.
 
 
 

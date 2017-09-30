@@ -9,7 +9,7 @@ import {
 
 
 
-export function dragSortList (content = {}) {
+export function dragSortList (content = {}, handleSelector) {
   return component({
     items : collection({
       itemScope : '> .dragSortItem',
@@ -30,11 +30,11 @@ export function dragSortList (content = {}) {
     },
 
     sort (sourceIndex, targetIndex, above) {
-      return sort(this.$, sourceIndex, targetIndex, above)
+      return sort(this.$, sourceIndex, targetIndex, above, handleSelector)
     },
 
     move (sourceIndex, targetList, targetIndex, above) {
-      return move(this.$, sourceIndex, targetList.$, targetIndex, above)
+      return move(this.$, sourceIndex, targetList.$, targetIndex, above, handleSelector)
     },
   })
 }

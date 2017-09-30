@@ -20,26 +20,30 @@ export function triggerEvent (elementOrSelector, eventName, params) {
 
 
 
-export default function trigger (elementOrSelector, eventName, isDraggingUp) {
+export default function trigger (elementOrSelector, eventName, isDraggingUp, target) {
   triggerEvent(elementOrSelector, eventName, $el => {
-    if (isDraggingUp == null) return {}
+    const params = {target}
 
-    const modifier = isDraggingUp ? 0.25 : 0.75
-    const inner    = $el.outerHeight() * modifier
-    const outer    = $el.offset().top
-    const pageY    = inner + outer
+    if (isDraggingUp != null) {
+      const modifier = isDraggingUp ? 0.25 : 0.75
+      const inner    = $el.outerHeight() * modifier
+      const outer    = $el.offset().top
+      params.pageY   = inner + outer
+    }
 
-    return {pageY}
+    return params
   })
 }
 
 
 
 
-export async function sort (sourceList, sourceIndex, targetIndex, above) {
+export async function sort (sourceList, sourceIndex, targetIndex, above, handleSelector) {
   const $sourceList = $(sourceList)
-  const $sourceItem = $sourceList.children().eq(sourceIndex)
+  let   $sourceItem = $sourceList.children().eq(sourceIndex)
   const $targetItem = $sourceList.children().eq(targetIndex)
+
+  if (handleSelector) $sourceItem = $sourceItem.find(handleSelector)
 
   assert(
     `[ember-drag-sort sort helper] no item exists in the list at target index ${targetIndex}`,
@@ -56,11 +60,13 @@ export async function sort (sourceList, sourceIndex, targetIndex, above) {
 
 
 
-export async function move (sourceList, sourceIndex, targetList, targetIndex, above) {
+export async function move (sourceList, sourceIndex, targetList, targetIndex, above, handleSelector) {
   const $sourceList      = $(sourceList)
-  const $sourceItem      = $sourceList.children().eq(sourceIndex)
+  let   $sourceItem      = $sourceList.children().eq(sourceIndex)
   const $targetList      = $(targetList)
   const targetListLength = $targetList.children().length
+
+  if (handleSelector) $sourceItem = $sourceItem.find(handleSelector)
 
   if ($targetList.children().length) {
     if (targetIndex == null) {
