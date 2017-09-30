@@ -501,7 +501,7 @@ export default create({
 
 If you want to provide custom descriptors for the `dragSortList` page object component, use the spread operator:
 
-```
+```js
 import {create, hasClass, visitable} from 'ember-cli-page-object'
 import dragSortList from 'dummy/tests/pages/components/drag-sort-list'
 
@@ -527,12 +527,10 @@ You can not provide custom descriptor for `dragSortItem`s. But you can describe 
   </div>
 {{/drag-sort-list}}
 ```
-```
-
 
 ...by importing the page object component factory from `{dragSortList}` and passing your item description into it like this:
 
-```
+```js
 import {create, visitable} from 'ember-cli-page-object'
 import {dragSortList} from 'dummy/tests/pages/components/drag-sort-list'
 
