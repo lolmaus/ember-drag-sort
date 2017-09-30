@@ -28,6 +28,11 @@
   * [sort](#sort)
   * [move](#move)
   * [Page object components](#page-object-components)
+    * [Importing page object components](#importing-page-object-components)
+    * [Including page object components into your page objects](#including-page-object-components-into-your-page-objects)
+    * [Extending the dragSortList page object component](#extending-the-dragsortlist-page-object-component)
+    * [Extending the dragSortItem page object component](#extending-the-dragsortitem-page-object-component)
+    * [Providing the drag handle selector](#providing-the-drag-handle-selector)
     * [Sorting the dragSortList page object component](#sorting-the-dragsortlist-page-object-component)
 * [Development](#development)
   * [Do not use npm, use yarn](#do-not-use-npm-use-yarn)
@@ -38,6 +43,7 @@
   * [Demo deployment](#demo-deployment)
 * [Credits](#credits)
 * [License](#license)
+
 
 
 
@@ -490,7 +496,7 @@ Additionally, **both page object components offer the following properties and m
 
 
 
-#### Including page object components into your page objects 
+#### Including page object components into your page objects
 
 Here's how you include `dragSortList` into your page object:
 
