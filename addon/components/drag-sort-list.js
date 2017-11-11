@@ -138,8 +138,8 @@ export default Component.extend({
 
     let index =
       items === sourceList
-      ? items.indexOf(draggedItem) + 1
-      : determineForeignPositionAction({draggedItem, items})
+        ? items.indexOf(draggedItem) + 1
+        : determineForeignPositionAction({draggedItem, items})
 
     if (index >= itemsLength) {
       index        = itemsLength - 1

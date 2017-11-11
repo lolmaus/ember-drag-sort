@@ -1,9 +1,11 @@
 /* eslint-env node */
+'use strict'
+
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon')
 const Funnel     = require('broccoli-funnel')
 
 module.exports = function (defaults) {
-  var app = new EmberAddon(defaults, {
+  const app = new EmberAddon(defaults, {
     babel : {
       plugins : [
         'transform-object-rest-spread',
