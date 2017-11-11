@@ -72,6 +72,22 @@ export default Controller.extend({
     A()
   ),
 
+  items10 : computed(() =>
+    A([
+      {name : 'Foo'},
+      {name : 'Bar'},
+      {name : 'Baz'},
+      {name : 'Quux'},
+    ])
+  ),
+
+  items11 : computed(() =>
+    A([
+      {name : 'Zomg'},
+      {name : 'Lol'},
+    ])
+  ),
+
   nestedItem : computed(() => (
     {
       name     : 'Foo',

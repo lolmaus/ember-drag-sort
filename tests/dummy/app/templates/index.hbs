@@ -233,22 +233,85 @@
       </article>
     </section>
   </div>
+
+
+
+  <div class="list-group-wrapper">
+    <h2>Tables</h2>
+
+    <p>
+      ember-drag-sort uses a simple CSS technique to render the placeholder: `:before` and `:after` pseudoelements.
+    </p>
+
+    <p>
+      Unfortunately, this doesn't work with HTML tables because table semantics are very restrictive. To work around this problem, top/bottom padding on table cells can be used instead of selectors.
+    </p>
+
+    <p>
+      This is not a great solution because padding appears <em>inside</em> table cells. If you want your cells to have borders, you'll have to apply them to inner elements instead.
+    </p>
+
+    <p>
+      See <a href="https://github.com/Deveo/ember-drag-sort/blob/gen-0/tests/dummy/app/styles/app.css#L126-L159">style overrides of this demo.</a>
+    </p>
+
+    <section class="list-group">
+      <article class="list">
+        <h4>Table 1</h4>
+
+        {{#drag-sort-list
+          items         = items10
+          tagName       = 'table'
+          childTagName  = 'tr'
+          group         = 'table'
+          dragEndAction = (action 'dragEnd')
+          as |item|
+        }}
+          <td>
+            <div class="the-item">
+              {{item.name}}
+            </div>
+          </td>
+        {{/drag-sort-list}}
+      </article>
+
+      <article class="list">
+        <h4>Table 2</h4>
+
+        {{#drag-sort-list
+          items         = items11
+          tagName       = 'table'
+          childTagName  = 'tr'
+          group         = 'table'
+          dragEndAction = (action 'dragEnd')
+          as |item|
+        }}
+          <td>
+            <div class="the-item">
+              {{item.name}}
+            </div>
+          </td>
+        {{/drag-sort-list}}
+      </article>
+    </section>
+  </div>
 </div>
 
 
+<div class="list-group-wrapper">
+  <h2>Nested list</h2>
 
-<h2>Nested list</h2>
+  <p>
+    See
+    <a href="https://github.com/Deveo/ember-drag-sort/blob/gen-0/tests/dummy/app/templates/components/nested-item.hbs">
+      {{~concat~}}
+      component template source
+      {{~concat~}}
+    </a>.
+  </p>
 
-<p>
-  See
-  <a href="https://github.com/Deveo/ember-drag-sort/blob/gen-0/tests/dummy/app/templates/components/nested-item.hbs">
-    {{~concat~}}
-    component template source
-    {{~concat~}}
-  </a>.
-</p>
-
-{{nested-item
-  item          = nestedItem
-  dragEndAction = (action 'dragEnd')
-}}
+  {{nested-item
+    item          = nestedItem
+    dragEndAction = (action 'dragEnd')
+  }}
+</div>

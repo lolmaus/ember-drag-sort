@@ -39,7 +39,6 @@ h6:last-child
 }
 
 .list-group-wrapper {
-  flex-shrink: 0;
   flex-grow: 1;
   min-width: 600px;
   margin-bottom: 30px;
@@ -122,4 +121,39 @@ h6:last-child
 
 .dragSortList:not(.-draggingEnabled) {
   opacity: 0.66;
+}
+
+/* Table styles */
+table {
+  width: 100%;
+}
+
+table.dragSortList.-isExpanded {
+  padding: 15px;
+  background-color: #f6f6f6;
+}
+
+table.dragSortList.-isExpanded.-isDraggingOver {
+  background-color: #eee;
+}
+
+table.dragSortList.-isExpanded.-isDraggingOver:before {
+  content: none;
+}
+
+tr.dragSortItem.-placeholderAbove:before,
+tr.dragSortItem.-placeholderBelow:before {
+  content: none;
+}
+
+tr.dragSortItem.-placeholderAbove td {
+  padding-top: 25px;
+}
+
+tr.dragSortItem.-placeholderBelow td {
+  padding-bottom: 25px;
+}
+
+table .the-item {
+  margin: 0;
 }
