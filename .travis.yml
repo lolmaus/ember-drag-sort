@@ -41,10 +41,10 @@ before_install:
     sudo apt-get update -qq
     sudo apt-get install -y -qq yarn
     yarn --version
-    yarn global add bower
 
 install:
   - yarn install --no-lockfile
+  - yarn add bower
 
 script:
   # Usually, it's ok to finish the test scenario without reverting
