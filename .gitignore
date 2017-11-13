@@ -12,6 +12,7 @@
 /.sass-cache/
 /*.log
 /coverage/
+/*.ember-try
 
 # IDE
 /.idea/

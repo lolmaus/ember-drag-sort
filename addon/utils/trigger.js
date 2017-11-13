@@ -77,9 +77,9 @@ export async function move (sourceList, sourceIndex, targetList, targetIndex, ab
     const $targetItem = $targetList.children().eq(targetIndex)
 
     assert(
-        `[ember-drag-sort move helper] no item exists in target list at target index ${targetIndex}`,
-        $targetItem.length
-      )
+      `[ember-drag-sort move helper] no item exists in target list at target index ${targetIndex}`,
+      $targetItem.length
+    )
 
     trigger($sourceItem, 'dragstart')
     trigger($targetList, 'dragenter')
@@ -87,9 +87,9 @@ export async function move (sourceList, sourceIndex, targetList, targetIndex, ab
     trigger($sourceItem, 'dragend')
   } else {
     assert(
-        `[ember-drag-sort move helper] target list is empty, the only available target index is 0, but target index ${targetIndex} was provided`,
-        !targetIndex
-      )
+      `[ember-drag-sort move helper] target list is empty, the only available target index is 0, but target index ${targetIndex} was provided`,
+      !targetIndex
+    )
 
     trigger($sourceItem, 'dragstart')
     trigger($targetList, 'dragenter')
