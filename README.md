@@ -10,7 +10,12 @@
 
 
 
-* [About](#about)
+A drag'n'drop sortable list addon.
+
+
+
+
+* [Support](#support)
   * [Features](#features)
   * [Missing features](#missing-features)
   * [Browser support](#browser-support)
@@ -47,11 +52,12 @@
 
 
 
+## Support
 
+Bug reports and feature requests are very welcome. In case you have something to suggest or report, please file an issue to the [issue queue](https://github.com/Deveo/ember-drag-sort/issues). But first make sure there's no similar issue. ;)
 
-## About
+If you're having trouble using this addon in your project, please file a properly structured question at [StackOverflow](http://stackoverflow.com/questions/ask?tags=ember.js,ember-drag-sort). It is important that you use `ember.js` and `ember-drag-sort` tags for your question to be seen.
 
-A drag'n'drop sortable list addon.
 
 
 ### Features
