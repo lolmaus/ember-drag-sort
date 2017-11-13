@@ -41,6 +41,7 @@ before_install:
     sudo apt-get update -qq
     sudo apt-get install -y -qq yarn
     yarn --version
+    yarn global add bower
 
 install:
   - yarn install --no-lockfile
