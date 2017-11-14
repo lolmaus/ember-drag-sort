@@ -1,6 +1,7 @@
-import run from 'ember-runloop'
+import {run} from '@ember/runloop'
+import {assert} from '@ember/debug'
+
 import $ from 'jquery'
-import {assert} from 'ember-metal/utils'
 import wait from 'ember-test-helpers/wait'
 
 

@@ -1,10 +1,10 @@
 // ----- Ember modules -----
-import Component from 'ember-component'
-import service from 'ember-service/inject'
-import {reads} from 'ember-computed'
-import on from 'ember-evented/on'
-import observer from 'ember-metal/observer'
-import {next} from 'ember-runloop'
+import Component from '@ember/component'
+import {inject as service} from '@ember/service'
+import {reads} from '@ember/object/computed'
+import {on} from '@ember/object/evented'
+import {observer} from '@ember/object'
+import {next} from '@ember/runloop'
 
 // ----- Ember addons -----
 import computed from 'ember-macro-helpers/computed'

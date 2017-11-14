@@ -1,5 +1,6 @@
-import Controller from 'ember-controller'
-import {A} from 'ember-array/utils'
+import Controller from '@ember/controller'
+import {A} from '@ember/array'
+
 import { task, timeout } from 'ember-concurrency'
 import RSVP from 'rsvp'
 import computed from 'ember-computed'

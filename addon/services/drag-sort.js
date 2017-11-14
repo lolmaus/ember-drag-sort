@@ -1,7 +1,7 @@
 // ----- Ember modules -----
-import Service from 'ember-service'
-import EventedMixin from 'ember-evented'
-import {next} from 'ember-runloop'
+import Service from '@ember/service'
+import EventedMixin from '@ember/object/evented'
+import {next} from '@ember/runloop'
 
 
 

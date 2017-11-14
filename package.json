@@ -36,6 +36,7 @@
     "ember-awesome-macros": "^0.40.0",
     "ember-cli-babel": "^6.8.2",
     "ember-cli-htmlbars": "^2.0.1",
+    "ember-cli-shims": "^1.1.0",
     "ember-macro-helpers": "^0.17.0"
   },
   "devDependencies": {
@@ -55,7 +56,6 @@
     "ember-cli-node-modules-to-vendor": "^0.3.0",
     "ember-cli-page-object": "^1.12.0",
     "ember-cli-qunit": "^4.0.2",
-    "ember-cli-shims": "^1.1.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-uglify": "^2.0.0",
     "ember-composable-helpers": "^2.0.3",

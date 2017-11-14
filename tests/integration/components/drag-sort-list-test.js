@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit'
 import hbs from 'htmlbars-inline-precompile'
 import trigger from 'ember-drag-sort/utils/trigger'
-import {A} from 'ember-array/utils'
+import {A} from '@ember/array'
 import sinon from 'sinon'
 import { withChai } from 'ember-cli-chai/qunit'
 import wait from 'ember-test-helpers/wait'
