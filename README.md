@@ -8,14 +8,8 @@
 ![node-versions 6+](https://img.shields.io/badge/node--versions-6%2B-yellowgreen.svg)
 ![ember-cli 2.16.2](https://img.shields.io/badge/uses%20ember--cli-2.16.2-blue.svg)
 
-
-
-A drag'n'drop sortable list addon.
-
-
-
-
 * [Support](#support)
+* [About](#about)
   * [Features](#features)
   * [Missing features](#missing-features)
   * [Browser support](#browser-support)
@@ -51,12 +45,17 @@ A drag'n'drop sortable list addon.
 
 
 
-
 ## Support
 
 Bug reports and feature requests are very welcome. In case you have something to suggest or report, please file an issue to the [issue queue](https://github.com/Deveo/ember-drag-sort/issues). But first make sure there's no similar issue. ;)
 
-If you're having trouble using this addon in your project, please file a properly structured question at [StackOverflow](http://stackoverflow.com/questions/ask?tags=ember.js,ember-drag-sort). It is important that you use `ember.js` and `ember-drag-sort` tags for your question to be seen.
+If you're having trouble using this addon in your project, **please file a properly structured question at [StackOverflow](http://stackoverflow.com/questions/ask?tags=ember.js,ember-drag-sort)**. It is important that you use `ember.js` and `ember-drag-sort` tags for your question to be seen.
+
+
+
+## About
+
+A drag'n'drop sortable list addon.
 
 
 
