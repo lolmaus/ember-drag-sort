@@ -100,12 +100,12 @@ export default Component.extend({
     const activeGroup = this.get('dragSort.group')
     if (group !== activeGroup) return
 
+    event.stopPropagation()
+
     // Ignore duplicate events (explanation: https://github.com/lolmaus/jquery.dragbetter#what-this-is-all-about )
     const items               = this.get('items')
     const lastDragEnteredList = this.get('lastDragEnteredList')
     if (items === lastDragEnteredList) return
-
-    event.stopPropagation()
 
     this.dragEntering()
 
