@@ -1,43 +1,50 @@
 // ----- Ember modules -----
-import Component from '@ember/component';
-import { inject as service } from '@ember/service';
-import { reads } from '@ember/object/computed';
-import { on } from '@ember/object/evented';
-import { observer } from '@ember/object';
-import { next } from '@ember/runloop';
+import Component from '@ember/component'
+import {inject as service} from '@ember/service'
+import {reads} from '@ember/object/computed'
+import {on} from '@ember/object/evented'
+import {observer} from '@ember/object'
+import {next} from '@ember/runloop'
 
 // ----- Ember addons -----
-import computed from 'ember-macro-helpers/computed';
-import and from 'ember-awesome-macros/and';
-import not from 'ember-awesome-macros/not';
-import eq from 'ember-awesome-macros/eq';
-import subtract from 'ember-awesome-macros/subtract';
+import computed from 'ember-macro-helpers/computed'
+import and from 'ember-awesome-macros/and'
+import not from 'ember-awesome-macros/not'
+import eq from 'ember-awesome-macros/eq'
+import subtract from 'ember-awesome-macros/subtract'
 
 // ----- Third-party modules -----
-import $ from 'jquery';
+import $ from 'jquery'
 
 // ----- Own modules -----
-import layout from '../templates/components/drag-sort-item';
+import layout from '../templates/components/drag-sort-item'
+
+
 
 export default Component.extend({
-  // ----- Arguments -----
-  item: undefined,
-  index: undefined,
-  items: undefined,
-  group: undefined,
-  childTagName: 'div',
-  draggingEnabled: undefined,
-  handle: null,
 
-  dragEndAction: undefined,
-  determineForeignPositionAction: undefined,
+  // ----- Arguments -----
+  item            : undefined,
+  index           : undefined,
+  items           : undefined,
+  group           : undefined,
+  childTagName    : 'div',
+  draggingEnabled : undefined,
+  handle          : null,
+
+  dragEndAction                  : undefined,
+  determineForeignPositionAction : undefined,
+
+
 
   // ----- Services -----
-  dragSort: service(),
+  dragSort : service(),
+
+
 
   // ----- Overridden properties -----
   layout,
-  classNameBindings: [
+  classNameBindings : [
     ':dragSortItem',
     'isDragged2:-isDragged',
     'isDraggingOver:-isDraggingOver',
@@ -45,50 +52,70 @@ export default Component.extend({
     'shouldShowPlaceholderBelow2:-placeholderBelow',
   ],
 
-  attributeBindings: ['draggable'],
+  attributeBindings : [
+    'draggable',
+  ],
+
+
+
 
   // ----- Static properties -----
-  isDragged2: false,
-  originalHeight: null,
+  isDragged2     : false,
+  originalHeight : null,
 
-  shouldShowPlaceholderAbove2: undefined,
-  shouldShowPlaceholderBelow2: undefined,
+  shouldShowPlaceholderAbove2 : undefined,
+  shouldShowPlaceholderBelow2 : undefined,
+
+
 
   // ----- Aliases -----
-  isDraggingUp: reads('dragSort.isDraggingUp'),
-  sourceList: reads('dragSort.sourceList'),
-  sourceIndex: reads('dragSort.sourceIndex'),
-  targetIndex: reads('dragSort.targetIndex'),
-  targetList: reads('dragSort.targetList'),
+  isDraggingUp : reads('dragSort.isDraggingUp'),
+  sourceList   : reads('dragSort.sourceList'),
+  sourceIndex  : reads('dragSort.sourceIndex'),
+  targetIndex  : reads('dragSort.targetIndex'),
+  targetList   : reads('dragSort.targetList'),
+
+
 
   // ----- Computed properties -----
-  draggable: computed('draggingEnabled', 'handle', (draggingEnabled, handle) => {
-    return !handle && draggingEnabled ? true : null;
+  draggable : computed('draggingEnabled', 'handle', (draggingEnabled, handle) => {
+    return !handle && draggingEnabled ? true : null
   }),
 
-  isDragged: and('dragSort.isDragging', eq('items', 'sourceList'), eq('index', 'sourceIndex')),
+  isDragged : and(
+    'dragSort.isDragging',
+    eq('items', 'sourceList'),
+    eq('index', 'sourceIndex')
+  ),
 
-  isDraggingOver: and('dragSort.isDragging', eq('items', 'targetList'), eq('index', 'targetIndex'), not('isDragged')),
+  isDraggingOver : and(
+    'dragSort.isDragging',
+    eq('items', 'targetList'),
+    eq('index', 'targetIndex'),
+    not('isDragged')
+  ),
 
-  $handle: computed('handle', function(handleClass) {
-    return this.$(handleClass);
+  $handle : computed('handle', function (handleClass) {
+    return this.$(handleClass)
   }),
 
-  isLast: eq('index', subtract('items.length', 1)),
-  shouldShowPlaceholderAbove: and('isDraggingOver', 'isDraggingUp'),
-  shouldShowPlaceholderBelow: and('isDraggingOver', not('isDraggingUp')),
+  isLast                     : eq('index', subtract('items.length', 1)),
+  shouldShowPlaceholderAbove : and('isDraggingOver', 'isDraggingUp'),
+  shouldShowPlaceholderBelow : and('isDraggingOver', not('isDraggingUp')),
+
+
 
   // ----- Overridden methods -----
-  dragStart(event) {
+  dragStart (event) {
     // Ignore irrelevant drags
-    if (!this.get('draggingEnabled')) return;
+    if (!this.get('draggingEnabled')) return
 
     if (!this.isHandleUsed(event.target)) {
-      event.preventDefault();
-      return;
+      event.preventDefault()
+      return
     }
 
-    event.stopPropagation();
+    event.stopPropagation()
 
     // calculate ghost image position
     const handle = this.get('$handle');
@@ -100,11 +127,11 @@ export default Component.extend({
     } else {
       const mousePos = {
         x: event.originalEvent.pageX,
-        y: event.originalEvent.pageY,
+        y: event.originalEvent.pageY
       };
       const elementPos = {
         x: this.$().offset().left,
-        y: this.$().offset().top,
+        y: this.$().offset().top
       };
       xOffset = mousePos.x - elementPos.x;
       yOffset = mousePos.y - elementPos.y;
@@ -112,130 +139,148 @@ export default Component.extend({
 
     // Required for Firefox. http://stackoverflow.com/a/32592759/901944
     if (event.dataTransfer) {
-      if (event.dataTransfer.setData) event.dataTransfer.setData('text', 'anything');
-      if (event.dataTransfer.setDragImage) event.dataTransfer.setDragImage(this.$().get(0), xOffset, yOffset);
+      if (event.dataTransfer.setData) event.dataTransfer.setData('text', 'anything')
+      if (event.dataTransfer.setDragImage) event.dataTransfer.setDragImage(this.$().get(0), xOffset, yOffset)
     }
 
-    this.startDragging(event);
+    this.startDragging(event)
   },
 
-  dragEnd(event) {
+  dragEnd (event) {
     // Ignore irrelevant drags
-    if (!this.get('dragSort.isDragging')) return;
+    if (!this.get('dragSort.isDragging')) return
 
-    event.stopPropagation();
+    event.stopPropagation()
 
-    this.endDragging(event);
+    this.endDragging(event)
   },
 
-  dragOver(event) {
+  dragOver (event) {
     // Ignore irrelevant drags
-    if (!this.get('dragSort.isDragging') || this.get('determineForeignPositionAction')) return;
+    if (
+      !this.get('dragSort.isDragging')
+      || this.get('determineForeignPositionAction')
+    ) return
 
-    const group = this.get('group');
-    const activeGroup = this.get('dragSort.group');
+    const group           = this.get('group')
+    const activeGroup     = this.get('dragSort.group')
 
-    if (group !== activeGroup) return;
+    if (group !== activeGroup) return
 
-    event.stopPropagation();
+    event.stopPropagation()
 
-    const pageY = event.originalEvent ? event.originalEvent.pageY : event.pageY;
+    const pageY = event.originalEvent ? event.originalEvent.pageY : event.pageY
 
-    this.draggingOver({ pageY });
+    this.draggingOver({pageY})
   },
 
-  dragEnter(event) {
-    if (!this.get('dragSort.isDragging')) return;
+  dragEnter (event) {
+    if (!this.get('dragSort.isDragging')) return
     // Without this, dragOver would not fire in IE11. http://mereskin.github.io/dnd/
-    event.preventDefault();
+    event.preventDefault()
   },
+
+
+
+
 
   // ----- Custom methods -----
-  startDragging() {
-    this.collapse();
+  startDragging () {
+    this.collapse()
 
-    const item = this.get('item');
-    const index = this.get('index');
-    const items = this.get('items');
-    const group = this.get('group');
-    const dragSort = this.get('dragSort');
+    const item     = this.get('item')
+    const index    = this.get('index')
+    const items    = this.get('items')
+    const group    = this.get('group')
+    const dragSort = this.get('dragSort')
 
-    dragSort.startDragging({ item, index, items, group });
+    dragSort.startDragging({item, index, items, group})
   },
 
-  endDragging() {
-    this.restore();
+  endDragging () {
+    this.restore()
 
-    const action = this.get('dragEndAction');
-    const dragSort = this.get('dragSort');
+    const action   = this.get('dragEndAction')
+    const dragSort = this.get('dragSort')
 
-    dragSort.endDragging({ action });
+    dragSort.endDragging({action})
   },
 
-  draggingOver({ pageY }) {
-    const group = this.get('group');
-    const index = this.get('index');
-    const items = this.get('items');
-    const top = this.$().offset().top;
-    const height = this.$().outerHeight();
-    const isDraggingUp = pageY - top < height / 2;
+  draggingOver ({pageY}) {
+    const group        = this.get('group')
+    const index        = this.get('index')
+    const items        = this.get('items')
+    const top          = this.$().offset().top
+    const height       = this.$().outerHeight()
+    const isDraggingUp = (pageY - top) < height / 2
 
-    this.get('dragSort').draggingOver({ group, index, items, isDraggingUp });
+    this.get('dragSort').draggingOver({group, index, items, isDraggingUp})
   },
 
-  collapse() {
+  collapse () {
     // The delay is necessary for HTML classes to update with a delay.
     // Otherwise, dragging is finished immediately.
     next(() => {
-      if (this.get('isDestroying') || this.get('isDestroyed')) return;
-      this.set('isDragged2', true);
-    });
+      if (this.get('isDestroying') || this.get('isDestroyed')) return
+      this.set('isDragged2', true)
+    })
   },
 
-  restore() {
+  restore () {
     // The delay is necessary for HTML class to update with a delay.
     // Otherwise, dragging is finished immediately.
     next(() => {
-      if (this.get('isDestroying') || this.get('isDestroyed')) return;
-      this.set('isDragged2', false);
-    });
+      if (this.get('isDestroying') || this.get('isDestroyed')) return
+      this.set('isDragged2', false)
+    })
   },
 
-  isHandleUsed(target) {
-    const handle = this.get('handle');
+  isHandleUsed (target) {
+    const handle = this.get('handle')
 
-    if (!handle) return true;
+    if (!handle) return true
 
-    const $target = $(target);
+    const $target = $(target)
 
-    if ($target.is(handle)) return true;
+    if ($target.is(handle)) return true
 
     return $target
       .parentsUntil(this.$())
       .toArray()
-      .some(el => $(el).is(handle));
+      .some(el => $(el).is(handle))
   },
 
+
+
   // ----- Observers -----
-  consumePlaceholderCPs: on('didInsertElement', function() {
-    this.getProperties('shouldShowPlaceholderAbove', 'shouldShowPlaceholderBelow');
+  consumePlaceholderCPs : on('didInsertElement', function () {
+    this.getProperties(
+      'shouldShowPlaceholderAbove',
+      'shouldShowPlaceholderBelow'
+    )
   }),
 
-  setPlaceholderAbove: observer('shouldShowPlaceholderAbove', function() {
+  setPlaceholderAbove : observer('shouldShowPlaceholderAbove', function () {
     // The delay is necessary for HTML class to update with a delay.
     // Otherwise, dragging is finished immediately.
     next(() => {
-      if (this.get('isDestroying') || this.get('isDestroyed')) return;
-      this.set('shouldShowPlaceholderAbove2', this.get('shouldShowPlaceholderAbove'));
-    });
+      if (this.get('isDestroying') || this.get('isDestroyed')) return
+      this.set(
+        'shouldShowPlaceholderAbove2',
+        this.get('shouldShowPlaceholderAbove')
+      )
+    })
   }),
 
-  setPlaceholderBelow: observer('shouldShowPlaceholderBelow', function() {
+  setPlaceholderBelow : observer('shouldShowPlaceholderBelow', function () {
     // The delay is necessary for HTML class to update with a delay.
     // Otherwise, dragging is finished immediately.
     next(() => {
-      if (this.get('isDestroying') || this.get('isDestroyed')) return;
-      this.set('shouldShowPlaceholderBelow2', this.get('shouldShowPlaceholderBelow'));
-    });
+      if (this.get('isDestroying') || this.get('isDestroyed')) return
+      this.set(
+        'shouldShowPlaceholderBelow2',
+        this.get('shouldShowPlaceholderBelow')
+      )
+    })
   }),
-});
+})
