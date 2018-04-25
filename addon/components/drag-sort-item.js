@@ -118,12 +118,14 @@ export default Component.extend({
     event.stopPropagation()
 
     // calculate ghost image position
-    const handle = this.get('$handle');
+    const handle = this.get('handle');
+    const handleElem = this.get('$handle');
+
     let xOffset = 0,
       yOffset = 0;
     if (handle) {
-      xOffset = handle.position().left + handle.outerWidth() / 2;
-      yOffset = handle.position().top + handle.outerHeight() / 2;
+      xOffset = handleElem.position().left + handleElem.outerWidth() / 2;
+      yOffset = handleElem.position().top + handleElem.outerHeight() / 2;
     } else {
       const mousePos = {
         x: event.originalEvent.pageX,
