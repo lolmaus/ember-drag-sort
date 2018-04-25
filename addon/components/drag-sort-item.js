@@ -121,22 +121,23 @@ export default Component.extend({
     const handle = this.get('handle');
     const handleElem = this.get('$handle');
 
-    let xOffset = 0,
-      yOffset = 0;
+    let xOffset = 0
+    let yOffset = 0
+
     if (handle) {
-      xOffset = handleElem.position().left + handleElem.outerWidth() / 2;
-      yOffset = handleElem.position().top + handleElem.outerHeight() / 2;
+      xOffset = handleElem.position().left + handleElem.outerWidth() / 2
+      yOffset = handleElem.position().top + handleElem.outerHeight() / 2
     } else {
       const mousePos = {
-        x: event.originalEvent.pageX,
-        y: event.originalEvent.pageY
-      };
+        x : event.originalEvent.pageX,
+        y : event.originalEvent.pageY
+      }
       const elementPos = {
-        x: this.$().offset().left,
-        y: this.$().offset().top
-      };
-      xOffset = mousePos.x - elementPos.x;
-      yOffset = mousePos.y - elementPos.y;
+        x : this.$().offset().left,
+        y : this.$().offset().top
+      }
+      xOffset = mousePos.x - elementPos.x
+      yOffset = mousePos.y - elementPos.y
     }
 
     // Required for Firefox. http://stackoverflow.com/a/32592759/901944
