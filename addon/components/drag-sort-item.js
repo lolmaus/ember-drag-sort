@@ -118,8 +118,8 @@ export default Component.extend({
     event.stopPropagation()
 
     // calculate ghost image position
-    const handle = this.get('handle');
-    const handleElem = this.get('$handle');
+    const handle = this.get('handle')
+    const handleElem = this.get('$handle')
 
     let xOffset = 0
     let yOffset = 0
