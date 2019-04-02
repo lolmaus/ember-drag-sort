@@ -40,11 +40,11 @@ export default Service.extend(EventedMixin, {
 
     if (items.length > 1) {
       if (index === 0) {
-        this.set("targetIndex", index + 1)
-        this.set("isDraggingUp", true)
+        this.set('targetIndex', index + 1)
+        this.set('isDraggingUp', true)
 
       } else {
-        this.set("targetIndex", index - 1)
+        this.set('targetIndex', index - 1)
       }
     }
 
@@ -84,7 +84,7 @@ export default Service.extend(EventedMixin, {
     // Remember current index and direction
     this.setProperties({
       targetIndex : index,
-      isDraggingUp
+      isDraggingUp,
     })
   },
 
@@ -166,7 +166,7 @@ export default Service.extend(EventedMixin, {
             sourceList,
             sourceIndex,
             targetList,
-            targetIndex
+            targetIndex,
           })
         })
       }
@@ -181,7 +181,7 @@ export default Service.extend(EventedMixin, {
         sourceList,
         sourceIndex,
         targetList,
-        targetIndex
+        targetIndex,
       })
     })
   },

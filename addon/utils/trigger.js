@@ -1,101 +1,105 @@
-import {run} from '@ember/runloop'
 import {assert} from '@ember/debug'
-
-import $ from 'jquery'
-import wait from 'ember-test-helpers/wait'
+import { triggerEvent, settled } from '@ember/test-helpers'
 
 
 
-// https://github.com/jgwhite/ember-sortable/blob/21d2c513f96796f9b1a56983d34cf501a1f169c2/tests/integration/components/sortable-group-test.js#L35-L40
-export function triggerEvent (elementOrSelector, eventName, params) {
-  run(() => {
-    const $el   = $(elementOrSelector)
+// // https://github.com/jgwhite/ember-sortable/blob/21d2c513f96796f9b1a56983d34cf501a1f169c2/tests/integration/components/sortable-group-test.js#L35-L40
+// export function triggerEvent (elementOrSelector, eventName, params) {
+//   run(() => {
+//     const element =
+//       (elementOrSelector instanceof Element)
+//         ? elementOrSelector
+//         : find(elementOrSelector)
 
-    if (typeof params === 'function') params = params($el)
+//     if (typeof params === 'function') params = params(element)
 
-    const event = $.Event(eventName, params)
+//     const event = new CustomEvent(eventName, params)
 
-    $el.trigger(event)
-  })
-}
+//     element.dispatchEvent(event)
+//   })
+// }
 
 
 
-export default function trigger (elementOrSelector, eventName, isDraggingUp, target) {
-  triggerEvent(elementOrSelector, eventName, $el => {
-    const params = {target}
+export default function trigger (elementOrSelector, eventName, isDraggingUp) {
+  const element =
+    (elementOrSelector instanceof Element)
+      ? elementOrSelector
+      : find(elementOrSelector)
 
-    if (isDraggingUp != null) {
-      const modifier = isDraggingUp ? 0.25 : 0.75
-      const inner    = $el.outerHeight() * modifier
-      const outer    = $el.offset().top
-      params.pageY   = inner + outer
-    }
+  const params = {}
 
-    return params
-  })
+  if (isDraggingUp != null) {
+    const modifier = isDraggingUp ? 0.25 : 0.75
+    const inner    = element.offsetHeight * modifier
+    const outer    = element.getBoundingClientRect().top
+    params.clientY = inner + outer
+  }
+
+  return triggerEvent(elementOrSelector, eventName, params)
 }
 
 
 
 
 export async function sort (sourceList, sourceIndex, targetIndex, above, handleSelector) {
-  const $sourceList = $(sourceList)
-  let   $sourceItem = $sourceList.children().eq(sourceIndex)
-  const $targetItem = $sourceList.children().eq(targetIndex)
+  let sourceItem = sourceList.children[sourceIndex]
 
-  if (handleSelector) $sourceItem = $sourceItem.find(handleSelector)
+  assert(`source item not exist at index ${sourceIndex}`, sourceItem)
 
-  assert(
-    `[ember-drag-sort sort helper] no item exists in the list at target index ${targetIndex}`,
-    $targetItem.length
-  )
+  if (handleSelector) sourceItem = sourceItem.querySelector(handleSelector)
 
-  trigger($sourceItem, 'dragstart')
-  trigger($targetItem, 'dragover', above)
-  trigger($sourceItem, 'dragend')
+  assert('handle does not exist', !handleSelector || sourceItem)
 
-  return wait()
+  const targetItem = sourceList.children[targetIndex]
+
+  assert(`target item not exist at index ${targetIndex}`, targetItem)
+
+  await trigger(sourceItem, 'dragstart')
+  await trigger(targetItem, 'dragover', above)
+  await trigger(sourceItem, 'dragend')
+
+  return settled()
 }
 
 
 
 
 export async function move (sourceList, sourceIndex, targetList, targetIndex, above, handleSelector) {
-  const $sourceList      = $(sourceList)
-  let   $sourceItem      = $sourceList.children().eq(sourceIndex)
-  const $targetList      = $(targetList)
-  const targetListLength = $targetList.children().length
+  let sourceItem       = sourceList.children[sourceIndex]
 
-  if (handleSelector) $sourceItem = $sourceItem.find(handleSelector)
+  assert(`source item not exist at index ${sourceIndex}`, sourceItem)
 
-  if ($targetList.children().length) {
+  if (handleSelector) sourceItem = sourceItem.querySelector(handleSelector)
+
+  assert('handle does not exist', !handleSelector || sourceItem)
+
+  const targetListLength = targetList.childElementCount
+
+  if (targetListLength) {
     if (targetIndex == null) {
       targetIndex = targetListLength - 1
       above       = false
     }
 
-    const $targetItem = $targetList.children().eq(targetIndex)
+    const targetItem = targetList.children[targetIndex]
 
-    assert(
-      `[ember-drag-sort move helper] no item exists in target list at target index ${targetIndex}`,
-      $targetItem.length
-    )
+    assert(`target item not exist at index ${targetIndex}`, targetItem)
 
-    trigger($sourceItem, 'dragstart')
-    trigger($targetList, 'dragenter')
-    trigger($targetItem, 'dragover', above)
-    trigger($sourceItem, 'dragend')
+    await trigger(sourceItem, 'dragstart')
+    await trigger(targetList, 'dragenter')
+    await trigger(targetItem, 'dragover', above)
+    await trigger(sourceItem, 'dragend')
   } else {
     assert(
-      `[ember-drag-sort move helper] target list is empty, the only available target index is 0, but target index ${targetIndex} was provided`,
+      `target list is empty, the only available target index is 0, but target index ${targetIndex} was provided`,
       !targetIndex
     )
 
-    trigger($sourceItem, 'dragstart')
-    trigger($targetList, 'dragenter')
-    trigger($sourceItem, 'dragend')
+    await trigger(sourceItem, 'dragstart')
+    await trigger(targetList, 'dragenter')
+    await trigger(sourceItem, 'dragend')
   }
 
-  return wait()
+  return settled()
 }

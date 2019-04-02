@@ -1,8 +1,8 @@
 // ----- Ember modules -----
 import Component from '@ember/component'
+import { assert }  from '@ember/debug'
 import {inject as service} from '@ember/service'
 import {reads} from '@ember/object/computed'
-import {on} from '@ember/object/evented'
 import {observer} from '@ember/object'
 import {next} from '@ember/runloop'
 
@@ -12,9 +12,6 @@ import and from 'ember-awesome-macros/and'
 import not from 'ember-awesome-macros/not'
 import eq from 'ember-awesome-macros/eq'
 import subtract from 'ember-awesome-macros/subtract'
-
-// ----- Third-party modules -----
-import $ from 'jquery'
 
 // ----- Own modules -----
 import layout from '../templates/components/drag-sort-item'
@@ -95,10 +92,6 @@ export default Component.extend({
     not('isDragged')
   ),
 
-  $handle : computed('handle', function (handleClass) {
-    return this.$(handleClass)
-  }),
-
   isLast                     : eq('index', subtract('items.length', 1)),
   shouldShowPlaceholderAbove : and('isDraggingOver', 'isDraggingUp'),
   shouldShowPlaceholderBelow : and('isDraggingOver', not('isDraggingUp')),
@@ -106,6 +99,14 @@ export default Component.extend({
 
 
   // ----- Overridden methods -----
+  didInsertElement () {
+    // Consume properties for observers to act
+    this.getProperties(
+      'shouldShowPlaceholderAbove',
+      'shouldShowPlaceholderBelow'
+    )
+  },
+
   dragStart (event) {
     // Ignore irrelevant drags
     if (!this.get('draggingEnabled')) return
@@ -120,7 +121,7 @@ export default Component.extend({
     // Required for Firefox. http://stackoverflow.com/a/32592759/901944
     if (event.dataTransfer) {
       if (event.dataTransfer.setData) event.dataTransfer.setData('text', 'anything')
-      if (event.dataTransfer.setDragImage) event.dataTransfer.setDragImage(this.$().get(0), 0, 0)
+      if (event.dataTransfer.setDragImage) event.dataTransfer.setDragImage(this.element, 0, 0)
     }
 
     this.startDragging(event)
@@ -142,16 +143,14 @@ export default Component.extend({
       || this.get('determineForeignPositionAction')
     ) return
 
-    const group           = this.get('group')
-    const activeGroup     = this.get('dragSort.group')
+    const group       = this.get('group')
+    const activeGroup = this.get('dragSort.group')
 
     if (group !== activeGroup) return
 
     event.stopPropagation()
 
-    const pageY = event.originalEvent ? event.originalEvent.pageY : event.pageY
-
-    this.draggingOver({pageY})
+    this.draggingOver(event)
   },
 
   dragEnter (event) {
@@ -186,13 +185,14 @@ export default Component.extend({
     dragSort.endDragging({action})
   },
 
-  draggingOver ({pageY}) {
+  draggingOver (event) {
     const group        = this.get('group')
     const index        = this.get('index')
     const items        = this.get('items')
-    const top          = this.$().offset().top
-    const height       = this.$().outerHeight()
-    const isDraggingUp = (pageY - top) < height / 2
+    const element      = this.get('element')
+    const top          = element.getBoundingClientRect().top
+    const height       = element.offsetHeight
+    const isDraggingUp = (event.clientY - top) < height / 2
 
     this.get('dragSort').draggingOver({group, index, items, isDraggingUp})
   },
@@ -216,30 +216,21 @@ export default Component.extend({
   },
 
   isHandleUsed (target) {
-    const handle = this.get('handle')
+    const handle  = this.get('handle')
+    const element = this.get('element')
 
     if (!handle) return true
 
-    const $target = $(target)
+    const handleElement = element.querySelector(handle)
 
-    if ($target.is(handle)) return true
+    assert('Handle not found', !!handleElement)
 
-    return $target
-      .parentsUntil(this.$())
-      .toArray()
-      .some(el => $(el).is(handle))
+    return handleElement === target || handleElement.contains(target)
   },
 
 
 
   // ----- Observers -----
-  consumePlaceholderCPs : on('didInsertElement', function () {
-    this.getProperties(
-      'shouldShowPlaceholderAbove',
-      'shouldShowPlaceholderBelow'
-    )
-  }),
-
   setPlaceholderAbove : observer('shouldShowPlaceholderAbove', function () {
     // The delay is necessary for HTML class to update with a delay.
     // Otherwise, dragging is finished immediately.

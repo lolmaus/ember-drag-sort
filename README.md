@@ -1,53 +1,56 @@
 # ember-drag-sort
 
-[![Travis build status](https://img.shields.io/travis/Deveo/ember-drag-sort.svg)](https://travis-ci.org/Deveo/ember-drag-sort)
+[![Travis build status](https://img.shields.io/travis/kaliber5/ember-drag-sort.svg)](https://travis-ci.org/kaliber5/ember-drag-sort)
 [![Ember Observer Score](http://emberobserver.com/badges/ember-drag-sort.svg?cache_bust=1)](http://emberobserver.com/addons/ember-drag-sort)
 [![npm package version](https://img.shields.io/npm/v/ember-drag-sort.svg)](https://www.npmjs.com/package/ember-drag-sort)
-[![license MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/Deveo/ember-drag-sort/blob/gen-1/LICENSE.md)
+[![license MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/kaliber5/ember-drag-sort/blob/gen-1/LICENSE.md)
 ![ember-versions 1.13+](https://img.shields.io/badge/ember--versions-1.13%2B-yellowgreen.svg)
 ![node-versions 6+](https://img.shields.io/badge/node--versions-6%2B-yellowgreen.svg)
 ![ember-cli 2.16.2](https://img.shields.io/badge/uses%20ember--cli-2.16.2-blue.svg)
 
-* [Support](#support)
-* [About](#about)
-  * [Features](#features)
-  * [Missing features](#missing-features)
-  * [Browser support](#browser-support)
-* [Installation](#installation)
-* [Usage](#usage)
-  * [Basic usage](#basic-usage)
-  * [The drag end action](#the-drag-end-action)
-  * [The determine foreign position action](#the-determine-foreign-position-action)
-  * [drag-sort-list arguments reference](#drag-sort-list-arguments-reference)
-  * [HTML classes](#html-classes)
-  * [CSS concerns](#css-concerns)
-  * [Events](#events)
-* [Test helpers](#test-helpers)
-  * [trigger](#trigger)
-  * [sort](#sort)
-  * [move](#move)
-  * [Page object components](#page-object-components)
-    * [Importing page object components](#importing-page-object-components)
-    * [Including page object components into your page objects](#including-page-object-components-into-your-page-objects)
-    * [Extending the dragSortList page object component](#extending-the-dragsortlist-page-object-component)
-    * [Extending the dragSortItem page object component](#extending-the-dragsortitem-page-object-component)
-    * [Providing the drag handle selector](#providing-the-drag-handle-selector)
-    * [Sorting the dragSortList page object component](#sorting-the-dragsortlist-page-object-component)
-* [Development](#development)
-  * [Do not use npm, use yarn](#do-not-use-npm-use-yarn)
-  * [Installation for development](#installation-for-development)
-  * [Running](#running)
-  * [Branch names](#branch-names)
-  * [Updating the table of contents](#updating-the-table-of-contents)
-  * [Demo deployment](#demo-deployment)
-* [Credits](#credits)
-* [License](#license)
+- [ember-drag-sort](#ember-drag-sort)
+  - [Support](#support)
+  - [About](#about)
+    - [Features](#features)
+    - [Missing features](#missing-features)
+  - [Versions, branches and jQuery](#versions-branches-and-jquery)
+  - [Known issues](#known-issues)
+    - [Browser support](#browser-support)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Basic usage](#basic-usage)
+    - [The drag end action](#the-drag-end-action)
+    - [The determine foreign position action](#the-determine-foreign-position-action)
+    - [drag-sort-list arguments reference](#drag-sort-list-arguments-reference)
+    - [HTML classes](#html-classes)
+    - [CSS concerns](#css-concerns)
+    - [Events](#events)
+  - [Test helpers](#test-helpers)
+    - [trigger](#trigger)
+    - [sort](#sort)
+    - [move](#move)
+    - [Page object components](#page-object-components)
+      - [Importing page object components](#importing-page-object-components)
+      - [Including page object components into your page objects](#including-page-object-components-into-your-page-objects)
+      - [Extending the dragSortList page object component](#extending-the-dragsortlist-page-object-component)
+      - [Extending the dragSortItem page object component](#extending-the-dragsortitem-page-object-component)
+      - [Providing the drag handle selector](#providing-the-drag-handle-selector)
+      - [Sorting the dragSortList page object component](#sorting-the-dragsortlist-page-object-component)
+  - [Development](#development)
+    - [Do not use npm, use yarn](#do-not-use-npm-use-yarn)
+    - [Installation for development](#installation-for-development)
+    - [Running](#running)
+    - [Branch names](#branch-names)
+    - [Updating the table of contents](#updating-the-table-of-contents)
+    - [Demo deployment](#demo-deployment)
+  - [Credits](#credits)
+  - [License](#license)
 
 
 
 ## Support
 
-Bug reports and feature requests are very welcome. In case you have something to suggest or report, please file an issue to the [issue queue](https://github.com/Deveo/ember-drag-sort/issues). But first make sure there's no similar issue. ;)
+Bug reports and feature requests are very welcome. In case you have something to suggest or report, please file an issue to the [issue queue](https://github.com/kaliber5/ember-drag-sort/issues). But first make sure there's no similar issue. ;)
 
 If you're having trouble using this addon in your project, **please file a properly structured question at [StackOverflow](http://stackoverflow.com/questions/ask?tags=ember.js,ember-drag-sort)**. It is important that you use `ember.js` and `ember-drag-sort` tags for your question to be seen.
 
@@ -73,7 +76,22 @@ A drag'n'drop sortable list addon.
 
 Not in active development. PRs welcome!
 
-* Support for horizontal lists ([#6](https://github.com/Deveo/ember-drag-sort/issues/6)).
+* Support for horizontal lists ([#6](https://github.com/kaliber5/ember-drag-sort/issues/6)).
+
+
+
+## Versions, branches and jQuery
+
+* Version 1.x, `gen-0` branch is based on jQuery.
+* Version 2.x, `gen-1` branch (current development head) has got rid of jQuery. Except for page objects which [still import](https://github.com/san650/ember-cli-page-object/blob/v1.15.2/index.js#L23-L28) jQuery in test env.
+
+
+
+## Known issues
+
+* :warning: Nested lists do not work correctly in Ember without jQuery. This is an issue with Ember itself, see https://github.com/emberjs/ember.js/issues/17840 .
+
+    The [demo](https://kaliber5.github.io/ember-drag-sort/) hosts the v1.1.1 version.
 
 
 
@@ -305,7 +323,7 @@ For sorting to work correctly, you must not apply padding to the list HTML eleme
 
 You must not apply any padding or margin to list item elements either. If you need padding between list items, apply it to HTML elements that you pass into list items.
 
-Avoid collapsing margins between list items and between list item and list. Collapsing margins may cause a [jumping glitch](https://github.com/Deveo/ember-drag-sort/issues/7).
+Avoid collapsing margins between list items and between list item and list. Collapsing margins may cause a [jumping glitch](https://github.com/kaliber5/ember-drag-sort/issues/7).
 
 
 
@@ -711,7 +729,7 @@ Maintaining the TOC by hand is extremely tedious. Use [this tiny webapp](https:/
 
 ### Demo deployment
 
-This command will deploy the app to https://deveo.github.io/ember-drag-sort/ :
+This command will deploy the app to https://kaliber5/ember-drag-sort.github.io/ember-drag-sort/ :
 
     ember deploy prod
 
@@ -719,15 +737,16 @@ This command will deploy the app to https://deveo.github.io/ember-drag-sort/ :
 
 ## Credits
 
-Proudly built in [@Deveo](https://github.com/Deveo) by [@lolmaus](https://github.com/lolmaus) and [contributors](https://github.com/Deveo/ember-drag-sort/graphs/contributors).
+Built by [@lolmaus](https://github.com/lolmaus) and [contributors](https://github.com/kaliber5/ember-drag-sort/graphs/contributors).
 
-https://deveo.com
+Initially developed in [Deveo](https://github.com/Deveo)/[Perforce](https://www.perforce.com/deveo-customer-info).
 
-Contains code fragments borrowed from:
+Currently developed and maintained by [kaliber5](https://kaliber5.de).
 
-* [jgwhite/ember-sortable](https://github.com/jgwhite/ember-sortable) ([MIT](https://github.com/jgwhite/ember-sortable/blob/master/LICENSE.md))
+<img src="https://www.kaliber5.de/assets/images/kaliber5@2x.png" alt="kaliber5" width="134" height="40">
+
 
 
 ## License
 
-[MIT](https://github.com/Deveo/ember-drag-sort/blob/gen-1/LICENSE.md).
+[MIT](https://github.com/kaliber5/ember-drag-sort/blob/gen-1/LICENSE.md).

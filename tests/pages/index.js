@@ -2,7 +2,7 @@ import {
   collection,
   create,
   text,
-  visitable
+  visitable,
 } from 'ember-cli-page-object'
 
 import {dragSortList} from 'dummy/tests/pages/components/drag-sort-list'
@@ -18,9 +18,9 @@ export default create({
       lists : collection({
         itemScope : '.dragSortList',
         item      : dragSortList({
-          title : text()
-        })
-      })
-    }
-  })
+          title : text(),
+        }),
+      }),
+    },
+  }),
 })

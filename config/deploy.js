@@ -6,8 +6,8 @@ module.exports = function (deployTarget) {
 
     // include other plugin configuration that applies to all deploy targets here
     ghpages : {
-      gitRemoteUrl : 'git@github.com:Deveo/ember-drag-sort.git'
-    }
+      gitRemoteUrl : 'git@github.com:kaliber5/ember-drag-sort.git',
+    },
   }
 
   if (deployTarget === 'development') {

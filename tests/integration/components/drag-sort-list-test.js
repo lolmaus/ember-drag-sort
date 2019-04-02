@@ -1,216 +1,206 @@
-import { moduleForComponent, test } from 'ember-qunit'
+import { module, test } from 'qunit'
+import { setupRenderingTest } from 'ember-qunit'
+import { find, findAll, render, settled } from '@ember/test-helpers'
 import hbs from 'htmlbars-inline-precompile'
 import trigger from 'ember-drag-sort/utils/trigger'
-import {A} from '@ember/array'
 import sinon from 'sinon'
-import { withChai } from 'ember-cli-chai/qunit'
-import wait from 'ember-test-helpers/wait'
+import { A }  from '@ember/array'
 
 
 
-moduleForComponent('drag-sort-list', 'Integration | Component | drag sort list', {
-  integration : true
+module('Integration | Component | drag-sort-list', function (hooks) {
+  setupRenderingTest(hooks)
+
+  test('it works', async function (assert) {
+    const items = A([
+      {name : 'foo'},
+      {name : 'bar'},
+      {name : 'baz'},
+    ])
+
+    const dragEndCallback = sinon.spy()
+
+    this.setProperties({items, dragEndCallback})
+
+    await render(hbs`
+      {{#drag-sort-list
+        items         = items
+        dragEndAction = (action dragEndCallback)
+        as |item|
+      }}
+        <div>
+          {{item.name}}
+        </div>
+      {{/drag-sort-list}}
+    `)
+
+    const itemElements   = findAll('.dragSortItem')
+    const [item0, item1] = itemElements
+
+    trigger(item0, 'dragstart')
+    trigger(item1, 'dragover', false)
+    trigger(item0, 'dragend')
+
+    await settled()
+
+    assert.ok(dragEndCallback.calledOnce)
+
+    assert.ok(dragEndCallback.calledWithExactly({
+      group       : undefined,
+      draggedItem : items.objectAt(0),
+      sourceList  : items,
+      targetList  : items,
+      sourceIndex : 0,
+      targetIndex : 1,
+    }))
+  })
+
+
+
+  test('sorting with neither dragover nor dragenter', async function (assert) {
+    const items = A([
+      {name : 'foo'},
+      {name : 'bar'},
+      {name : 'baz'},
+    ])
+
+    const dragEndCallback = sinon.spy()
+
+    this.setProperties({items, dragEndCallback})
+
+    await render(hbs`
+      {{#drag-sort-list
+        items         = items
+        dragEndAction = (action dragEndCallback)
+        as |item|
+      }}
+        <div>
+          {{item.name}}
+        </div>
+      {{/drag-sort-list}}
+    `)
+
+    const item0 = find('.dragSortItem')
+
+    trigger(item0, 'dragstart')
+    trigger(item0, 'dragend')
+
+    await settled()
+
+    assert.ok(dragEndCallback.notCalled)
+  })
+
+
+
+  test('drag handle', async function (assert) {
+    const items = A([
+      {name : 'foo'},
+      {name : 'bar'},
+      {name : 'baz'},
+    ])
+
+    const dragEndCallback = sinon.spy()
+
+    this.setProperties({items, dragEndCallback})
+
+    await render(hbs`
+      {{#drag-sort-list
+        items         = items
+        dragEndAction = (action dragEndCallback)
+        handle        = ".handle"
+        as |item|
+      }}
+        <div class="handle">handle</div>
+        <div>
+          {{item.name}}
+        </div>
+      {{/drag-sort-list}}
+    `)
+
+    const itemElements   = findAll('.dragSortItem')
+    const [item0, item1] = itemElements
+
+    trigger(item0, 'dragstart')
+    trigger(item1, 'dragover', false)
+    trigger(item0, 'dragend')
+
+    await settled()
+
+    assert.ok(dragEndCallback.notCalled)
+
+    trigger(item0.querySelector('.handle'), 'dragstart')
+    trigger(item1, 'dragover', false)
+    trigger(item0, 'dragend')
+
+    await settled()
+
+    assert.ok(dragEndCallback.calledOnce)
+
+    assert.ok(dragEndCallback.calledWithExactly({
+      group       : undefined,
+      draggedItem : items.objectAt(0),
+      sourceList  : items,
+      targetList  : items,
+      sourceIndex : 0,
+      targetIndex : 1,
+    }))
+  })
+
+
+
+  test('nested drag handle', async function (assert) {
+    const items = A([
+      {name : 'foo'},
+      {name : 'bar'},
+      {name : 'baz'},
+    ])
+
+    const dragEndCallback = sinon.spy()
+
+    this.setProperties({items, dragEndCallback})
+
+    await render(hbs`
+      {{#drag-sort-list
+        items         = items
+        dragEndAction = (action dragEndCallback)
+        handle        = ".handle"
+        as |item|
+      }}
+        <div class="handle">
+          <div class="handle2">handle</div>
+        </div>
+        <div>
+          {{item.name}}
+        </div>
+      {{/drag-sort-list}}
+    `)
+
+    const itemElements   = findAll('.dragSortItem')
+    const [item0, item1] = itemElements
+
+    trigger(item0, 'dragstart')
+    trigger(item1, 'dragover', false)
+    trigger(item0, 'dragend')
+
+    await settled()
+
+    assert.ok(dragEndCallback.notCalled)
+
+    trigger(item0.querySelector('.handle2'), 'dragstart')
+    trigger(item1, 'dragover', false)
+    trigger(item0, 'dragend')
+
+    await settled()
+
+    assert.ok(dragEndCallback.calledOnce)
+
+    assert.ok(dragEndCallback.calledWithExactly({
+      group       : undefined,
+      draggedItem : items.objectAt(0),
+      sourceList  : items,
+      targetList  : items,
+      sourceIndex : 0,
+      targetIndex : 1,
+    }))
+  })
 })
-
-
-
-test('it works', withChai(async function (expect) {
-  const items = A([
-    {name : 'foo'},
-    {name : 'bar'},
-    {name : 'baz'},
-  ])
-
-  const dragEndCallback = sinon.spy()
-
-  this.setProperties({items, dragEndCallback})
-
-  this.render(hbs`
-    {{#drag-sort-list
-      items         = items
-      dragEndAction = (action dragEndCallback)
-      as |item|
-    }}
-      <div>
-        {{item.name}}
-      </div>
-    {{/drag-sort-list}}
-  `)
-
-  const $item0 = this.$('.dragSortItem:eq(0)')
-  const $item1 = this.$('.dragSortItem:eq(1)')
-
-  // const itemOffset = $item0.offset()
-
-  trigger($item0, 'dragstart')
-  trigger($item1, 'dragover', false)
-  trigger($item0, 'dragend')
-
-  await wait()
-
-  expect(dragEndCallback).calledOnce
-
-  expect(dragEndCallback).calledWithExactly({
-    group       : undefined,
-    draggedItem : items.objectAt(0),
-    sourceList  : items,
-    targetList  : items,
-    sourceIndex : 0,
-    targetIndex : 1
-  })
-}))
-
-
-
-test('sorting with neither dragover nor dragenter', withChai(async function (expect) {
-  const items = A([
-    {name : 'foo'},
-    {name : 'bar'},
-    {name : 'baz'},
-  ])
-
-  const dragEndCallback = sinon.spy()
-
-  this.setProperties({items, dragEndCallback})
-
-  this.render(hbs`
-    {{#drag-sort-list
-      items         = items
-      dragEndAction = (action dragEndCallback)
-      as |item|
-    }}
-      <div>
-        {{item.name}}
-      </div>
-    {{/drag-sort-list}}
-  `)
-
-  const $item0 = this.$('.dragSortItem:eq(0)')
-
-  // const itemOffset = $item0.offset()
-
-  trigger($item0, 'dragstart')
-  trigger($item0, 'dragend')
-
-  await wait()
-
-  expect(dragEndCallback).not.called
-}))
-
-
-
-test('drag handle', withChai(async function (expect) {
-  const items = A([
-    {name : 'foo'},
-    {name : 'bar'},
-    {name : 'baz'},
-  ])
-
-  const dragEndCallback = sinon.spy()
-
-  this.setProperties({items, dragEndCallback})
-
-  this.render(hbs`
-    {{#drag-sort-list
-      items         = items
-      dragEndAction = (action dragEndCallback)
-      handle        = ".handle"
-      as |item|
-    }}
-      <div class="handle">handle</div>
-      <div>
-        {{item.name}}
-      </div>
-    {{/drag-sort-list}}
-  `)
-
-  const $item0 = this.$('.dragSortItem:eq(0)')
-  const $item1 = this.$('.dragSortItem:eq(1)')
-
-  // const itemOffset = $item0.offset()
-
-  trigger($item0, 'dragstart')
-  trigger($item1, 'dragover', false)
-  trigger($item0, 'dragend')
-
-  await wait()
-
-  expect(dragEndCallback).not.called
-
-  trigger($item0.find('.handle'), 'dragstart')
-  trigger($item1, 'dragover', false)
-  trigger($item0, 'dragend')
-
-  await wait()
-
-  expect(dragEndCallback).calledOnce
-
-  expect(dragEndCallback).calledWithExactly({
-    group       : undefined,
-    draggedItem : items.objectAt(0),
-    sourceList  : items,
-    targetList  : items,
-    sourceIndex : 0,
-    targetIndex : 1
-  })
-}))
-
-
-
-test('nested drag handle', withChai(async function (expect) {
-  const items = A([
-    {name : 'foo'},
-    {name : 'bar'},
-    {name : 'baz'},
-  ])
-
-  const dragEndCallback = sinon.spy()
-
-  this.setProperties({items, dragEndCallback})
-
-  this.render(hbs`
-    {{#drag-sort-list
-      items         = items
-      dragEndAction = (action dragEndCallback)
-      handle        = ".handle"
-      as |item|
-    }}
-      <div class="handle">
-        <div class="handle2">handle</div>
-      </div>
-      <div>
-        {{item.name}}
-      </div>
-    {{/drag-sort-list}}
-  `)
-
-  const $item0 = this.$('.dragSortItem:eq(0)')
-  const $item1 = this.$('.dragSortItem:eq(1)')
-
-  // const itemOffset = $item0.offset()
-
-  trigger($item0, 'dragstart')
-  trigger($item1, 'dragover', false)
-  trigger($item0, 'dragend')
-
-  await wait()
-
-  expect(dragEndCallback).not.called
-
-  trigger($item0.find('.handle2'), 'dragstart')
-  trigger($item1, 'dragover', false)
-  trigger($item0, 'dragend')
-
-  await wait()
-
-  expect(dragEndCallback).calledOnce
-
-  expect(dragEndCallback).calledWithExactly({
-    group       : undefined,
-    draggedItem : items.objectAt(0),
-    sourceList  : items,
-    targetList  : items,
-    sourceIndex : 0,
-    targetIndex : 1
-  })
-}))

@@ -1,25 +1,10 @@
-/* eslint-env node */
 'use strict'
 
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon')
-const Funnel     = require('broccoli-funnel')
 
 module.exports = function (defaults) {
-  const app = new EmberAddon(defaults, {
-    babel : {
-      plugins : [
-        'transform-object-rest-spread',
-      ],
-    },
-
-    nodeModulesToVendor : [
-      ...(process.env.EMBER_ENV === 'test' ? [
-        new Funnel('node_modules/sinon/pkg', {
-          destDir : 'sinon',
-          files   : ['sinon.js']
-        })
-      ] : [])
-    ],
+  let app = new EmberAddon(defaults, {
+    // Add options here
   })
 
   /*
@@ -28,13 +13,6 @@ module.exports = function (defaults) {
     This build file does *not* influence how the addon or the app using it
     behave. You most likely want to be modifying `./index.js` or app's build file
   */
-  if (process.env.EMBER_ENV === 'test') {
-    app.import('vendor/sinon/sinon.js', {
-      using : [
-        { transformation : 'amd', as : 'sinon' }
-      ]
-    })
-  }
 
   return app.toTree()
 }

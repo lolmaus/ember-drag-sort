@@ -3,7 +3,7 @@ import {A} from '@ember/array'
 
 import { task, timeout } from 'ember-concurrency'
 import RSVP from 'rsvp'
-import computed from 'ember-computed'
+import { computed } from '@ember/object'
 
 
 
@@ -98,21 +98,21 @@ export default Controller.extend({
           children : A([
             {
               name     : 'Baz',
-              children : A([])
+              children : A([]),
             },
             {
               name     : 'Quuz',
-              children : A([])
+              children : A([]),
             },
-          ])
+          ]),
         },
         {
           name     : 'Zomg',
-          children : A([])
+          children : A([]),
         },
         {
           name     : 'Lol',
-          children : A([])
+          children : A([]),
         },
       ]),
     }
@@ -152,7 +152,7 @@ export default Controller.extend({
 
     determineForeignPosition2 ({/*draggedItem, */items}) {
       return items.length
-    }
+    },
   },
 
   dragEndTask : task(function * ({sourceList, sourceIndex, targetList, targetIndex}) {
@@ -170,7 +170,7 @@ export default Controller.extend({
       targetList.removeAt(targetIndex)
       sourceList.insertAt(sourceIndex, item)
 
-      return RSVP.reject({message : "Request timed out."})
+      return RSVP.reject({message : 'Request timed out.'})
     }
 
     return RSVP.resolve()

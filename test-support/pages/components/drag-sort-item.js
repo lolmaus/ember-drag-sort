@@ -17,14 +17,14 @@ export default component({
   placeholderBelow : hasClass('-placeholderBelow'),
 
   dragStart (index) {
-    trigger(this.$, 'dragstart')
+    trigger(this.$.get(0), 'dragstart')
   },
 
   dragOver (above) {
-    trigger(this.$, 'dragover', above)
+    trigger(this.$.get(0), 'dragover', above)
   },
 
   dragEnd () {
-    trigger(this.$, 'dragend')
+    trigger(this.$.get(0), 'dragend')
   },
 })

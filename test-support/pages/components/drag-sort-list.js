@@ -15,8 +15,8 @@ export function dragSortList (content = {}, handleSelector) {
       itemScope : '> .dragSortItem',
       item      : {
         ...dragSortItem,
-        content
-      }
+        content,
+      },
     }),
 
     draggingEnabled : hasClass('-draggingEnabled'),
@@ -26,15 +26,15 @@ export function dragSortList (content = {}, handleSelector) {
     isExpanded      : hasClass('-isExpanded'),
 
     dragEnter () {
-      trigger(this.$, 'dragenter')
+      trigger(this.$.get(0), 'dragenter')
     },
 
     sort (sourceIndex, targetIndex, above) {
-      return sort(this.$, sourceIndex, targetIndex, above, handleSelector)
+      return sort(this.$.get(0), sourceIndex, targetIndex, above, handleSelector)
     },
 
     move (sourceIndex, targetList, targetIndex, above) {
-      return move(this.$, sourceIndex, targetList.$, targetIndex, above, handleSelector)
+      return move(this.$.get(0), sourceIndex, targetList.$.get(0), targetIndex, above, handleSelector)
     },
   })
 }
