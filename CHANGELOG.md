@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Upgraded to Ember Canary (internally).
 - Removed dependency on `ember-awesome-macros` and `ember-macro-helpers`.
+- Account for current placeholder padding when determining next placeholder position.
   
 ## Documentation
 - Updated the version of the Ember CLI badge.

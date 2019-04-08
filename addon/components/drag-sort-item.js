@@ -11,6 +11,15 @@ import layout from '../templates/components/drag-sort-item'
 
 
 
+function getComputedStyleInt (element, cssProp) {
+  const computedStyle = window.getComputedStyle(element, null)
+  const valueStr      = computedStyle.getPropertyValue(cssProp)
+
+  return parseInt(valueStr, 10)
+}
+
+
+
 export default Component.extend({
 
   // ----- Arguments -----
@@ -210,13 +219,21 @@ export default Component.extend({
   },
 
   draggingOver (event) {
-    const group        = this.get('group')
-    const index        = this.get('index')
-    const items        = this.get('items')
-    const element      = this.get('element')
-    const top          = element.getBoundingClientRect().top
-    const height       = element.offsetHeight
-    const isDraggingUp = (event.clientY - top) < height / 2
+    const group              = this.get('group')
+    const index              = this.get('index')
+    const items              = this.get('items')
+    const element            = this.get('element')
+    const top                = element.getBoundingClientRect().top
+    const height             = element.offsetHeight
+    const isPlaceholderAbove = this.get('shouldShowPlaceholderAbove2')
+    const isPlaceholderBelow = this.get('shouldShowPlaceholderBelow2')
+
+    const placeholderCorrection =
+      isPlaceholderAbove ?  getComputedStyleInt(element, 'padding-top')    :
+      isPlaceholderBelow ? -getComputedStyleInt(element, 'padding-bottom') :
+                            0                                                // eslint-disable-line indent
+
+    const isDraggingUp = (event.clientY - top) < (height + placeholderCorrection) / 2
 
     this.get('dragSort').draggingOver({group, index, items, isDraggingUp})
   },

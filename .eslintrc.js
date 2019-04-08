@@ -23,6 +23,7 @@ module.exports = {
     'comma-dangle'                       : ['error', 'always-multiline'],
     'func-call-spacing'                  : 'off',
     'generator-star-spacing'             : 'off',
+    'indent'                             : ['error', 2, {flatTernaryExpressions : true}],
     'key-spacing'                        : ['error', { beforeColon : true, afterColon : true, align : 'colon' }],
     'new-cap'                            : 'off',
     'no-console'                         : 'off',
