@@ -6,7 +6,7 @@
 [![license MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/kaliber5/ember-drag-sort/blob/gen-1/LICENSE.md)
 ![ember-versions 1.13+](https://img.shields.io/badge/ember--versions-1.13%2B-yellowgreen.svg)
 ![node-versions 6+](https://img.shields.io/badge/node--versions-6%2B-yellowgreen.svg)
-![ember-cli 2.16.2](https://img.shields.io/badge/uses%20ember--cli-2.16.2-blue.svg)
+![ember-cli 3.8.1](https://img.shields.io/badge/uses%20ember--cli-3.8.1-blue.svg)
 
 - [ember-drag-sort](#ember-drag-sort)
   - [Support](#support)
@@ -305,7 +305,7 @@ Incorrect:
 | HTML class         | Applied when...                                                                                                                                                                   |
 |:-------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `-isEmpty`         | The given list is empty.                                                                                                                                                          |
-| `-draggingEnabled` | Dragging is enabled via the `draggingEnabled` attribute.                                                                                                                         |
+| `-draggingEnabled` | Dragging is enabled via the `draggingEnabled` attribute.                                                                                                                          |
 | `-isDragging`      | Dragging is in progress and the given list is either a source list or belongs to the same group as the source list.                                                               |
 | `-isDraggingOver`  | Dragging is in progress and the placeholder is within the given list. This class is removed from a list when an item is dragged into a different list.                            |
 | `-isExpanded`      | Dragging is in progress and the given list is either empty or contains only the dragged item. Used to give some height to the list, so that the item can be dragged back into it. |

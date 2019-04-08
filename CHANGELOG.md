@@ -6,8 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [2.0.0-alpha.3] - 2019-04-08
+
+### Changed
 - Upgraded to Ember Canary (internally).
 - Removed dependency on `ember-awesome-macros` and `ember-macro-helpers`.
+  
+## Documentation
+- Updated the version of the Ember CLI badge.
 
 ## [2.0.0-alpha.2] - 2019-04-03
 
