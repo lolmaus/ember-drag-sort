@@ -3,15 +3,8 @@ import Component from '@ember/component'
 import { assert }  from '@ember/debug'
 import {inject as service} from '@ember/service'
 import {reads} from '@ember/object/computed'
-import {observer} from '@ember/object'
+import {computed, observer} from '@ember/object'
 import {next} from '@ember/runloop'
-
-// ----- Ember addons -----
-import computed from 'ember-macro-helpers/computed'
-import and from 'ember-awesome-macros/and'
-import not from 'ember-awesome-macros/not'
-import eq from 'ember-awesome-macros/eq'
-import subtract from 'ember-awesome-macros/subtract'
 
 // ----- Own modules -----
 import layout from '../templates/components/drag-sort-item'
@@ -47,6 +40,9 @@ export default Component.extend({
     'isDraggingOver:-isDraggingOver',
     'shouldShowPlaceholderAbove2:-placeholderAbove',
     'shouldShowPlaceholderBelow2:-placeholderBelow',
+    'isTarget:-isTarget:-isTargetNOT',
+    'index',
+    'targetIndex',
   ],
 
   attributeBindings : [
@@ -75,26 +71,54 @@ export default Component.extend({
 
 
   // ----- Computed properties -----
-  draggable : computed('draggingEnabled', 'handle', (draggingEnabled, handle) => {
+  draggable : computed('draggingEnabled', 'handle', function () {
+    const handle          = this.get('handle')
+    const draggingEnabled = this.get('draggingEnabled')
+
     return !handle && draggingEnabled ? true : null
   }),
 
-  isDragged : and(
-    'dragSort.isDragging',
-    eq('items', 'sourceList'),
-    eq('index', 'sourceIndex')
-  ),
+  isDragged : computed('dragSort.isDragging', 'items', 'sourceList', 'index', 'sourceIndex', function () {
+    const isDragging  = this.get('dragSort.isDragging')
+    const items       = this.get('items')
+    const sourceList  = this.get('sourceList')
+    const index       = this.get('index')
+    const sourceIndex = this.get('sourceIndex')
 
-  isDraggingOver : and(
-    'dragSort.isDragging',
-    eq('items', 'targetList'),
-    eq('index', 'targetIndex'),
-    not('isDragged')
-  ),
+    return isDragging && items === sourceList && index === sourceIndex
+  }),
 
-  isLast                     : eq('index', subtract('items.length', 1)),
-  shouldShowPlaceholderAbove : and('isDraggingOver', 'isDraggingUp'),
-  shouldShowPlaceholderBelow : and('isDraggingOver', not('isDraggingUp')),
+  isDraggingOver : computed('dragSort.isDragging', 'items', 'targetList', 'index', 'targetIndex', 'isDragged', function () {
+    const isDragging  = this.get('dragSort.isDragging')
+    const items       = this.get('items')
+    const targetList  = this.get('targetList')
+    const index       = this.get('index')
+    const targetIndex = this.get('targetIndex')
+    const isDragged   = this.get('isDragged')
+
+    return isDragging && items === targetList && index === targetIndex && !isDragged
+  }),
+
+  isLast : computed('index', 'items.[]', function () {
+    const index = this.get('index')
+    const count = this.get('items.length')
+
+    return index === count - 1
+  }),
+
+  shouldShowPlaceholderAbove : computed('isDraggingOver', 'isDraggingUp', function () {
+    const isDraggingOver = this.get('isDraggingOver')
+    const isDraggingUp   = this.get('isDraggingUp')
+
+    return isDraggingOver && isDraggingUp
+  }),
+
+  shouldShowPlaceholderBelow : computed('isDraggingOver', 'isDraggingUp', function () {
+    const isDraggingOver = this.get('isDraggingOver')
+    const isDraggingUp   = this.get('isDraggingUp')
+
+    return isDraggingOver && !isDraggingUp
+  }),
 
 
 

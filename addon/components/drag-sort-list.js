@@ -2,14 +2,10 @@
 import Component from '@ember/component'
 import {inject as service} from '@ember/service'
 import {reads} from '@ember/object/computed'
-import {get, observer} from '@ember/object'
+import {computed, get, observer} from '@ember/object'
 import {next} from '@ember/runloop'
 
 // ----- Ember addons -----
-// import computed from 'ember-macro-helpers/computed'
-import and from 'ember-awesome-macros/and'
-import or from 'ember-awesome-macros/or'
-import eq from 'ember-awesome-macros/eq'
 
 // ----- Own modules -----
 import layout from '../templates/components/drag-sort-list'
@@ -63,30 +59,50 @@ export default Component.extend({
 
 
   // ----- Computed properties -----
-  isDragging : and(
-    'dragSort.isDragging',
-    eq('group', 'dragSort.group')
-  ),
+  isDragging : computed('dragSort.{isDragging,group}', 'group', function () {
+    const isDragging       = this.get('dragSort.isDragging')
+    const group            = this.get('group')
+    const groupFromService = this.get('dragSort.group')
 
-  isDraggingOver : and(
-    'isDragging',
-    eq('items', 'targetList'),
-  ),
+    return isDragging && group === groupFromService
+  }),
 
-  isExpanded : and(
-    'isDragging',
-    or('isEmpty', 'isOnlyElementDragged')
-  ),
+  isDraggingOver : computed('isDragging', 'items', 'targetList', function () {
+    const isDragging = this.get('isDragging')
+    const items      = this.get('items')
+    const targetList = this.get('targetList')
+
+    return isDragging && items === targetList
+  }),
+
+  isExpanded : computed('isDragging', 'isEmpty', 'isOnlyElementDragged', function () {
+    const isDragging           = this.get('isDragging')
+    const isEmpty              = this.get('isEmpty')
+    const isOnlyElementDragged = this.get('isOnlyElementDragged')
+
+    return isDragging && (isEmpty || isOnlyElementDragged)
+  }),
 
   isExpanded2 : reads('isExpanded'),
 
-  isEmpty : eq('items.length', 0),
+  isEmpty : computed('items.[]', function () {
+    const count = this.get('items.length')
 
-  isOnlyElementDragged : and(
-    eq('items.length', 1),
-    eq('items', 'sourceList'),
-    eq('sourceIndex', 0)
-  ),
+    return !count
+  }),
+
+  isOnlyElementDragged : computed('items.length', 'items', 'sourceList', 'sourceIndex', function () {
+    const count       = this.get('items.length')
+    const items       = this.get('items')
+    const sourceList  = this.get('sourceList')
+    const sourceIndex = this.get('sourceIndex')
+
+    return (
+      count === 1
+      && items === sourceList
+      && !sourceIndex
+    )
+  }),
 
 
 

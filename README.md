@@ -13,6 +13,7 @@
   - [About](#about)
     - [Features](#features)
     - [Missing features](#missing-features)
+    - [Demo](#demo)
   - [Versions, branches and jQuery](#versions-branches-and-jquery)
   - [Known issues](#known-issues)
     - [Browser support](#browser-support)
@@ -80,6 +81,12 @@ Not in active development. PRs welcome!
 
 
 
+### Demo
+
+https://kaliber5.github.io/ember-drag-sort/
+
+
+
 ## Versions, branches and jQuery
 
 * Version 1.x, `gen-0` branch is based on jQuery.
@@ -89,9 +96,11 @@ Not in active development. PRs welcome!
 
 ## Known issues
 
-* :warning: Nested lists do not work correctly in Ember without jQuery. This is an issue with Ember itself, see https://github.com/emberjs/ember.js/issues/17840 .
+* :warning: Nested lists do not work correctly in Ember <= v3.10.0-beta.1 without jQuery. This is an issue with Ember itself, see https://github.com/emberjs/ember.js/issues/17840 .
 
-    The [demo](https://kaliber5.github.io/ember-drag-sort/) hosts the v1.1.1 version.
+    If your app has jQuery removed, make sure you're using Ember newer than v3.10.0-beta.1, non-inclusive.
+
+    The [demo app](https://kaliber5.github.io/ember-drag-sort/) is using Ember Canary.
 
 
 

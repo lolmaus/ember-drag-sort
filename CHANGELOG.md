@@ -5,11 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [2.0.0-alpha.0] - 2019-04-03
+## [2.0.0-alpha.3] - 2019-04-08
+- Upgraded to Ember Canary (internally).
+- Removed dependency on `ember-awesome-macros` and `ember-macro-helpers`.
 
-No user-facing changes.
+## [2.0.0-alpha.2] - 2019-04-03
 
-### Internal changes
+### Changed
 - Upgraded to Ember CLI 3.8, got rid of jQuery dependency. :warning: Nested lists don't work in Ember without jQuery, see https://github.com/emberjs/ember.js/issues/17840
 - Moved to kaliber5/ember-drag-sort
 - Adjusted code style/linting
