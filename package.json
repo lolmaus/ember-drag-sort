@@ -1,6 +1,6 @@
 {
   "name": "ember-drag-sort",
-  "version": "2.0.0-alpha.2",
+  "version": "2.0.0-alpha.3",
   "description": "A sortable list component with support for multiple and nested lists.",
   "keywords": [
     "ember-addon",
