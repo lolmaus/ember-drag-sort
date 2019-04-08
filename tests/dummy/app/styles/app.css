@@ -6,6 +6,10 @@ html, body {
   font-family: sans-serif;
 }
 
+body {
+  padding-bottom: 50px;
+}
+
 h4 {
   margin-bottom: 10px;
 }
