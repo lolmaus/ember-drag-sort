@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Raised the minimal Node requirement to 8.
 - Resolved the nested list jumping issue by preventing height change during dragging.
 
+### Documentation
+- Removed jQuery mentions from the readme.
+- Mentioned the `handleSelector` attribute in test helpers.
+
 
 
 ## [2.0.0-alpha.3] - 2019-04-08

@@ -285,16 +285,16 @@ Incorrect:
 
 ### drag-sort-list arguments reference
 
-| Argument                         | Type                          | Default value | Description                                                                                                                                                                                     |
-|:---------------------------------|:------------------------------|:--------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `items`                          | Ember Array                   | <required>    | An array of items to display and offer sorting.                                                                                                                                                 |
-| `dragEndAction`                  | Closure action                | <required>    | This callback will be called on source list when sorting is complete. See above for details.                                                                                                    |
-| `determineForeignPositionAction` | Closure action or `undefined` | `undefined`   | When provided, used to determine the position of the placeholder when dragging a foreign item into the list. When not provided, the user is able to determine the order. See above for details. |
-| `group`                          | <any>                         | `undefined`   | Used to restrict dragging between multiple lists to only some of those lists. Typically a string.                                                                                               |
-| `draggingEnabled`                | Boolean                       | `true`        | Disables sorting. Useful when `dragEndAction` is an async operation.                                                                                                                            |
-| `childClass`                     | String                        | `""`          | HTML class applied to list item components.                                                                                                                                                     |
-| `childTagName`                   | String                        | `"div"`       | `tagName` applied to list item components.                                                                                                                                                      |
-| `handle`                         | String or null                | `null`        | Selector of the drag handle element. When provided, items can only be dragged by handle. The handle element must have `draggable="true"` attribute.                                                                                                       |
+| Argument                         | Type                                         | Default value | Description                                                                                                                                                                                     |
+|:---------------------------------|:---------------------------------------------|:--------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `items`                          | Ember Array                                  | <required>    | An array of items to display and offer sorting.                                                                                                                                                 |
+| `dragEndAction`                  | Closure action                               | <required>    | This callback will be called on source list when sorting is complete. See above for details.                                                                                                    |
+| `determineForeignPositionAction` | Closure action or `undefined`                | `undefined`   | When provided, used to determine the position of the placeholder when dragging a foreign item into the list. When not provided, the user is able to determine the order. See above for details. |
+| `group`                          | <any>                                        | `undefined`   | Used to restrict dragging between multiple lists to only some of those lists. Typically a string.                                                                                               |
+| `draggingEnabled`                | Boolean                                      | `true`        | Disables sorting. Useful when `dragEndAction` is an async operation.                                                                                                                            |
+| `childClass`                     | String                                       | `""`          | HTML class applied to list item components.                                                                                                                                                     |
+| `childTagName`                   | String                                       | `"div"`       | `tagName` applied to list item components.                                                                                                                                                      |
+| `handle`                         | String, typically `"[draggable]"`, or `null` | `null`        | Selector of the drag handle element. When provided, items can only be dragged by handle. :warning: The handle element *must* have `draggable="true"` attribute.                                 |
 
 
 
@@ -394,12 +394,13 @@ import {sort} from 'ember-drag-sort/utils/trigger'
 
 It accepts the following arguments:
 
-| Argument      | Type                                     | Required? | Description                                                                                                                     |
-|:--------------|:-----------------------------------------|:----------|:--------------------------------------------------------------------------------------------------------------------------------|
-| `sourceList`  | String, DOM element or jQuery collection | yes       | Selector or element of the `drag-sort-list` component.                                                                          |
-| `sourceIndex` | Integer                                  | yes       | Zero-based index of the item to pick up.                                                                                        |
-| `targetIndex` | Integer                                  | yes       | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. |
-| `above`       | Boolean                                  | yes       | Whether to drop picked item above (`true`) or below (`false`) target item.                                                      |
+| Argument         | Type                                     | Required? | Description                                                                                                                     |
+|:-----------------|:-----------------------------------------|:----------|:--------------------------------------------------------------------------------------------------------------------------------|
+| `sourceList`     | String, DOM element or jQuery collection | yes       | Selector or element of the `drag-sort-list` component.                                                                          |
+| `sourceIndex`    | Integer                                  | yes       | Zero-based index of the item to pick up.                                                                                        |
+| `targetIndex`    | Integer                                  | yes       | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. |
+| `above`          | Boolean                                  | yes       | Whether to drop picked item above (`true`) or below (`false`) target item.                                                      |
+| `handleSelector` | String                                   | no        | Provide if handles are used in the list                                                                                         |
 
 After executing `sort` in a test, perform a wait using `wait`, `andThen` or `await`.
 
@@ -411,17 +412,17 @@ import {sort} from 'ember-drag-sort/utils/trigger'
 test('sorting a list', async function (assert) {
   await visit('/')
   
-  const $list = $('.dragSortList')
+  const list = document.querySelector('.dragSortList')
   
-  await sort($list, 0, 1, false)
+  await sort(list, 0, 1, false)
 
   const expectedTitles = ['Bar', 'Foo', 'Baz', 'Quux']
 
-  assert.equal($list.children().length, 4)
+  assert.equal(list.childElementCount, 4)
 
   expectedTitles.forEach((expectedTitle, k) => {
     m = `List #0 item #${k} content title`
-    expect($list.children().eq(k).text(), m).equal(expectedTitle)
+    expect(list.children[k].textContent.trim(), m).equal(expectedTitle)
   })
 }))
 ```
@@ -439,26 +440,26 @@ import {sort} from 'ember-drag-sort/utils/trigger'
 
 It accepts the following arguments:
 
-| Argument      | Type                                     | Required?                       | Description                                                                                                                                                                                                                                |
-|:--------------|:-----------------------------------------|:--------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `sourceList`  | String, DOM element or jQuery collection | yes                             | Selector or element of the source `drag-sort-list` component.                                                                                                                                                                              |
-| `sourceIndex` | Integer                                  | yes                             | Zero-based index of the item to pick up.                                                                                                                                                                                                   |
-| `targetList`  | String, DOM element or jQuery collection | yes                             | Selector or element of the target `drag-sort-list` component.                                                                                                                                                                              |
-| `targetIndex` | Integer                                  | no                              | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. When omitted, adds item to the end of the target list. **Must** be omitted when moving into an empty list. |
-| `above`       | Boolean                                  | yes if `targetList` is provided | Whether to drop picked item above (`true`) or below (`false`) target item.                                                                                                                                                                 |
+| Argument         | Type                                     | Required?                       | Description                                                                                                                                                                                                                                |
+|:-----------------|:-----------------------------------------|:--------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `sourceList`     | String, DOM element or jQuery collection | yes                             | Selector or element of the source `drag-sort-list` component.                                                                                                                                                                              |
+| `sourceIndex`    | Integer                                  | yes                             | Zero-based index of the item to pick up.                                                                                                                                                                                                   |
+| `targetList`     | String, DOM element or jQuery collection | yes                             | Selector or element of the target `drag-sort-list` component.                                                                                                                                                                              |
+| `targetIndex`    | Integer                                  | no                              | Zero-based index of the item to drop picked item on top of, calculated while the picked item is still on its original position. When omitted, adds item to the end of the target list. **Must** be omitted when moving into an empty list. |
+| `above`          | Boolean                                  | yes if `targetList` is provided | Whether to drop picked item above (`true`) or below (`false`) target item.                                                                                                                                                                 |
+| `handleSelector` | String                                   | no                              | Provide if handles are used in the list                                                                                                                                                                                                    |
 
 After executing `sort`, perform a wait using `wait`, `andThen` or `await`.
 
 Example:
 
 ```js  
-  const $list0 = $('.dragSortList').eq(0)
-  const $list1 = $('.dragSortList').eq(1)
+  const [list0, list1] = document.querySelectorAll('.dragSortList')
   
-  await move($list0, 0, $list1, 1, false)
+  await move(list0, 0, list1, 1, false)
 ```
 
-This will pick the first item from `$list0` and drop it below the second item of `$list1`.
+This will pick the first item from `list0` and drop it below the second item of `list1`.
 
 See this addon's acceptance test for example.
 
@@ -615,7 +616,7 @@ import {dragSortList} from '<your-app-name>/tests/pages/components/drag-sort-lis
 
 export default create({
   visit:        visitable('/'),
-  sortableList: dragSortList({}, '.my-component--drag-handle')
+  sortableList: dragSortList({}, '[draggable]')
 })
 ```
 
@@ -623,7 +624,7 @@ If you don't want to provide custom list item content, pass an empty object.
 
 This assumes that every list item has a handle with the same selector.
 
-The selector must be discoverable within list item content. In other words, the handle is accessed via `$listItem.find(handleSelector)`.
+The selector must be discoverable within list item content. In other words, the handle is accessed via `listItem.querySelector(handleSelector)`.
 
 If you're describing a nested list, use the `>` combinator in your drag handle selector, so that drag handles of child items aren't selected.
 
