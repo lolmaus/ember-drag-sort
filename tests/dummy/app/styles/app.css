@@ -6,10 +6,6 @@ html, body {
   font-family: sans-serif;
 }
 
-body {
-  padding-bottom: 50px;
-}
-
 h4 {
   margin-bottom: 10px;
 }
@@ -90,8 +86,9 @@ h6:last-child
   flex-grow: 1;
 }
 
-.nestedItem .dragSortList.-isExpanded {
-  padding-top: 55px;
+.nestedItem .dragSortList.-isExpanded:not(.-isEmpty),
+.nestedItem .dragSortList.-isExpanded.-isDraggingOver {
+  padding-top: 60px;
 }
 
 .nestedItem .dragSortList.-isDragging {
@@ -100,7 +97,7 @@ h6:last-child
 }
 
 .nestedItem .dragSortList.-isExpanded.-isDraggingOver:before {
-  top: 15px;
+  top: 18px;
 }
 
 .nestedItem {
