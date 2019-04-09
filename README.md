@@ -5,7 +5,7 @@
 [![npm package version](https://img.shields.io/npm/v/ember-drag-sort.svg)](https://www.npmjs.com/package/ember-drag-sort)
 [![license MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/kaliber5/ember-drag-sort/blob/gen-1/LICENSE.md)
 ![ember-versions 1.13+](https://img.shields.io/badge/ember--versions-1.13%2B-yellowgreen.svg)
-![node-versions 6+](https://img.shields.io/badge/node--versions-6%2B-yellowgreen.svg)
+![node-versions 8+](https://img.shields.io/badge/node--versions-8%2B-yellowgreen.svg)
 ![ember-cli 3.8.1](https://img.shields.io/badge/uses%20ember--cli-3.8.1-blue.svg)
 
 - [ember-drag-sort](#ember-drag-sort)
