@@ -21,9 +21,7 @@ env:
 
 branches:
   only:
-    - master
-    # npm version tags
-    - /^v\d+\.\d+\.\d+/
+    - /.*/
 
 jobs:
   fail_fast: true
