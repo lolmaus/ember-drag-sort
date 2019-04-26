@@ -4394,25 +4394,6 @@ ember-source-channel-url@^1.0.1, ember-source-channel-url@^1.1.0:
     jquery "^3.3.1"
     resolve "^1.10.0"
 
-"ember-source@https://s3.amazonaws.com/builds.emberjs.com/canary/shas/5656cc50a0a49597acb49cc22291ec16146cb902.tgz":
-  version "3.11.0-canary"
-  resolved "https://s3.amazonaws.com/builds.emberjs.com/canary/shas/5656cc50a0a49597acb49cc22291ec16146cb902.tgz#36c33c4572e61ae0effedd52757a471ae0647be7"
-  dependencies:
-    broccoli-funnel "^2.0.2"
-    broccoli-merge-trees "^3.0.2"
-    chalk "^2.4.2"
-    ember-cli-babel "^7.7.0"
-    ember-cli-get-component-path-option "^1.0.0"
-    ember-cli-is-package-missing "^1.0.0"
-    ember-cli-normalize-entity-name "^1.0.0"
-    ember-cli-path-utils "^1.0.0"
-    ember-cli-string-utils "^1.1.0"
-    ember-cli-version-checker "^3.1.3"
-    ember-router-generator "^1.2.3"
-    inflection "^1.12.0"
-    jquery "^3.3.1"
-    resolve "^1.10.0"
-
 ember-template-lint@^1.0.0-beta.5:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/ember-template-lint/-/ember-template-lint-1.1.0.tgz#312e101728452bf082f54cbe429ed9b52273ba64"
@@ -5188,6 +5169,11 @@ flat-cache@^1.2.1:
     rimraf "~2.6.2"
     write "^0.2.1"
 
+flex-exec@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/flex-exec/-/flex-exec-1.0.0.tgz#06974b68532839d2a12c32debcdb12378200fdf0"
+  integrity sha1-BpdLaFMoOdKhLDLevNsSN4IA/fA=
+
 flush-write-stream@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/flush-write-stream/-/flush-write-stream-1.1.1.tgz#8dd7d873a1babc207d94ead0c2e0e44276ebf2e8"
@@ -5407,12 +5393,13 @@ get-value@^2.0.3, get-value@^2.0.6:
   resolved "https://registry.yarnpkg.com/get-value/-/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
   integrity sha1-3BXKHGcjh8p2vTesCjlbogQqLCg=
 
-gift@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/gift/-/gift-0.7.0.tgz#6ff386e0af3211b941ab9e1aff5976adc92c2428"
-  integrity sha1-b/OG4K8yEblBq54a/1l2rcksJCg=
+gift@^0.10.2, gift@^0.7.0:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/gift/-/gift-0.10.2.tgz#4600efe8f284b51fcb01c3527b321e22b494e156"
+  integrity sha512-wC9aKnQpjfOTWX+JG4DPJkS89ux6sl8EN4hXhv/2vBoXCDTEz1JiTeGTSeuKYlCqIgUFM1JwPVym34Sys3hvzw==
   dependencies:
-    underscore "1.x.x"
+    flex-exec "^1.0.0"
+    underscore "^1.8.3"
 
 git-fetch-pack@^0.1.1:
   version "0.1.1"
@@ -9683,7 +9670,7 @@ underscore.string@^3.2.2, underscore.string@~3.3.4:
     sprintf-js "^1.0.3"
     util-deprecate "^1.0.2"
 
-underscore@1.x.x, underscore@>=1.8.3:
+underscore@>=1.8.3, underscore@^1.8.3:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.1.tgz#06dce34a0e68a7babc29b365b8e74b8925203961"
   integrity sha512-5/4etnCkd9c8gwgowi5/om/mYO5ajCaOgdzj/oW+0eQV9WxKBDZw5+ycmKmeaTXjInS/W0BzpGLo2xR2aBwZdg==

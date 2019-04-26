@@ -91,5 +91,8 @@
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "demoURL": "https://kaliber5.github.io/ember-drag-sort/"
+  },
+  "resolutions": {
+    "gift": "^0.10.2"
   }
 }
