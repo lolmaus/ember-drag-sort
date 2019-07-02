@@ -315,3 +315,28 @@
     dragEndAction = (action 'dragEnd')
   }}
 </div>
+
+
+<div class="list-group-wrapper">
+  <h2>Horizontal list</h2>
+
+  <p>
+    Set horizontal=true for a horizontal drag n drop
+  </p>
+
+  <section class="list-group">
+    <article class="horizontal-list">
+      <h4>List 1</h4>
+      {{#drag-sort-list
+        items         = items12
+        dragEndAction = (action 'dragEnd')
+        horizontal    = true
+        as |item|
+      }}
+        <div class="the-item">
+          {{item.name}}
+        </div>
+      {{/drag-sort-list}}
+    </article>
+  </section>
+</div>

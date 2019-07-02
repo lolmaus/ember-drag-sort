@@ -57,6 +57,10 @@ h6:last-child
   background-color: #eee;
 }
 
+.horizontal-list {
+  width: 400px;
+}
+
 .dragSortItem {
   overflow: auto;
 }
