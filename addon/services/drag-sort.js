@@ -24,13 +24,14 @@ export default Service.extend(EventedMixin, {
 
 
   // ----- Custom methods -----
-  startDragging ({item, index, items, group}) {
+  startDragging ({item, index, items, group, horizontal}) {
     this.setProperties({
       isDragging   : true,
       isDraggingUp : false,
 
       draggedItem : item,
       group,
+      horizontal,
 
       sourceList  : items,
       targetList  : items,

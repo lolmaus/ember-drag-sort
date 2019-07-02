@@ -23,13 +23,14 @@ function getComputedStyleInt (element, cssProp) {
 export default Component.extend({
 
   // ----- Arguments -----
-  item            : undefined,
-  index           : undefined,
-  items           : undefined,
-  group           : undefined,
-  childTagName    : 'div',
-  draggingEnabled : undefined,
-  handle          : null,
+  item             : undefined,
+  index            : undefined,
+  items            : undefined,
+  group            : undefined,
+  childTagName     : 'div',
+  draggingEnabled  : undefined,
+  handle           : null,
+  inHorizontalList : false,
 
   dragEndAction                  : undefined,
   determineForeignPositionAction : undefined,
@@ -205,13 +206,14 @@ export default Component.extend({
   startDragging () {
     this.collapse()
 
-    const item     = this.get('item')
-    const index    = this.get('index')
-    const items    = this.get('items')
-    const group    = this.get('group')
-    const dragSort = this.get('dragSort')
+    const item       = this.get('item')
+    const index      = this.get('index')
+    const items      = this.get('items')
+    const group      = this.get('group')
+    const dragSort   = this.get('dragSort')
+    const horizontal = this.get('inHorizontalList')
 
-    dragSort.startDragging({item, index, items, group})
+    dragSort.startDragging({item, index, items, group, horizontal})
   },
 
   endDragging () {

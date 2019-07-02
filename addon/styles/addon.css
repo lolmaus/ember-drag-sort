@@ -97,6 +97,32 @@
   display: inline-block;
 }
 
+.dragSortList.-horizontal .dragSortItem.-placeholderAbove:before,
+.dragSortList.-horizontal .dragSortItem.-placeholderBelow:before {
+  display: none;
+}
+
+.dragSortList.-horizontal .dragSortItem.-placeholderAbove {
+  padding-top: 0;
+}
+
+.dragSortList.-horizontal .dragSortItem.-placeholderBelow {
+  padding-bottom: 0;
+}
+
 .dragSortList.-horizontal .dragSortItem.-isDragged {
   display: none;
+}
+
+.dragSortList.-vertical .dragSortItem.-placeholderLeft:before,
+.dragSortList.-vertical .dragSortItem.-placeholderRight:before {
+  display: none;
+}
+
+.dragSortList.-vertical .dragSortItem.-placeholderLeft {
+  padding-left: 0;
+}
+
+.dragSortList.-vertical .dragSortItem.-placeholderRight {
+  padding-right: 0;
 }

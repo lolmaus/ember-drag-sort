@@ -1,7 +1,7 @@
 // ----- Ember modules -----
 import Component from '@ember/component'
 import {inject as service} from '@ember/service'
-import {reads} from '@ember/object/computed'
+import {not, reads} from '@ember/object/computed'
 import {computed, get, observer} from '@ember/object'
 import {next} from '@ember/runloop'
 
@@ -39,6 +39,7 @@ export default Component.extend({
     ':dragSortList',
     'draggingEnabled:-draggingEnabled',
     'horizontal:-horizontal',
+    'vertical:-vertical',
     'isDragging:-isDragging',
     'isDraggingOver:-isDraggingOver',
     'isExpanded2:-isExpanded',
@@ -57,7 +58,7 @@ export default Component.extend({
   sourceIndex         : reads('dragSort.sourceIndex'),
   draggedItem         : reads('dragSort.draggedItem'),
   lastDragEnteredList : reads('dragSort.lastDragEnteredList'),
-
+  vertical            : not('horizontal'),
 
 
   // ----- Computed properties -----
