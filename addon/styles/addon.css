@@ -44,8 +44,18 @@
   padding-bottom: 25px;
 }
 
+.dragSortItem.-placeholderLeft {
+  padding-left: 15px;
+}
+
+.dragSortItem.-placeholderRight {
+  padding-right: 15px;
+}
+
 .dragSortItem.-placeholderAbove:before,
-.dragSortItem.-placeholderBelow:before {
+.dragSortItem.-placeholderBelow:before,
+.dragSortItem.-placeholderLeft:before,
+.dragSortItem.-placeholderRight:before {
   content: '🡢';
   position: absolute;
   line-height: 25px;
@@ -60,4 +70,33 @@
 .dragSortItem.-placeholderBelow:before {
   /*top: 100%;*/
   bottom: 0;
+}
+
+.dragSortItem.-placeholderLeft:before,
+.dragSortItem.-placeholderRight:before {
+  text-align: center;
+  width: 15px;
+}
+
+.dragSortItem.-placeholderLeft:before {
+  /* right: 100%; */
+  left: 0;
+}
+
+.dragSortItem.-placeholderRight:before {
+  /* left: 100%; */
+  left: auto;
+  right: 0;
+}
+
+.dragSortList.-horizontal {
+  white-space: nowrap;
+}
+
+.dragSortList.-horizontal .dragSortItem{
+  display: inline-block;
+}
+
+.dragSortList.-horizontal .dragSortItem.-isDragged {
+  display: none;
 }

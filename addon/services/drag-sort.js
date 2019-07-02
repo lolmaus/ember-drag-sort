@@ -20,7 +20,7 @@ export default Service.extend(EventedMixin, {
   targetIndex : null,
 
   lastDragEnteredList : null,
-
+  horizontal          : false,
 
 
   // ----- Custom methods -----
@@ -90,7 +90,7 @@ export default Service.extend(EventedMixin, {
 
 
 
-  dragEntering ({group, items}) {
+  dragEntering ({group, items, horizontal}) {
     // Ignore entering irrelevant groups
     if (group !== this.get('group')) return
 
@@ -116,6 +116,7 @@ export default Service.extend(EventedMixin, {
     this.setProperties({
       targetList          : items,
       lastDragEnteredList : items,
+      horizontal          : horizontal,
     })
   },
 

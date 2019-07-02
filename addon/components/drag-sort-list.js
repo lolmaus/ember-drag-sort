@@ -21,6 +21,7 @@ export default Component.extend({
   childClass      : '',
   childTagName    : 'div',
   handle          : null,
+  horizontal      : false,
 
   dragEndAction                  : undefined,
   determineForeignPositionAction : undefined,
@@ -37,6 +38,7 @@ export default Component.extend({
   classNameBindings : [
     ':dragSortList',
     'draggingEnabled:-draggingEnabled',
+    'horizontal:-horizontal',
     'isDragging:-isDragging',
     'isDraggingOver:-isDraggingOver',
     'isExpanded2:-isExpanded',
@@ -133,11 +135,12 @@ export default Component.extend({
 
   // ----- Custom methods -----
   dragEntering () {
-    const group    = this.get('group')
-    const items    = this.get('items')
-    const dragSort = this.get('dragSort')
+    const group      = this.get('group')
+    const items      = this.get('items')
+    const dragSort   = this.get('dragSort')
+    const horizontal = this.get('horizontal')
 
-    dragSort.dragEntering({group, items})
+    dragSort.dragEntering({group, items, horizontal})
   },
 
   forceDraggingOver () {
