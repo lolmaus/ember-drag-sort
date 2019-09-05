@@ -70,11 +70,11 @@ export default Component.extend({
 
   shouldShowPlaceholderAbove2     : undefined,
   shouldShowPlaceholderBelow2     : undefined,
-  shouldShowPlaceholderAbove3     : and('shouldShowPlaceholderAbove2', 'notHorizontal'),
-  shouldShowPlaceholderBelow3     : and('shouldShowPlaceholderBelow2', 'notHorizontal'),
+  shouldShowPlaceholderAbove3     : and('shouldShowPlaceholderAbove2', 'isNotHorizontal'),
+  shouldShowPlaceholderBelow3     : and('shouldShowPlaceholderBelow2', 'isNotHorizontal'),
   shouldShowPlaceholderToTheLeft  : and('shouldShowPlaceholderAbove2', 'dragSort.horizontal'),
   shouldShowPlaceholderToTheRight : and('shouldShowPlaceholderBelow2', 'dragSort.horizontal'),
-  notHorizontal                   : not('dragSort.horizontal'),
+  isNotHorizontal                 : not('dragSort.horizontal'),
 
   // ----- Aliases -----
   isDraggingUp : reads('dragSort.isDraggingUp'),
