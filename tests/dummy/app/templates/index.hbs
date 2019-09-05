@@ -321,7 +321,7 @@
   <h2>Horizontal list</h2>
 
   <p>
-    Set horizontal=true for a horizontal drag n drop
+    Set isHorizontal=true for a horizontal drag n drop
   </p>
 
   <section class="list-group">
@@ -330,7 +330,7 @@
       {{#drag-sort-list
         items         = items12
         dragEndAction = (action 'dragEnd')
-        horizontal    = true
+        isHorizontal  = true
         as |item|
       }}
         <div class="the-item">

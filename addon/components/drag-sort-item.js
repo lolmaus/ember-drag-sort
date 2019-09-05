@@ -72,9 +72,9 @@ export default Component.extend({
   shouldShowPlaceholderBelow2     : undefined,
   shouldShowPlaceholderAbove3     : and('shouldShowPlaceholderAbove2', 'isNotHorizontal'),
   shouldShowPlaceholderBelow3     : and('shouldShowPlaceholderBelow2', 'isNotHorizontal'),
-  shouldShowPlaceholderToTheLeft  : and('shouldShowPlaceholderAbove2', 'dragSort.horizontal'),
-  shouldShowPlaceholderToTheRight : and('shouldShowPlaceholderBelow2', 'dragSort.horizontal'),
-  isNotHorizontal                 : not('dragSort.horizontal'),
+  shouldShowPlaceholderToTheLeft  : and('shouldShowPlaceholderAbove2', 'dragSort.isHorizontal'),
+  shouldShowPlaceholderToTheRight : and('shouldShowPlaceholderBelow2', 'dragSort.isHorizontal'),
+  isNotHorizontal                 : not('dragSort.isHorizontal'),
 
   // ----- Aliases -----
   isDraggingUp : reads('dragSort.isDraggingUp'),
@@ -206,14 +206,14 @@ export default Component.extend({
   startDragging () {
     this.collapse()
 
-    const item       = this.get('item')
-    const index      = this.get('index')
-    const items      = this.get('items')
-    const group      = this.get('group')
-    const dragSort   = this.get('dragSort')
-    const horizontal = this.get('isHorizontal')
+    const item         = this.get('item')
+    const index        = this.get('index')
+    const items        = this.get('items')
+    const group        = this.get('group')
+    const dragSort     = this.get('dragSort')
+    const isHorizontal = this.get('isHorizontal')
 
-    dragSort.startDragging({item, index, items, group, horizontal})
+    dragSort.startDragging({item, index, items, group, isHorizontal})
   },
 
   endDragging () {
@@ -230,7 +230,7 @@ export default Component.extend({
     const index        = this.get('index')
     const items        = this.get('items')
     const element      = this.get('element')
-    const isHorizontal = this.get('dragSort.horizontal')
+    const isHorizontal = this.get('dragSort.isHorizontal')
 
     const isPlaceholderBefore   = isHorizontal
       ? this.get('shouldShowPlaceholderToTheLeft')
