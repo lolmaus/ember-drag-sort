@@ -241,7 +241,7 @@ export default Component.extend({
       : this.get('shouldShowPlaceholderBelow2')
 
     const placeholderCorrection =
-      isPlaceholderBefore ?  getComputedStyleInt(element, isHorizontal ? 'padding-left' : 'padding-top')  :
+      isPlaceholderBefore ? getComputedStyleInt(element, isHorizontal ? 'padding-left' : 'padding-top')  :
       isPlaceholderAfter ? -getComputedStyleInt(element, isHorizontal ? 'padding-right' : 'padding-bottom') :
                             0                                                // eslint-disable-line indent
     const offset                = isHorizontal
