@@ -45,11 +45,11 @@
 }
 
 .dragSortItem.-placeholderLeft {
-  padding-left: 15px;
+  padding-left: 25px;
 }
 
 .dragSortItem.-placeholderRight {
-  padding-right: 15px;
+  padding-right: 25px;
 }
 
 .dragSortItem.-placeholderAbove:before,
@@ -75,7 +75,7 @@
 .dragSortItem.-placeholderLeft:before,
 .dragSortItem.-placeholderRight:before {
   text-align: center;
-  width: 15px;
+  width: 25px;
 }
 
 .dragSortItem.-placeholderLeft:before {
