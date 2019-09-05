@@ -246,7 +246,8 @@ export default Component.extend({
       ? element.offsetWidth
       : element.offsetHeight
 
-    const isDraggingUp = ((isHorizontal ? event.clientX : event.clientY) - offset) < (itemSize + placeholderCorrection) / 2
+    const mousePosition = (isHorizontal ? event.clientX : event.clientY)
+    const isDraggingUp  = (mousePosition - offset) < (itemSize + placeholderCorrection) / 2
 
     this.get('dragSort').draggingOver({group, index, items, isDraggingUp})
   },
