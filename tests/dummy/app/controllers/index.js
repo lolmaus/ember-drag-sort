@@ -97,6 +97,7 @@ export default Controller.extend({
       {name : 'Quux'},
       {name : 'Zomg'},
       {name : 'Lol'},
+      {name : 'Quuz'},
       {name : 'Hello'},
       {name : 'World'},
     ])
