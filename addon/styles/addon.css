@@ -90,11 +90,9 @@
 }
 
 .dragSortList.-horizontal {
-  white-space: nowrap;
-}
-
-.dragSortList.-horizontal .dragSortItem{
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .dragSortList.-horizontal .dragSortItem.-placeholderAbove:before,
