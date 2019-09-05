@@ -2,7 +2,7 @@
 import Component from '@ember/component'
 import { assert }  from '@ember/debug'
 import {inject as service} from '@ember/service'
-import {and, not, reads} from '@ember/object/computed'
+import {not, reads} from '@ember/object/computed'
 import {computed, observer} from '@ember/object'
 import {next} from '@ember/runloop'
 
@@ -48,10 +48,8 @@ export default Component.extend({
     ':dragSortItem',
     'isDragged2:-isDragged',
     'isDraggingOver:-isDraggingOver',
-    'shouldShowPlaceholderAbove3:-placeholderAbove',
-    'shouldShowPlaceholderBelow3:-placeholderBelow',
-    'shouldShowPlaceholderToTheLeft:-placeholderLeft',
-    'shouldShowPlaceholderToTheRight:-placeholderRight',
+    'shouldShowPlaceholderBefore2:-placeholderAbove',
+    'shouldShowPlaceholderAfter2:-placeholderBelow',
     'isTarget:-isTarget:-isTargetNOT',
     'index',
     'targetIndex',
@@ -68,13 +66,9 @@ export default Component.extend({
   isDragged2     : false,
   originalHeight : null,
 
-  shouldShowPlaceholderAbove2     : undefined,
-  shouldShowPlaceholderBelow2     : undefined,
-  shouldShowPlaceholderAbove3     : and('shouldShowPlaceholderAbove2', 'isVertical'),
-  shouldShowPlaceholderBelow3     : and('shouldShowPlaceholderBelow2', 'isVertical'),
-  shouldShowPlaceholderToTheLeft  : and('shouldShowPlaceholderAbove2', 'dragSort.isHorizontal'),
-  shouldShowPlaceholderToTheRight : and('shouldShowPlaceholderBelow2', 'dragSort.isHorizontal'),
-  isVertical                      : not('dragSort.isHorizontal'),
+  shouldShowPlaceholderBefore2 : undefined,
+  shouldShowPlaceholderAfter2  : undefined,
+  isVertical                   : not('dragSort.isHorizontal'),
 
   // ----- Aliases -----
   isDraggingUp : reads('dragSort.isDraggingUp'),
@@ -121,14 +115,14 @@ export default Component.extend({
     return index === count - 1
   }),
 
-  shouldShowPlaceholderAbove : computed('isDraggingOver', 'isDraggingUp', function () {
+  shouldShowPlaceholderBefore : computed('isDraggingOver', 'isDraggingUp', function () {
     const isDraggingOver = this.get('isDraggingOver')
     const isDraggingUp   = this.get('isDraggingUp')
 
     return isDraggingOver && isDraggingUp
   }),
 
-  shouldShowPlaceholderBelow : computed('isDraggingOver', 'isDraggingUp', function () {
+  shouldShowPlaceholderAfter : computed('isDraggingOver', 'isDraggingUp', function () {
     const isDraggingOver = this.get('isDraggingOver')
     const isDraggingUp   = this.get('isDraggingUp')
 
@@ -141,8 +135,8 @@ export default Component.extend({
   didInsertElement () {
     // Consume properties for observers to act
     this.getProperties(
-      'shouldShowPlaceholderAbove',
-      'shouldShowPlaceholderBelow'
+      'shouldShowPlaceholderBefore',
+      'shouldShowPlaceholderAfter'
     )
   },
 
@@ -234,11 +228,11 @@ export default Component.extend({
 
     const isPlaceholderBefore   = isHorizontal
       ? this.get('shouldShowPlaceholderToTheLeft')
-      : this.get('shouldShowPlaceholderAbove2')
+      : this.get('shouldShowPlaceholderBefore2')
 
     const isPlaceholderAfter    = isHorizontal
       ? this.get('shouldShowPlaceholderToTheRight')
-      : this.get('shouldShowPlaceholderBelow2')
+      : this.get('shouldShowPlaceholderAfter2')
 
     const placeholderCorrection =
       isPlaceholderBefore ? getComputedStyleInt(element, isHorizontal ? 'padding-left' : 'padding-top')  :
@@ -291,26 +285,26 @@ export default Component.extend({
 
 
   // ----- Observers -----
-  setPlaceholderAbove : observer('shouldShowPlaceholderAbove', function () {
+  setPlaceholderBefore : observer('shouldShowPlaceholderBefore', function () {
     // The delay is necessary for HTML class to update with a delay.
     // Otherwise, dragging is finished immediately.
     next(() => {
       if (this.get('isDestroying') || this.get('isDestroyed')) return
       this.set(
-        'shouldShowPlaceholderAbove2',
-        this.get('shouldShowPlaceholderAbove')
+        'shouldShowPlaceholderBefore2',
+        this.get('shouldShowPlaceholderBefore')
       )
     })
   }),
 
-  setPlaceholderBelow : observer('shouldShowPlaceholderBelow', function () {
+  setPlaceholderAfter : observer('shouldShowPlaceholderAfter', function () {
     // The delay is necessary for HTML class to update with a delay.
     // Otherwise, dragging is finished immediately.
     next(() => {
       if (this.get('isDestroying') || this.get('isDestroyed')) return
       this.set(
-        'shouldShowPlaceholderBelow2',
-        this.get('shouldShowPlaceholderBelow')
+        'shouldShowPlaceholderAfter2',
+        this.get('shouldShowPlaceholderAfter')
       )
     })
   }),

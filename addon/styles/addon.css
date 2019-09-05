@@ -7,7 +7,6 @@
   padding-top: 25px;
 }
 
-
 .dragSortList.-isExpanded.-isDraggingOver:before {
   content: '🡢';
   position: absolute;
@@ -44,18 +43,18 @@
   padding-bottom: 25px;
 }
 
-.dragSortItem.-placeholderLeft {
+.-horizontal .dragSortItem.-placeholderAbove {
+  padding-top: 0;
   padding-left: 25px;
 }
 
-.dragSortItem.-placeholderRight {
+.-horizontal .dragSortItem.-placeholderBelow {
   padding-right: 25px;
+  padding-bottom: 0;
 }
 
 .dragSortItem.-placeholderAbove:before,
-.dragSortItem.-placeholderBelow:before,
-.dragSortItem.-placeholderLeft:before,
-.dragSortItem.-placeholderRight:before {
+.dragSortItem.-placeholderBelow:before{
   content: '🡢';
   position: absolute;
   line-height: 25px;
@@ -72,18 +71,19 @@
   bottom: 0;
 }
 
-.dragSortItem.-placeholderLeft:before,
-.dragSortItem.-placeholderRight:before {
+.-horizontal .dragSortItem.-placeholderAbove:before,
+.-horizontal .dragSortItem.-placeholderBelow:before {
   text-align: center;
   width: 25px;
+  top: 0;
 }
 
-.dragSortItem.-placeholderLeft:before {
+.-horizontal .dragSortItem.-placeholderAbove:before {
   /* right: 100%; */
   left: 0;
 }
 
-.dragSortItem.-placeholderRight:before {
+.-horizontal .dragSortItem.-placeholderBelow:before {
   /* left: 100%; */
   left: auto;
   right: 0;
@@ -93,34 +93,4 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-}
-
-.dragSortList.-horizontal .dragSortItem.-placeholderAbove:before,
-.dragSortList.-horizontal .dragSortItem.-placeholderBelow:before {
-  display: none;
-}
-
-.dragSortList.-horizontal .dragSortItem.-placeholderAbove {
-  padding-top: 0;
-}
-
-.dragSortList.-horizontal .dragSortItem.-placeholderBelow {
-  padding-bottom: 0;
-}
-
-.dragSortList.-horizontal .dragSortItem.-isDragged {
-  display: none;
-}
-
-.dragSortList.-vertical .dragSortItem.-placeholderLeft:before,
-.dragSortList.-vertical .dragSortItem.-placeholderRight:before {
-  display: none;
-}
-
-.dragSortList.-vertical .dragSortItem.-placeholderLeft {
-  padding-left: 0;
-}
-
-.dragSortList.-vertical .dragSortItem.-placeholderRight {
-  padding-right: 0;
 }
