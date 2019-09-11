@@ -132,6 +132,35 @@ export default Controller.extend({
     }
   )),
 
+  nestedItems2 : computed(() => (
+    {
+      name     : 'Foo',
+      children : A([
+        {
+          name     : 'Bar',
+          children : A([
+            {
+              name     : 'Baz',
+              children : A([]),
+            },
+            {
+              name     : 'Quuz',
+              children : A([]),
+            },
+          ]),
+        },
+        {
+          name     : 'Zomg',
+          children : A([]),
+        },
+        {
+          name     : 'Lol',
+          children : A([]),
+        },
+      ]),
+    }
+  )),
+
   networkFailure : false,
 
   actions : {

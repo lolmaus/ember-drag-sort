@@ -128,6 +128,21 @@ h6:last-child
   opacity: 0.66;
 }
 
+.nestedItem.-horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.nestedItem.-horizontal .dragSortList.-isExpanded.-isEmpty,
+.nestedItem.-horizontal .dragSortList.-isExpanded.-isDraggingOver {
+  padding-top: 30px;
+  padding-left: 30px;
+}
+
+.nestedItem.-horizontal .dragSortList{
+  flex-shrink: 1;
+}
+
 /* Table styles */
 table {
   width: 100%;

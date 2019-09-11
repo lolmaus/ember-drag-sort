@@ -6,11 +6,13 @@
   items               = item.children
   group               = group
   dragEndAction       = dragEndAction
+  isHorizontal        = isHorizontal
   as |child|
 }}
   {{nested-item
     item          = child
     group         = group
     dragEndAction = dragEndAction
+    isHorizontal  = isHorizontal
   }}
 {{/drag-sort-list}}
