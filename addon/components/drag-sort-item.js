@@ -226,27 +226,38 @@ export default Component.extend({
     const element      = this.get('element')
     const isHorizontal = this.get('dragSort.isHorizontal')
 
-    const isPlaceholderBefore   = isHorizontal
-      ? this.get('shouldShowPlaceholderToTheLeft')
-      : this.get('shouldShowPlaceholderBefore2')
+    const isPlaceholderBefore =
+      isHorizontal
+        ? this.get('shouldShowPlaceholderToTheLeft')
+        : this.get('shouldShowPlaceholderBefore2')
 
-    const isPlaceholderAfter    = isHorizontal
-      ? this.get('shouldShowPlaceholderToTheRight')
-      : this.get('shouldShowPlaceholderAfter2')
+    const isPlaceholderAfter =
+      isHorizontal
+        ? this.get('shouldShowPlaceholderToTheRight')
+        : this.get('shouldShowPlaceholderAfter2')
+
+    const afterAttribute  = isHorizontal ? 'padding-right' : 'padding-bottom'
 
     const placeholderCorrection =
-      isPlaceholderBefore ? getComputedStyleInt(element, isHorizontal ? 'padding-left' : 'padding-top')  :
-      isPlaceholderAfter ? -getComputedStyleInt(element, isHorizontal ? 'padding-right' : 'padding-bottom') :
-                            0                                                // eslint-disable-line indent
-    const offset                = isHorizontal
-      ? element.getBoundingClientRect().left
-      : element.getBoundingClientRect().top
+      isPlaceholderBefore ?  getComputedStyleInt(element, beforeAttribute) :
+      isPlaceholderAfter  ? -getComputedStyleInt(element, afterAttribute)  :
+                             0                                                // eslint-disable-line indent
 
-    const itemSize = isHorizontal
-      ? element.offsetWidth
-      : element.offsetHeight
+    const offset =
+      isHorizontal
+        ? element.getBoundingClientRect().left
+        : element.getBoundingClientRect().top
 
-    const mousePosition = (isHorizontal ? event.clientX : event.clientY)
+    const itemSize =
+      isHorizontal
+        ? element.offsetWidth
+        : element.offsetHeight
+
+    const mousePosition =
+      isHorizontal
+        ? event.clientX
+        : event.clientY
+
     const isDraggingUp  = (mousePosition - offset) < (itemSize + placeholderCorrection) / 2
 
     this.get('dragSort').draggingOver({group, index, items, isDraggingUp})
