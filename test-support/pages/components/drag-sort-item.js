@@ -13,8 +13,8 @@ export default component({
 
   isDragged        : hasClass('-isDragged'),
   isDraggingOver   : hasClass('-isDraggingOver'),
-  placeholderAbove : hasClass('-placeholderAbove'),
-  placeholderBelow : hasClass('-placeholderBelow'),
+  placeholderAbove : hasClass('-placeholderBefore'),
+  placeholderBelow : hasClass('-placeholderAfter'),
 
   dragStart (index) {
     trigger(this.$.get(0), 'dragstart')

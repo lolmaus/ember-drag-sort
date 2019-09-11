@@ -33,40 +33,40 @@
   display: none;
 }
 
-.dragSortItem.-placeholderAbove {
+.dragSortItem.-placeholderBefore {
   /*margin-top: 25px;*/
   padding-top: 25px;
 }
 
-.dragSortItem.-placeholderBelow {
+.dragSortItem.-placeholderAfter {
   /*margin-bottom: 25px;*/
   padding-bottom: 25px;
 }
 
-.dragSortList.-horizontal .dragSortItem.-placeholderAbove {
+.dragSortList.-horizontal .dragSortItem.-placeholderBefore {
   padding-top: 0;
   padding-left: 25px;
 }
 
-.dragSortList.-horizontal .dragSortItem.-placeholderBelow {
+.dragSortList.-horizontal .dragSortItem.-placeholderAfter {
   padding-right: 25px;
   padding-bottom: 0;
 }
 
-.dragSortItem.-placeholderAbove:before,
-.dragSortItem.-placeholderBelow:before{
+.dragSortItem.-placeholderBefore:before,
+.dragSortItem.-placeholderAfter:before{
   content: '🡢';
   position: absolute;
   line-height: 25px;
   left: 0;
 }
 
-.dragSortItem.-placeholderAbove:before {
+.dragSortItem.-placeholderBefore:before {
   /*bottom: 100%;*/
   top: 0;
 }
 
-.dragSortItem.-placeholderBelow:before {
+.dragSortItem.-placeholderAfter:before {
   /*top: 100%;*/
   bottom: 0;
 }
@@ -77,8 +77,8 @@
   flex-wrap: wrap;
 }
 
-.dragSortList.-horizontal .dragSortItem.-placeholderAbove:before,
-.dragSortList.-horizontal .dragSortItem.-placeholderBelow:before {
+.dragSortList.-horizontal .dragSortItem.-placeholderBefore:before,
+.dragSortList.-horizontal .dragSortItem.-placeholderAfter:before {
   width: 25px;
   top: 50%;
   bottom: auto;
@@ -86,12 +86,12 @@
   text-align: center;
 }
 
-.dragSortList.-horizontal .dragSortItem.-placeholderAbove:before {
+.dragSortList.-horizontal .dragSortItem.-placeholderBefore:before {
   /* right: 100%; */
   left: 0;
 }
 
-.dragSortList.-horizontal .dragSortItem.-placeholderBelow:before {
+.dragSortList.-horizontal .dragSortItem.-placeholderAfter:before {
   /* left: 100%; */
   left: auto;
   right: 0;

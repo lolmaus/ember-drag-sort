@@ -316,9 +316,9 @@ The individual item component has HTML class `dragSortItem`. It also assumes the
 | HTML class          | Applied when...                                                               |
 |:--------------------|:------------------------------------------------------------------------------|
 | `-isDragged`        | The given item is the one being dragged. Used to hide the item from the list. |
-| `-isDraggingOver`   | Dragged item is positioned either above or below the given item.              |
-| `-placeholderAbove` | Dragged item is positioned above the given item.                              |
-| `-placeholderBelow` | Dragged item is positioned below the given item.                              |
+| `-isDraggingOver`   | Dragged item is positioned either above/before or below/after the given item.              |
+| `-placeholderBefore` | Dragged item is positioned above/before the given item.                              |
+| `-placeholderAfter` | Dragged item is positioned below/after the given item.                              |
 
 
 
@@ -326,7 +326,7 @@ The individual item component has HTML class `dragSortItem`. It also assumes the
 
 When dragging, the dragged item is hidden via the `-isDragged` HTML class that applies `display: none`.
 
-The placeholder (drop target) is shown via the `-placeholderAbove` or `-placeholderBelow` HTML classes. These classes apply padding to the given list item, and the placeholder is an absolutely positioned `:before` pseudo-element. A similar pseudo-element is applied to an `-isExpanded` list (see above).
+The placeholder (drop target) is shown via the `-placeholderBefore` or `-placeholderAfter` HTML classes. These classes apply padding to the given list item, and the placeholder is an absolutely positioned `:before` pseudo-element. A similar pseudo-element is applied to an `-isExpanded` list (see above).
 
 For sorting to work correctly, you must not apply padding to the list HTML element. If you need some padding on the list, apply it to its parent element.
 
@@ -505,8 +505,8 @@ When used in a test, **the `dragSortList` page object component offers the follo
 | `draggable`        | Boolean               | Whether the item is draggable                                                                                  |
 | `isDragged`        | Boolean               | Checks for `-isDragged` class on the component (see above).                                                    |
 | `isDraggingOver`   | Boolean               | Checks for `-isDraggingOver` class on the component (see above).                                               |
-| `placeholderAbove` | Boolean               | Checks for `-placeholderAbove` class on the component (see above).                                             |
-| `placeholderBelow` | Boolean               | Checks for `-placeholderBelow` class on the component (see above).                                             |
+| `placeholderAbove` | Boolean               | Checks for `-placeholderBefore` class on the component (see above).                                             |
+| `placeholderBelow` | Boolean               | Checks for `-placeholderAfter` class on the component (see above).                                             |
 | `dragStart()`      | Method                | Calls `trigger` helper on current item with `'dragstart'`.                                                     |
 | `dragOver(above)`  | Method                | Calls `trigger` helper on current item with `'dragover'` and `above`.                                          |
 | `dragEnd()`        | Method                | Calls `trigger` helper on current item with `'dragend'`.                                                       |
