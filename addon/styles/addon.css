@@ -73,9 +73,11 @@
 
 .-horizontal .dragSortItem.-placeholderAbove:before,
 .-horizontal .dragSortItem.-placeholderBelow:before {
-  text-align: center;
   width: 25px;
-  top: 0;
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
+  text-align: center;
 }
 
 .-horizontal .dragSortItem.-placeholderAbove:before {
