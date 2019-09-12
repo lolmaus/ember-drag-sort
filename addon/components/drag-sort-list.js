@@ -4,6 +4,7 @@ import {inject as service} from '@ember/service'
 import {not, reads} from '@ember/object/computed'
 import {computed, get, observer} from '@ember/object'
 import {next} from '@ember/runloop'
+import { A } from '@ember/array'
 
 // ----- Ember addons -----
 
@@ -129,7 +130,7 @@ export default Component.extend({
     const lastDragEnteredList = this.get('lastDragEnteredList')
     if (items === lastDragEnteredList) return
 
-    this.dragEntering()
+    this.dragEntering(event)
 
     if (this.get('determineForeignPositionAction')) {
       this.forceDraggingOver()
@@ -138,13 +139,28 @@ export default Component.extend({
 
 
   // ----- Custom methods -----
-  dragEntering () {
+  dragEntering (event) {
     const group        = this.get('group')
     const items        = this.get('items')
     const dragSort     = this.get('dragSort')
     const isHorizontal = this.get('isHorizontal')
+    let targetIndex    = 0
 
-    dragSort.dragEntering({group, items, isHorizontal})
+    if (isHorizontal) {
+      // Calculate which item is closest and make that the target
+      const itemsNodeList      = this.get('element').querySelectorAll('.dragSortItem')
+      const draggableItems     = A(Array.prototype.slice.call(itemsNodeList))
+      const positions          = A(draggableItems.map(draggableItem => draggableItem.getBoundingClientRect()))
+      const rows               = positions.uniqBy('top').mapBy('top')
+      const currentRowPosition = rows.filter(row => row < event.clientY).pop()
+      const closestItem        = positions.filterBy('top', currentRowPosition).pop()
+
+      if (closestItem) targetIndex = positions.indexOf(closestItem)
+
+      dragSort.set('isDraggingUp', false)
+    }
+
+    dragSort.dragEntering({group, items, isHorizontal, targetIndex})
   },
 
   forceDraggingOver () {
