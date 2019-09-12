@@ -43,14 +43,14 @@
   padding-bottom: 25px;
 }
 
-.dragSortList.-horizontal .dragSortItem.-placeholderBefore {
-  padding-top: 0;
-  padding-left: 25px;
+.dragSortList.-horizontal .dragSortItem.-placeholderBefore,
+.dragSortList.-horizontal.-rtl .dragSortItem.-placeholderAfter {
+  padding: 0 0 0 25px;
 }
 
-.dragSortList.-horizontal .dragSortItem.-placeholderAfter {
-  padding-right: 25px;
-  padding-bottom: 0;
+.dragSortList.-horizontal .dragSortItem.-placeholderAfter,
+.dragSortList.-horizontal.-rtl .dragSortItem.-placeholderBefore {
+  padding: 0 25px 0 0;
 }
 
 .dragSortItem.-placeholderBefore:before,
@@ -86,13 +86,22 @@
   text-align: center;
 }
 
-.dragSortList.-horizontal .dragSortItem.-placeholderBefore:before {
+.dragSortList.-horizontal .dragSortItem.-placeholderBefore:before,
+.dragSortList.-horizontal.-rtl .dragSortItem.-placeholderAfter:before {
   /* right: 100%; */
   left: 0;
+  right: auto;
 }
 
-.dragSortList.-horizontal .dragSortItem.-placeholderAfter:before {
+.dragSortList.-horizontal .dragSortItem.-placeholderAfter:before,
+.dragSortList.-horizontal.-rtl .dragSortItem.-placeholderBefore:before {
   /* left: 100%; */
   left: auto;
   right: 0;
+}
+
+
+
+.dragSortList.-rtl {
+  direction: rtl;
 }

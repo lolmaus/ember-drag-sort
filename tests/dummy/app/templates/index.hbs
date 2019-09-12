@@ -333,6 +333,25 @@
       {{/drag-sort-list}}
     </article>
   </section>
+  <section class="list-group">
+    <article class="horizontal-list list">
+      <h4>List 12 - Right to left</h4>
+
+      <p>Use isRtl=true if you're using a language which is read right to left. Has no effect when not using a horizontal list.</p>
+      {{#drag-sort-list
+        items         = items14
+        dragEndAction = (action 'dragEnd')
+        isHorizontal  = true
+        isRtl         = true
+        as |item|
+      }}
+        <div class="the-item">
+          {{item.name}}
+        </div>
+      {{/drag-sort-list}}
+    </article>
+  </section>
+
 </div>
 
 <div class="list-group-wrapper">

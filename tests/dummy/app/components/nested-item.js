@@ -13,5 +13,6 @@ export default Component.extend({
   item          : undefined,
   dragEndAction : undefined,
   isHorizontal  : false,
+  isRtl         : false,
   group         : 'nested group',
 })

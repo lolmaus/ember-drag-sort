@@ -31,6 +31,7 @@ export default Component.extend({
   draggingEnabled : undefined,
   handle          : null,
   isHorizontal    : false,
+  isRtl           : false,
 
   dragEndAction                  : undefined,
   determineForeignPositionAction : undefined,
@@ -220,27 +221,42 @@ export default Component.extend({
   },
 
   draggingOver (event) {
-    const group        = this.get('group')
-    const index        = this.get('index')
-    const items        = this.get('items')
-    const element      = this.get('element')
-    const isHorizontal = this.get('dragSort.isHorizontal')
+    const group               = this.get('group')
+    const index               = this.get('index')
+    const items               = this.get('items')
+    const element             = this.get('element')
+    const isHorizontal        = this.get('dragSort.isHorizontal')
+    const isRtl               = this.get('isRtl') && isHorizontal
+    const isPlaceholderBefore = this.get('shouldShowPlaceholderBefore2')
+    const isPlaceholderAfter  = this.get('shouldShowPlaceholderAfter2')
 
-    const isPlaceholderBefore =
-      isHorizontal
-        ? this.get('shouldShowPlaceholderToTheLeft')
-        : this.get('shouldShowPlaceholderBefore2')
+    let beforeAttribute     = 'padding-top'
+    let afterAttribute      = 'padding-bottom'
+    let placeholderModifier =
+      isRtl
+        ? -1
+        : 1
 
-    const isPlaceholderAfter =
-      isHorizontal
-        ? this.get('shouldShowPlaceholderToTheRight')
-        : this.get('shouldShowPlaceholderAfter2')
+    if (isHorizontal) {
 
-    const afterAttribute  = isHorizontal ? 'padding-right' : 'padding-bottom'
+      if (isRtl) {
+        placeholderModifier = -1
+      }
+
+      beforeAttribute =
+        isRtl
+          ? 'padding-right'
+          : 'padding-left'
+
+      afterAttribute =
+        isRtl
+          ? 'padding-left'
+          : 'padding-right'
+    }
 
     const placeholderCorrection =
-      isPlaceholderBefore ?  getComputedStyleInt(element, beforeAttribute) :
-      isPlaceholderAfter  ? -getComputedStyleInt(element, afterAttribute)  :
+      isPlaceholderBefore ?  getComputedStyleInt(element, beforeAttribute) * placeholderModifier :
+      isPlaceholderAfter  ? -getComputedStyleInt(element, afterAttribute)  * placeholderModifier :
                              0                                                // eslint-disable-line indent
 
     const offset =
@@ -258,8 +274,10 @@ export default Component.extend({
         ? event.clientX
         : event.clientY
 
-    const isDraggingUp  = (mousePosition - offset) < (itemSize + placeholderCorrection) / 2
-
+    let isDraggingUp  = (mousePosition - offset) < (itemSize + placeholderCorrection) / 2
+    if (isRtl) {
+      isDraggingUp = !isDraggingUp
+    }
     this.get('dragSort').draggingOver({group, index, items, isDraggingUp})
   },
 

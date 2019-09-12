@@ -21,7 +21,9 @@ export default Component.extend({
   childClass      : '',
   childTagName    : 'div',
   handle          : null,
-  isHorizontal    : false,
+
+  isHorizontal : false,
+  isRtl        : false,
 
   dragEndAction                  : undefined,
   determineForeignPositionAction : undefined,
@@ -40,6 +42,7 @@ export default Component.extend({
     'draggingEnabled:-draggingEnabled',
     'isHorizontal:-horizontal',
     'isVertical:-vertical',
+    'isRtl:-rtl',
     'isDragging:-isDragging',
     'isDraggingOver:-isDraggingOver',
     'isExpanded2:-isExpanded',

@@ -112,6 +112,15 @@ export default Controller.extend({
     ])
   ),
 
+  items14 : computed(() =>
+    A([
+      {name : 'أخرى ماشاء أي مكن'},
+      {name : 'أضف ما معقل'},
+      {name : 'أخر أحدث والمانيا'},
+      {name : '٣٠ هذا أوسع أوروبا ليتسنّى'},
+    ])
+  ),
+
   nestedItem : computed(() => (
     {
       name     : 'Foo',
