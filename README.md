@@ -12,7 +12,6 @@
   - [Support](#support)
   - [About](#about)
     - [Features](#features)
-    - [Missing features](#missing-features)
     - [Demo](#demo)
   - [Versions, branches and jQuery](#versions-branches-and-jquery)
   - [Known issues](#known-issues)
@@ -70,14 +69,6 @@ A drag'n'drop sortable list addon.
 * Nested lists (tree-like structures).
 * Strict DDAU: does not mutate the lists while dragging. On drag end, calls an action for you to handle list mutation.
 * Disable sorting within a list while still allowing dragging in and out of the list (sort order is determined by host app instead of the user).
-
-
-
-### Missing features
-
-Not in active development. PRs welcome!
-
-* Support for horizontal lists ([#6](https://github.com/kaliber5/ember-drag-sort/issues/6)).
 
 
 
@@ -295,6 +286,8 @@ Incorrect:
 | `childClass`                     | String                                       | `""`          | HTML class applied to list item components.                                                                                                                                                     |
 | `childTagName`                   | String                                       | `"div"`       | `tagName` applied to list item components.                                                                                                                                                      |
 | `handle`                         | String, typically `"[draggable]"`, or `null` | `null`        | Selector of the drag handle element. When provided, items can only be dragged by handle. :warning: The handle element *must* have `draggable="true"` attribute.                                 |
+| `isHorizontal`                   | Boolean                                      | `false`       | Displays list horizontal. :warning: Horizontal lists doesn't work well with nested lists.   |
+| `isRtl`                          | Boolean                                      | `false`       | RTL - Right to left. Might be useful for certain languages. :warning: Has no effect on vertical lists. |
 
 
 
