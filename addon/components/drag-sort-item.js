@@ -259,10 +259,11 @@ export default Component.extend({
         ? event.clientX
         : event.clientY
 
-    let isDraggingUp  = (mousePosition - offset) < (itemSize + placeholderCorrection) / 2
-    if (isRtl) {
-      isDraggingUp = !isDraggingUp
-    }
+    const isDraggingUp =
+      isRtl
+        ? (mousePosition - offset) > (itemSize + placeholderCorrection) / 2
+        : (mousePosition - offset) < (itemSize + placeholderCorrection) / 2
+
     dragSort.draggingOver({group, index, items, isDraggingUp})
   },
 
