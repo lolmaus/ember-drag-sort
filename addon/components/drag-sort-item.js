@@ -229,29 +229,13 @@ export default Component.extend({
     const isRtl               = this.get('isRtl') && isHorizontal
     const isPlaceholderBefore = this.get('shouldShowPlaceholderBefore2')
     const isPlaceholderAfter  = this.get('shouldShowPlaceholderAfter2')
+    const placeholderModifier = isRtl ? -1 : 1
 
-    let beforeAttribute     = 'padding-top'
-    let afterAttribute      = 'padding-bottom'
-    let placeholderModifier =
-      isRtl
-        ? -1
-        : 1
-
+    let beforeAttribute = 'padding-top'
+    let afterAttribute  = 'padding-bottom'
     if (isHorizontal) {
-
-      if (isRtl) {
-        placeholderModifier = -1
-      }
-
-      beforeAttribute =
-        isRtl
-          ? 'padding-right'
-          : 'padding-left'
-
-      afterAttribute =
-        isRtl
-          ? 'padding-left'
-          : 'padding-right'
+      beforeAttribute = isRtl ? 'padding-right' : 'padding-left'
+      afterAttribute  = isRtl ? 'padding-left'  : 'padding-right'
     }
 
     const placeholderCorrection =
