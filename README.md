@@ -121,11 +121,11 @@ Does not work on mobile browsers:
 Install the addon:
 
     ember i ember-drag-sort
-    
+
 You'll also need to install a dependency with either npm:
 
     npm i -D babel-plugin-transform-object-rest-spread
-    
+
  or Yarn:
 
     yarn add -D babel-plugin-transform-object-rest-spread
@@ -179,10 +179,10 @@ It is called on the source list component when the drag'n'drop operation is comp
 When sorting within one list, `targetIndex` assumes that the dragged item is not in the list.
 
 > For example, when your list is `['a', 'b', 'c']` and you put `b` after `c`, `sourceIndex` will be `1` and `targetIndex` will be `2`. The initial index of `c` was `2`, so you could suppose that target index after `c` is `3`.
-> 
+>
 > But `targetIndex` is calculated as if the dragged item `b` is not in the list: `['a', 'c']`. Thus, next index after `c` will be `2`.
 >
-> This is because the array has three items with indexes `0`, `1` and `2`, so putting an item to position `3` would make no sense. 
+> This is because the array has three items with indexes `0`, `1` and `2`, so putting an item to position `3` would make no sense.
 
 Here's the reference implementation of the `dragEndAction` action:
 
@@ -204,7 +204,7 @@ The `dragEndAction` action *must* be a closure action.
 Correct:
 
     dragEndAction = (action 'dragEnd')
-   
+
 Incorrect:
 
     dragEndAction = 'dragEnd'
@@ -266,7 +266,7 @@ determineForeignPosition ({draggedItem, items}) {
 Correct:
 
     determineForeignPositionAction = (action 'determineForeignPosition')
-   
+
 Incorrect:
 
     determineForeignPositionAction = 'determineForeignPosition'
@@ -286,7 +286,7 @@ Incorrect:
 | `childClass`                     | String                                       | `""`          | HTML class applied to list item components.                                                                                                                                                     |
 | `childTagName`                   | String                                       | `"div"`       | `tagName` applied to list item components.                                                                                                                                                      |
 | `handle`                         | String, typically `"[draggable]"`, or `null` | `null`        | Selector of the drag handle element. When provided, items can only be dragged by handle. :warning: The handle element *must* have `draggable="true"` attribute.                                 |
-| `isHorizontal`                   | Boolean                                      | `false`       | Displays list horizontal. :warning: Horizontal lists doesn't work well with nested lists.   |
+| `isHorizontal`                   | Boolean                                      | `false`       | Displays the list horizontally. :warning: Horizontal lists doesn't work well when nested.   |
 | `isRtl`                          | Boolean                                      | `false`       | RTL - Right to left. Might be useful for certain languages. :warning: Has no effect on vertical lists. |
 
 
@@ -370,7 +370,7 @@ The order of operations is the following:
 4. `dragover` on the dragged element.
 
 After performing the operations, you must [wait for async behavior](https://guides.emberjs.com/v2.13.0/testing/testing-components/#toc_waiting-on-asynchronous-behavior).
- 
+
 See this addon's integration test for example.
 
 
@@ -378,7 +378,7 @@ See this addon's integration test for example.
 ### sort
 
 `sort` is a high-level test helper that **moves an item to a new position within the same list**.
- 
+
 It can be imported like this:
 
 ```js
@@ -404,9 +404,9 @@ import {sort} from 'ember-drag-sort/utils/trigger'
 
 test('sorting a list', async function (assert) {
   await visit('/')
-  
+
   const list = document.querySelector('.dragSortList')
-  
+
   await sort(list, 0, 1, false)
 
   const expectedTitles = ['Bar', 'Foo', 'Baz', 'Quux']
@@ -424,7 +424,7 @@ test('sorting a list', async function (assert) {
 ### move
 
 `move` is a high-level test helper that **moves an item from one list into another**.
- 
+
 It can be imported like this:
 
 ```js
@@ -446,9 +446,9 @@ After executing `sort`, perform a wait using `wait`, `andThen` or `await`.
 
 Example:
 
-```js  
+```js
   const [list0, list1] = document.querySelectorAll('.dragSortList')
-  
+
   await move(list0, 0, list1, 1, false)
 ```
 
@@ -642,9 +642,9 @@ Example:
 ```js
 test('sorting a list', async function (assert) {
   await page.visit()
-  
+
   const list = page.sortableList
-  
+
   await list.sort(0, 1, false)
 
   const expectedTitles = ['Bar', 'Foo', 'Baz', 'Quux']
@@ -673,7 +673,7 @@ After executing `sort`, perform a wait using `await` or `andThen()`.
 
 Example:
 
-```js  
+```js
 const list1 = page.sortableList1
 const list2 = page.sortableList2
 
