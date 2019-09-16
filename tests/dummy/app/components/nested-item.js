@@ -5,14 +5,8 @@ import layout from '../templates/components/nested-item'
 
 export default Component.extend({
   layout,
-  classNames        : ['nestedItem'],
-  classNameBindings : [
-    'isHorizontal:-horizontal',
-  ],
-
+  classNames    : ['nestedItem'],
   item          : undefined,
   dragEndAction : undefined,
-  isHorizontal  : false,
-  isRtl         : false,
   group         : 'nested group',
 })
