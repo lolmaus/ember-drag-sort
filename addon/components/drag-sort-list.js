@@ -171,6 +171,7 @@ export default Component.extend({
     const itemsLength = get(items, 'length')
     const draggedItem = this.get('draggedItem')
     const sourceList  = this.get('sourceList')
+    const dragSort    = this.get('dragSort')
 
     let isDraggingUp = true
 
@@ -184,7 +185,7 @@ export default Component.extend({
       isDraggingUp = false
     }
 
-    this.get('dragSort').draggingOver({group, index, items, isDraggingUp})
+    dragSort.draggingOver({group, index, items, isDraggingUp})
   },
 
 

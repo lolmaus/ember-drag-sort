@@ -229,6 +229,7 @@ export default Component.extend({
     const isRtl               = this.get('isRtl') && isHorizontal
     const isPlaceholderBefore = this.get('shouldShowPlaceholderBefore2')
     const isPlaceholderAfter  = this.get('shouldShowPlaceholderAfter2')
+    const dragSort            = this.get('dragSort')
     const placeholderModifier = isRtl ? -1 : 1
 
     let beforeAttribute = 'padding-top'
@@ -262,7 +263,7 @@ export default Component.extend({
     if (isRtl) {
       isDraggingUp = !isDraggingUp
     }
-    this.get('dragSort').draggingOver({group, index, items, isDraggingUp})
+    dragSort.draggingOver({group, index, items, isDraggingUp})
   },
 
   collapse () {
