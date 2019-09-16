@@ -137,6 +137,28 @@ export default Component.extend({
     }
   },
 
+  dragOver (event) {
+    // This event is only used for placing the dragged element into the end of a horizontal list
+    if (this.get('isVertical')) {
+      return
+    }
+
+    // Ignore irrelevant drags
+    if (
+      !this.get('dragSort.isDragging')
+      || this.get('determineForeignPositionAction')
+    ) return
+
+    const group       = this.get('group')
+    const activeGroup = this.get('dragSort.group')
+
+    if (group !== activeGroup) return
+
+    event.stopPropagation()
+
+    this.isDraggingOverHorizontal(event)
+  },
+
 
   // ----- Custom methods -----
   dragEntering (event) {
@@ -147,20 +169,25 @@ export default Component.extend({
     let targetIndex    = 0
 
     if (isHorizontal) {
-      // Calculate which item is closest and make that the target
-      const itemsNodeList      = this.get('element').querySelectorAll('.dragSortItem')
-      const draggableItems     = A(Array.prototype.slice.call(itemsNodeList))
-      const positions          = A(draggableItems.map(draggableItem => draggableItem.getBoundingClientRect()))
-      const rows               = positions.uniqBy('top').mapBy('top')
-      const currentRowPosition = rows.filter(row => row < event.clientY).pop()
-      const closestItem        = positions.filterBy('top', currentRowPosition).pop()
-
-      if (closestItem) targetIndex = positions.indexOf(closestItem)
-
+      targetIndex = this.getClosestHorizontalIndex(event)
       dragSort.set('isDraggingUp', false)
     }
 
     dragSort.dragEntering({group, items, isHorizontal, targetIndex})
+  },
+
+  getClosestHorizontalIndex (event) {
+    // Calculate which item is closest and make that the target
+    const itemsNodeList      = this.get('element').querySelectorAll('.dragSortItem')
+    const draggableItems     = A(Array.prototype.slice.call(itemsNodeList))
+    const positions          = A(draggableItems.map(draggableItem => draggableItem.getBoundingClientRect()))
+    const rows               = positions.uniqBy('top').mapBy('top').sort()
+    const currentRowPosition = rows.filter(row => row < event.clientY).pop()
+    const closestItem        = positions.filterBy('top', currentRowPosition).pop()
+
+    return closestItem
+      ? positions.indexOf(closestItem)
+      : 0
   },
 
   forceDraggingOver () {
@@ -184,6 +211,16 @@ export default Component.extend({
       index        = itemsLength - 1
       isDraggingUp = false
     }
+
+    dragSort.draggingOver({group, index, items, isDraggingUp})
+  },
+
+  isDraggingOverHorizontal (event) {
+    const dragSort     = this.get('dragSort')
+    const group        = this.get('group')
+    const items        = this.get('items')
+    const index        = this.getClosestHorizontalIndex(event)
+    const isDraggingUp = false
 
     dragSort.draggingOver({group, index, items, isDraggingUp})
   },
