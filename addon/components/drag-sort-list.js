@@ -185,9 +185,7 @@ export default Component.extend({
     const currentRowPosition = rows.filter(row => row < event.clientY).pop()
     const closestItem        = positions.filterBy('top', currentRowPosition).pop()
 
-    return closestItem
-      ? positions.indexOf(closestItem)
-      : 0
+    return closestItem ? positions.indexOf(closestItem) : 0
   },
 
   forceDraggingOver () {
