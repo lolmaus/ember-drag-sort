@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
-## Unreleased
+## [2.0.0-beta.0] - 2019-09-17
+
+### Added
+- Support for horizontal lists by @frysch. 😎
 
 ### Changed
 - Raised the minimal Node requirement to 8.
