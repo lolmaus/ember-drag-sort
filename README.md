@@ -286,7 +286,7 @@ Incorrect:
 | `childClass`                     | String                                       | `""`          | HTML class applied to list item components.                                                                                                                                                     |
 | `childTagName`                   | String                                       | `"div"`       | `tagName` applied to list item components.                                                                                                                                                      |
 | `handle`                         | String, typically `"[draggable]"`, or `null` | `null`        | Selector of the drag handle element. When provided, items can only be dragged by handle. :warning: The handle element *must* have `draggable="true"` attribute.                                 |
-| `isHorizontal`                   | Boolean                                      | `false`       | Displays the list horizontally. :warning: Horizontal lists doesn't work well when nested.   |
+| `isHorizontal`                   | Boolean                                      | `false`       | Displays the list horizontally. :warning: Horizontal lists don't work well when nested.   |
 | `isRtl`                          | Boolean                                      | `false`       | RTL - Right to left. Might be useful for certain languages. :warning: Has no effect on vertical lists. |
 
 
