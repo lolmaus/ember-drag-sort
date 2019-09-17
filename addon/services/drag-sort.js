@@ -20,17 +20,18 @@ export default Service.extend(EventedMixin, {
   targetIndex : null,
 
   lastDragEnteredList : null,
-
+  isHorizontal        : false,
 
 
   // ----- Custom methods -----
-  startDragging ({item, index, items, group}) {
+  startDragging ({item, index, items, group, isHorizontal}) {
     this.setProperties({
       isDragging   : true,
       isDraggingUp : false,
 
       draggedItem : item,
       group,
+      isHorizontal,
 
       sourceList  : items,
       targetList  : items,
@@ -90,7 +91,7 @@ export default Service.extend(EventedMixin, {
 
 
 
-  dragEntering ({group, items}) {
+  dragEntering ({group, items, isHorizontal, targetIndex = 0}) {
     // Ignore entering irrelevant groups
     if (group !== this.get('group')) return
 
@@ -105,17 +106,18 @@ export default Service.extend(EventedMixin, {
           draggedItem   : this.get('draggedItem'),
           oldTargetList : this.get('targetList'),
           newTargetList : items,
-          targetIndex   : 0,
+          targetIndex   : targetIndex,
         })
       })
 
-      this.set('targetIndex', 0)
+      this.set('targetIndex', targetIndex)
     }
 
     // Remember entering a new list
     this.setProperties({
       targetList          : items,
       lastDragEnteredList : items,
+      isHorizontal        : isHorizontal,
     })
   },
 

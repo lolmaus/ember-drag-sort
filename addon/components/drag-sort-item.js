@@ -2,7 +2,7 @@
 import Component from '@ember/component'
 import { assert }  from '@ember/debug'
 import {inject as service} from '@ember/service'
-import {reads} from '@ember/object/computed'
+import {not, reads} from '@ember/object/computed'
 import {computed, observer} from '@ember/object'
 import {next} from '@ember/runloop'
 
@@ -30,6 +30,8 @@ export default Component.extend({
   childTagName    : 'div',
   draggingEnabled : undefined,
   handle          : null,
+  isHorizontal    : false,
+  isRtl           : false,
 
   dragEndAction                  : undefined,
   determineForeignPositionAction : undefined,
@@ -47,8 +49,8 @@ export default Component.extend({
     ':dragSortItem',
     'isDragged2:-isDragged',
     'isDraggingOver:-isDraggingOver',
-    'shouldShowPlaceholderAbove2:-placeholderAbove',
-    'shouldShowPlaceholderBelow2:-placeholderBelow',
+    'shouldShowPlaceholderBefore2:-placeholderBefore',
+    'shouldShowPlaceholderAfter2:-placeholderAfter',
     'isTarget:-isTarget:-isTargetNOT',
     'index',
     'targetIndex',
@@ -65,10 +67,9 @@ export default Component.extend({
   isDragged2     : false,
   originalHeight : null,
 
-  shouldShowPlaceholderAbove2 : undefined,
-  shouldShowPlaceholderBelow2 : undefined,
-
-
+  shouldShowPlaceholderBefore2 : undefined,
+  shouldShowPlaceholderAfter2  : undefined,
+  isVertical                   : not('dragSort.isHorizontal'),
 
   // ----- Aliases -----
   isDraggingUp : reads('dragSort.isDraggingUp'),
@@ -115,14 +116,14 @@ export default Component.extend({
     return index === count - 1
   }),
 
-  shouldShowPlaceholderAbove : computed('isDraggingOver', 'isDraggingUp', function () {
+  shouldShowPlaceholderBefore : computed('isDraggingOver', 'isDraggingUp', function () {
     const isDraggingOver = this.get('isDraggingOver')
     const isDraggingUp   = this.get('isDraggingUp')
 
     return isDraggingOver && isDraggingUp
   }),
 
-  shouldShowPlaceholderBelow : computed('isDraggingOver', 'isDraggingUp', function () {
+  shouldShowPlaceholderAfter : computed('isDraggingOver', 'isDraggingUp', function () {
     const isDraggingOver = this.get('isDraggingOver')
     const isDraggingUp   = this.get('isDraggingUp')
 
@@ -135,8 +136,8 @@ export default Component.extend({
   didInsertElement () {
     // Consume properties for observers to act
     this.getProperties(
-      'shouldShowPlaceholderAbove',
-      'shouldShowPlaceholderBelow'
+      'shouldShowPlaceholderBefore',
+      'shouldShowPlaceholderAfter'
     )
   },
 
@@ -200,13 +201,14 @@ export default Component.extend({
   startDragging () {
     this.collapse()
 
-    const item     = this.get('item')
-    const index    = this.get('index')
-    const items    = this.get('items')
-    const group    = this.get('group')
-    const dragSort = this.get('dragSort')
+    const item         = this.get('item')
+    const index        = this.get('index')
+    const items        = this.get('items')
+    const group        = this.get('group')
+    const dragSort     = this.get('dragSort')
+    const isHorizontal = this.get('isHorizontal')
 
-    dragSort.startDragging({item, index, items, group})
+    dragSort.startDragging({item, index, items, group, isHorizontal})
   },
 
   endDragging () {
@@ -219,23 +221,50 @@ export default Component.extend({
   },
 
   draggingOver (event) {
-    const group              = this.get('group')
-    const index              = this.get('index')
-    const items              = this.get('items')
-    const element            = this.get('element')
-    const top                = element.getBoundingClientRect().top
-    const height             = element.offsetHeight
-    const isPlaceholderAbove = this.get('shouldShowPlaceholderAbove2')
-    const isPlaceholderBelow = this.get('shouldShowPlaceholderBelow2')
+    const group               = this.get('group')
+    const index               = this.get('index')
+    const items               = this.get('items')
+    const element             = this.get('element')
+    const isHorizontal        = this.get('dragSort.isHorizontal')
+    const isRtl               = this.get('isRtl') && isHorizontal
+    const isPlaceholderBefore = this.get('shouldShowPlaceholderBefore2')
+    const isPlaceholderAfter  = this.get('shouldShowPlaceholderAfter2')
+    const dragSort            = this.get('dragSort')
+    const placeholderModifier = isRtl ? -1 : 1
+
+    let beforeAttribute = 'padding-top'
+    let afterAttribute  = 'padding-bottom'
+    if (isHorizontal) {
+      beforeAttribute = isRtl ? 'padding-right' : 'padding-left'
+      afterAttribute  = isRtl ? 'padding-left'  : 'padding-right'
+    }
 
     const placeholderCorrection =
-      isPlaceholderAbove ?  getComputedStyleInt(element, 'padding-top')    :
-      isPlaceholderBelow ? -getComputedStyleInt(element, 'padding-bottom') :
-                            0                                                // eslint-disable-line indent
+      isPlaceholderBefore ?  getComputedStyleInt(element, beforeAttribute) * placeholderModifier :
+      isPlaceholderAfter  ? -getComputedStyleInt(element, afterAttribute)  * placeholderModifier :
+                             0                                                // eslint-disable-line indent
 
-    const isDraggingUp = (event.clientY - top) < (height + placeholderCorrection) / 2
+    const offset =
+      isHorizontal
+        ? element.getBoundingClientRect().left
+        : element.getBoundingClientRect().top
 
-    this.get('dragSort').draggingOver({group, index, items, isDraggingUp})
+    const itemSize =
+      isHorizontal
+        ? element.offsetWidth
+        : element.offsetHeight
+
+    const mousePosition =
+      isHorizontal
+        ? event.clientX
+        : event.clientY
+
+    const isDraggingUp =
+      isRtl
+        ? (mousePosition - offset) > (itemSize + placeholderCorrection) / 2
+        : (mousePosition - offset) < (itemSize + placeholderCorrection) / 2
+
+    dragSort.draggingOver({group, index, items, isDraggingUp})
   },
 
   collapse () {
@@ -272,26 +301,26 @@ export default Component.extend({
 
 
   // ----- Observers -----
-  setPlaceholderAbove : observer('shouldShowPlaceholderAbove', function () {
+  setPlaceholderBefore : observer('shouldShowPlaceholderBefore', function () {
     // The delay is necessary for HTML class to update with a delay.
     // Otherwise, dragging is finished immediately.
     next(() => {
       if (this.get('isDestroying') || this.get('isDestroyed')) return
       this.set(
-        'shouldShowPlaceholderAbove2',
-        this.get('shouldShowPlaceholderAbove')
+        'shouldShowPlaceholderBefore2',
+        this.get('shouldShowPlaceholderBefore')
       )
     })
   }),
 
-  setPlaceholderBelow : observer('shouldShowPlaceholderBelow', function () {
+  setPlaceholderAfter : observer('shouldShowPlaceholderAfter', function () {
     // The delay is necessary for HTML class to update with a delay.
     // Otherwise, dragging is finished immediately.
     next(() => {
       if (this.get('isDestroying') || this.get('isDestroyed')) return
       this.set(
-        'shouldShowPlaceholderBelow2',
-        this.get('shouldShowPlaceholderBelow')
+        'shouldShowPlaceholderAfter2',
+        this.get('shouldShowPlaceholderAfter')
       )
     })
   }),

@@ -89,7 +89,68 @@ export default Controller.extend({
     ])
   ),
 
+  items12 : computed(() =>
+    A([
+      {name : 'Foo'},
+      {name : 'Bar'},
+      {name : 'Baz'},
+      {name : 'Quux'},
+      {name : 'Zomg'},
+      {name : 'Lol'},
+      {name : 'Quuz'},
+      {name : 'Hello'},
+      {name : 'World'},
+    ])
+  ),
+
+  items13 : computed(() =>
+    A([
+      {name : 'Foo'},
+      {name : 'Bar'},
+      {name : 'Baz'},
+      {name : 'Quux'},
+    ])
+  ),
+
+  items14 : computed(() =>
+    A([
+      {name : 'حلقة واحدة للحكم عليهم جميعان'},
+      {name : 'حلقة واحدة للعثور عليهم'},
+      {name : 'حلقة واحدة لجلب لهم'},
+      {name : 'وفي الظلام لربطهم'},
+    ])
+  ),
+
   nestedItem : computed(() => (
+    {
+      name     : 'Foo',
+      children : A([
+        {
+          name     : 'Bar',
+          children : A([
+            {
+              name     : 'Baz',
+              children : A([]),
+            },
+            {
+              name     : 'Quuz',
+              children : A([]),
+            },
+          ]),
+        },
+        {
+          name     : 'Zomg',
+          children : A([]),
+        },
+        {
+          name     : 'Lol',
+          children : A([]),
+        },
+      ]),
+    }
+  )),
+
+  nestedItems2 : computed(() => (
     {
       name     : 'Foo',
       children : A([

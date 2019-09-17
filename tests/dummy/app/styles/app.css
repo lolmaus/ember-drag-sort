@@ -57,6 +57,10 @@ h6:last-child
   background-color: #eee;
 }
 
+.horizontal-list {
+  width: 400px;
+}
+
 .dragSortItem {
   overflow: auto;
 }
@@ -142,16 +146,16 @@ table.dragSortList.-isExpanded.-isDraggingOver:before {
   content: none;
 }
 
-tr.dragSortItem.-placeholderAbove:before,
-tr.dragSortItem.-placeholderBelow:before {
+tr.dragSortItem.-placeholderBefore:before,
+tr.dragSortItem.-placeholderAfter:before {
   content: none;
 }
 
-tr.dragSortItem.-placeholderAbove td {
+tr.dragSortItem.-placeholderBefore td {
   padding-top: 25px;
 }
 
-tr.dragSortItem.-placeholderBelow td {
+tr.dragSortItem.-placeholderAfter td {
   padding-bottom: 25px;
 }
 

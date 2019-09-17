@@ -1,9 +1,10 @@
 // ----- Ember modules -----
 import Component from '@ember/component'
 import {inject as service} from '@ember/service'
-import {reads} from '@ember/object/computed'
+import {not, reads} from '@ember/object/computed'
 import {computed, get, observer} from '@ember/object'
 import {next} from '@ember/runloop'
+import { A } from '@ember/array'
 
 // ----- Ember addons -----
 
@@ -22,6 +23,9 @@ export default Component.extend({
   childTagName    : 'div',
   handle          : null,
 
+  isHorizontal : false,
+  isRtl        : false,
+
   dragEndAction                  : undefined,
   determineForeignPositionAction : undefined,
 
@@ -37,6 +41,9 @@ export default Component.extend({
   classNameBindings : [
     ':dragSortList',
     'draggingEnabled:-draggingEnabled',
+    'isHorizontal:-horizontal',
+    'isVertical:-vertical',
+    'isRtl:-rtl',
     'isDragging:-isDragging',
     'isDraggingOver:-isDraggingOver',
     'isExpanded2:-isExpanded',
@@ -55,7 +62,7 @@ export default Component.extend({
   sourceIndex         : reads('dragSort.sourceIndex'),
   draggedItem         : reads('dragSort.draggedItem'),
   lastDragEnteredList : reads('dragSort.lastDragEnteredList'),
-
+  isVertical          : not('isHorizontal'),
 
 
   // ----- Computed properties -----
@@ -123,21 +130,62 @@ export default Component.extend({
     const lastDragEnteredList = this.get('lastDragEnteredList')
     if (items === lastDragEnteredList) return
 
-    this.dragEntering()
+    this.dragEntering(event)
 
     if (this.get('determineForeignPositionAction')) {
       this.forceDraggingOver()
     }
   },
 
+  dragOver (event) {
+    // This event is only used for placing the dragged element into the end of a horizontal list
+    if (this.get('isVertical')) {
+      return
+    }
+
+    // Ignore irrelevant drags
+    if (
+      !this.get('dragSort.isDragging')
+      || this.get('determineForeignPositionAction')
+    ) return
+
+    const group       = this.get('group')
+    const activeGroup = this.get('dragSort.group')
+
+    if (group !== activeGroup) return
+
+    event.stopPropagation()
+
+    this.isDraggingOverHorizontal(event)
+  },
+
 
   // ----- Custom methods -----
-  dragEntering () {
-    const group    = this.get('group')
-    const items    = this.get('items')
-    const dragSort = this.get('dragSort')
+  dragEntering (event) {
+    const group        = this.get('group')
+    const items        = this.get('items')
+    const dragSort     = this.get('dragSort')
+    const isHorizontal = this.get('isHorizontal')
+    let targetIndex    = 0
 
-    dragSort.dragEntering({group, items})
+    if (isHorizontal) {
+      targetIndex = this.getClosestHorizontalIndex(event)
+      dragSort.set('isDraggingUp', false)
+    }
+
+    dragSort.dragEntering({group, items, isHorizontal, targetIndex})
+  },
+
+  getClosestHorizontalIndex (event) {
+    // Calculate which item is closest and make that the target
+    const itemsNodeList      = this.get('element').querySelectorAll('.dragSortItem')
+    const draggableItems     = A(Array.prototype.slice.call(itemsNodeList))
+    const positions          = A(draggableItems.map(draggableItem => draggableItem.getBoundingClientRect()))
+    const rows               = positions.uniqBy('top').mapBy('top').sort()
+    const currentRowPosition = rows.filter(row => row < event.clientY).pop()
+    const closestItem        = positions.filterBy('top', currentRowPosition).pop()
+
+    return closestItem ? positions.indexOf(closestItem) : 0
   },
 
   forceDraggingOver () {
@@ -148,6 +196,7 @@ export default Component.extend({
     const itemsLength = get(items, 'length')
     const draggedItem = this.get('draggedItem')
     const sourceList  = this.get('sourceList')
+    const dragSort    = this.get('dragSort')
 
     let isDraggingUp = true
 
@@ -161,7 +210,17 @@ export default Component.extend({
       isDraggingUp = false
     }
 
-    this.get('dragSort').draggingOver({group, index, items, isDraggingUp})
+    dragSort.draggingOver({group, index, items, isDraggingUp})
+  },
+
+  isDraggingOverHorizontal (event) {
+    const dragSort     = this.get('dragSort')
+    const group        = this.get('group')
+    const items        = this.get('items')
+    const index        = this.getClosestHorizontalIndex(event)
+    const isDraggingUp = false
+
+    dragSort.draggingOver({group, index, items, isDraggingUp})
   },
 
 
