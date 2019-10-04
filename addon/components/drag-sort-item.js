@@ -183,6 +183,7 @@ export default Component.extend({
     if (group !== activeGroup) return
 
     event.stopPropagation()
+    event.preventDefault()
 
     this.draggingOver(event)
   },
@@ -265,7 +266,6 @@ export default Component.extend({
         : (mousePosition - offset) < (itemSize + placeholderCorrection) / 2
 
     dragSort.draggingOver({group, index, items, isDraggingUp})
-    event.preventDefault();
   },
 
   collapse () {
