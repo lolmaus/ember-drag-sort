@@ -183,6 +183,7 @@ export default Component.extend({
     if (group !== activeGroup) return
 
     event.stopPropagation()
+    event.preventDefault()
 
     this.draggingOver(event)
   },
