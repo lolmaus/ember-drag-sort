@@ -166,8 +166,14 @@ export default Component.extend({
     if (!this.get('dragSort.isDragging')) return
 
     event.stopPropagation()
+    event.preventDefault()
 
     this.endDragging(event)
+  },
+
+  // Required for Firefox. http://stackoverflow.com/a/32592759/901944
+  drop (event) {
+    event.preventDefault()
   },
 
   dragOver (event) {
