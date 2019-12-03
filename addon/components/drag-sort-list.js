@@ -16,6 +16,7 @@ import layout from '../templates/components/drag-sort-list'
 export default Component.extend({
 
   // ----- Arguments -----
+  additionalArgs  : undefined,
   items           : undefined,
   group           : undefined,
   draggingEnabled : true,

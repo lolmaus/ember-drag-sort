@@ -24,7 +24,7 @@ export default Service.extend(EventedMixin, {
 
 
   // ----- Custom methods -----
-  startDragging ({item, index, items, group, isHorizontal}) {
+  startDragging ({additionalArgs, item, index, items, group, isHorizontal}) {
     this.setProperties({
       isDragging   : true,
       isDraggingUp : false,
@@ -33,10 +33,11 @@ export default Service.extend(EventedMixin, {
       group,
       isHorizontal,
 
-      sourceList  : items,
-      targetList  : items,
-      sourceIndex : index,
-      targetIndex : index,
+      additionalArgs : additionalArgs,
+      sourceList     : items,
+      targetList     : items,
+      sourceIndex    : index,
+      targetIndex    : index,
     })
 
     if (items.length > 1) {
@@ -71,6 +72,7 @@ export default Service.extend(EventedMixin, {
     if (index !== this.get('targetIndex')) {
       next(() => {
         this.trigger('sort', {
+          additionalArgs : this.get('additionalArgs'),
           group,
           sourceList     : this.get('sourceList'),
           sourceIndex    : this.get('sourceIndex'),
@@ -100,13 +102,14 @@ export default Service.extend(EventedMixin, {
 
       next(() => {
         this.trigger('move', {
+          additionalArgs : this.get('additionalArgs'),
           group,
-          sourceList    : this.get('sourceList'),
-          sourceIndex   : this.get('sourceIndex'),
-          draggedItem   : this.get('draggedItem'),
-          oldTargetList : this.get('targetList'),
-          newTargetList : items,
-          targetIndex   : targetIndex,
+          sourceList     : this.get('sourceList'),
+          sourceIndex    : this.get('sourceIndex'),
+          draggedItem    : this.get('draggedItem'),
+          oldTargetList  : this.get('targetList'),
+          newTargetList  : items,
+          targetIndex    : targetIndex,
         })
       })
 
@@ -124,13 +127,14 @@ export default Service.extend(EventedMixin, {
 
 
   endDragging ({action}) {
-    const sourceList   = this.get('sourceList')
-    const sourceIndex  = this.get('sourceIndex')
-    const targetList   = this.get('targetList')
-    let   targetIndex  = this.get('targetIndex')
-    const isDraggingUp = this.get('isDraggingUp')
-    const group        = this.get('group')
-    const draggedItem  = this.get('draggedItem')
+    const additionalArgs = this.get('additionalArgs')
+    const sourceList     = this.get('sourceList')
+    const sourceIndex    = this.get('sourceIndex')
+    const targetList     = this.get('targetList')
+    let   targetIndex    = this.get('targetIndex')
+    const isDraggingUp   = this.get('isDraggingUp')
+    const group          = this.get('group')
+    const draggedItem    = this.get('draggedItem')
 
     if (sourceList !== targetList || sourceIndex !== targetIndex) {
       // Account for dragged item shifting indexes by one
@@ -163,6 +167,7 @@ export default Service.extend(EventedMixin, {
       ) {
         next(() => {
           action({
+            additionalArgs,
             group,
             draggedItem,
             sourceList,
@@ -178,6 +183,7 @@ export default Service.extend(EventedMixin, {
 
     next(() => {
       this.trigger('end', {
+        additionalArgs,
         group,
         draggedItem,
         sourceList,
