@@ -49,13 +49,14 @@ module('Integration | Component | drag-sort-list', function (hooks) {
     assert.ok(dragEndCallback.calledOnce)
 
     assert.ok(dragEndCallback.calledWithExactly({
-      additionalArgs : {parent : 'test'},
-      group          : undefined,
-      draggedItem    : items.objectAt(0),
-      sourceList     : items,
-      targetList     : items,
-      sourceIndex    : 0,
-      targetIndex    : 1,
+      group       : undefined,
+      draggedItem : items.objectAt(0),
+      sourceArgs  : {parent : 'test'},
+      sourceList  : items,
+      targetArgs  : {parent : 'test'},
+      targetList  : items,
+      sourceIndex : 0,
+      targetIndex : 1,
     }))
   })
 
@@ -141,13 +142,14 @@ module('Integration | Component | drag-sort-list', function (hooks) {
     assert.ok(dragEndCallback.calledOnce)
 
     assert.ok(dragEndCallback.calledWithExactly({
-      additionalArgs : undefined,
-      group          : undefined,
-      draggedItem    : items.objectAt(0),
-      sourceList     : items,
-      targetList     : items,
-      sourceIndex    : 0,
-      targetIndex    : 1,
+      group       : undefined,
+      draggedItem : items.objectAt(0),
+      sourceArgs  : undefined,
+      sourceList  : items,
+      targetArgs  : undefined,
+      targetList  : items,
+      sourceIndex : 0,
+      targetIndex : 1,
     }))
   })
 
@@ -200,13 +202,14 @@ module('Integration | Component | drag-sort-list', function (hooks) {
     assert.ok(dragEndCallback.calledOnce)
 
     assert.ok(dragEndCallback.calledWithExactly({
-      additionalArgs : undefined,
-      group          : undefined,
-      draggedItem    : items.objectAt(0),
-      sourceList     : items,
-      targetList     : items,
-      sourceIndex    : 0,
-      targetIndex    : 1,
+      group       : undefined,
+      draggedItem : items.objectAt(0),
+      sourceArgs  : undefined,
+      sourceList  : items,
+      targetArgs  : undefined,
+      targetList  : items,
+      sourceIndex : 0,
+      targetIndex : 1,
     }))
   })
 })

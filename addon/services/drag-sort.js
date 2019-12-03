@@ -33,11 +33,12 @@ export default Service.extend(EventedMixin, {
       group,
       isHorizontal,
 
-      additionalArgs : additionalArgs,
-      sourceList     : items,
-      targetList     : items,
-      sourceIndex    : index,
-      targetIndex    : index,
+      sourceArgs  : additionalArgs,
+      sourceList  : items,
+      targetArgs  : additionalArgs,
+      targetList  : items,
+      sourceIndex : index,
+      targetIndex : index,
     })
 
     if (items.length > 1) {
@@ -72,11 +73,12 @@ export default Service.extend(EventedMixin, {
     if (index !== this.get('targetIndex')) {
       next(() => {
         this.trigger('sort', {
-          additionalArgs : this.get('additionalArgs'),
           group,
+          sourceArgs     : this.get('sourceArgs'),
           sourceList     : this.get('sourceList'),
           sourceIndex    : this.get('sourceIndex'),
           draggedItem    : this.get('draggedItem'),
+          targetArgs     : this.get('targetArgs'),
           targetList     : this.get('targetList'),
           oldTargetIndex : this.get('targetIndex'),
           newTargetIndex : index,
@@ -93,7 +95,7 @@ export default Service.extend(EventedMixin, {
 
 
 
-  dragEntering ({group, items, isHorizontal, targetIndex = 0}) {
+  dragEntering ({group, items, isHorizontal, targetArgs, targetIndex = 0}) {
     // Ignore entering irrelevant groups
     if (group !== this.get('group')) return
 
@@ -102,17 +104,19 @@ export default Service.extend(EventedMixin, {
 
       next(() => {
         this.trigger('move', {
-          additionalArgs : this.get('additionalArgs'),
           group,
-          sourceList     : this.get('sourceList'),
-          sourceIndex    : this.get('sourceIndex'),
-          draggedItem    : this.get('draggedItem'),
-          oldTargetList  : this.get('targetList'),
-          newTargetList  : items,
-          targetIndex    : targetIndex,
+          sourceArgs    : this.get('sourceArgs'),
+          sourceList    : this.get('sourceList'),
+          sourceIndex   : this.get('sourceIndex'),
+          draggedItem   : this.get('draggedItem'),
+          oldTargetList : this.get('targetList'),
+          newTargetList : items,
+          targetArgs,
+          targetIndex   : targetIndex,
         })
       })
 
+      this.set('targetArgs', targetArgs)
       this.set('targetIndex', targetIndex)
     }
 
@@ -127,14 +131,15 @@ export default Service.extend(EventedMixin, {
 
 
   endDragging ({action}) {
-    const additionalArgs = this.get('additionalArgs')
-    const sourceList     = this.get('sourceList')
-    const sourceIndex    = this.get('sourceIndex')
-    const targetList     = this.get('targetList')
-    let   targetIndex    = this.get('targetIndex')
-    const isDraggingUp   = this.get('isDraggingUp')
-    const group          = this.get('group')
-    const draggedItem    = this.get('draggedItem')
+    const sourceArgs   = this.get('sourceArgs')
+    const sourceList   = this.get('sourceList')
+    const sourceIndex  = this.get('sourceIndex')
+    const targetArgs   = this.get('targetArgs')
+    const targetList   = this.get('targetList')
+    let   targetIndex  = this.get('targetIndex')
+    const isDraggingUp = this.get('isDraggingUp')
+    const group        = this.get('group')
+    const draggedItem  = this.get('draggedItem')
 
     if (sourceList !== targetList || sourceIndex !== targetIndex) {
       // Account for dragged item shifting indexes by one
@@ -167,11 +172,12 @@ export default Service.extend(EventedMixin, {
       ) {
         next(() => {
           action({
-            additionalArgs,
             group,
             draggedItem,
+            sourceArgs,
             sourceList,
             sourceIndex,
+            targetArgs,
             targetList,
             targetIndex,
           })
@@ -183,11 +189,12 @@ export default Service.extend(EventedMixin, {
 
     next(() => {
       this.trigger('end', {
-        additionalArgs,
         group,
         draggedItem,
+        sourceArgs,
         sourceList,
         sourceIndex,
+        targetArgs,
         targetList,
         targetIndex,
       })
@@ -204,7 +211,9 @@ export default Service.extend(EventedMixin, {
       draggedItem : null,
       group       : null,
 
+      sourceArgs  : null,
       sourceList  : null,
+      targetArgs  : null,
       targetList  : null,
       sourceIndex : null,
       targetIndex : null,

@@ -167,6 +167,7 @@ export default Component.extend({
     const items        = this.get('items')
     const dragSort     = this.get('dragSort')
     const isHorizontal = this.get('isHorizontal')
+    const targetArgs   = this.get('additionalArgs')
     let targetIndex    = 0
 
     if (isHorizontal) {
@@ -174,7 +175,7 @@ export default Component.extend({
       dragSort.set('isDraggingUp', false)
     }
 
-    dragSort.dragEntering({group, items, isHorizontal, targetIndex})
+    dragSort.dragEntering({group, items, isHorizontal, targetArgs, targetIndex})
   },
 
   getClosestHorizontalIndex (event) {
