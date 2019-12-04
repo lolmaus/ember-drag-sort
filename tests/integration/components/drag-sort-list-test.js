@@ -20,12 +20,15 @@ module('Integration | Component | drag-sort-list', function (hooks) {
 
     const dragEndCallback = sinon.spy()
 
-    this.setProperties({items, dragEndCallback})
+    const additionalArgs = {parent : 'test'}
+
+    this.setProperties({additionalArgs, items, dragEndCallback})
 
     await render(hbs`
       {{#drag-sort-list
-        items         = items
-        dragEndAction = (action dragEndCallback)
+        additionalArgs = additionalArgs
+        items          = items
+        dragEndAction  = (action dragEndCallback)
         as |item|
       }}
         <div>
@@ -48,7 +51,9 @@ module('Integration | Component | drag-sort-list', function (hooks) {
     assert.ok(dragEndCallback.calledWithExactly({
       group       : undefined,
       draggedItem : items.objectAt(0),
+      sourceArgs  : {parent : 'test'},
       sourceList  : items,
+      targetArgs  : {parent : 'test'},
       targetList  : items,
       sourceIndex : 0,
       targetIndex : 1,
@@ -139,7 +144,9 @@ module('Integration | Component | drag-sort-list', function (hooks) {
     assert.ok(dragEndCallback.calledWithExactly({
       group       : undefined,
       draggedItem : items.objectAt(0),
+      sourceArgs  : undefined,
       sourceList  : items,
+      targetArgs  : undefined,
       targetList  : items,
       sourceIndex : 0,
       targetIndex : 1,
@@ -197,7 +204,9 @@ module('Integration | Component | drag-sort-list', function (hooks) {
     assert.ok(dragEndCallback.calledWithExactly({
       group       : undefined,
       draggedItem : items.objectAt(0),
+      sourceArgs  : undefined,
       sourceList  : items,
+      targetArgs  : undefined,
       targetList  : items,
       sourceIndex : 0,
       targetIndex : 1,

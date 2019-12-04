@@ -208,14 +208,15 @@ export default Component.extend({
   startDragging () {
     this.collapse()
 
-    const item         = this.get('item')
-    const index        = this.get('index')
-    const items        = this.get('items')
-    const group        = this.get('group')
-    const dragSort     = this.get('dragSort')
-    const isHorizontal = this.get('isHorizontal')
+    const additionalArgs = this.get('additionalArgs')
+    const item           = this.get('item')
+    const index          = this.get('index')
+    const items          = this.get('items')
+    const group          = this.get('group')
+    const dragSort       = this.get('dragSort')
+    const isHorizontal   = this.get('isHorizontal')
 
-    dragSort.startDragging({item, index, items, group, isHorizontal})
+    dragSort.startDragging({additionalArgs, item, index, items, group, isHorizontal})
   },
 
   endDragging () {

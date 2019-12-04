@@ -188,7 +188,7 @@ Here's the reference implementation of the `dragEndAction` action:
 
 ```js
   actions: {
-    dragEndAction ({sourceList, sourceIndex, targetList, targetIndex}) {
+    dragEndAction ({sourceArgs, sourceList, sourceIndex, targetArgs, targetList, targetIndex}) {
       if (sourceList === targetList && sourceIndex === targetIndex) return
 
       const item = sourceList.objectAt(sourceIndex)
@@ -288,6 +288,7 @@ Incorrect:
 | `handle`                         | String, typically `"[draggable]"`, or `null` | `null`        | Selector of the drag handle element. When provided, items can only be dragged by handle. :warning: The handle element *must* have `draggable="true"` attribute.                                 |
 | `isHorizontal`                   | Boolean                                      | `false`       | Displays the list horizontally. :warning: Horizontal lists don't work well when nested.   |
 | `isRtl`                          | Boolean                                      | `false`       | RTL - Right to left. Might be useful for certain languages. :warning: Has no effect on vertical lists. |
+| `additionalArgs`                 | <any>                                        | `undefined`   | A catch all for additional arguments you may want to access in the `dragEndAction`. Can be used for things like passing the parent of the list in for saving `hasMany` relationships. |
 
 
 
