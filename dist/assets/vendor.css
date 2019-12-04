@@ -1,0 +1,107 @@
+.dragSortList {
+  overflow: auto;
+  position: relative;
+}
+
+.dragSortList.-isExpanded {
+  padding-top: 25px;
+}
+
+.dragSortList.-isExpanded.-isDraggingOver:before {
+  content: '🡢';
+  position: absolute;
+  line-height: 25px;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.dragSortItem {
+  position: relative;
+}
+
+.dragSortItem[draggable], .dragSortItem [draggable] {
+  cursor: move;
+  cursor: hand;
+  cursor: -webkit-grab;
+  cursor: grab;
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+
+.dragSortItem.-isDragged {
+  display: none;
+}
+
+.dragSortItem.-placeholderBefore {
+  /*margin-top: 25px;*/
+  padding-top: 25px;
+}
+
+.dragSortItem.-placeholderAfter {
+  /*margin-bottom: 25px;*/
+  padding-bottom: 25px;
+}
+
+.dragSortList.-horizontal .dragSortItem.-placeholderBefore,
+.dragSortList.-horizontal.-rtl .dragSortItem.-placeholderAfter {
+  padding: 0 0 0 25px;
+}
+
+.dragSortList.-horizontal .dragSortItem.-placeholderAfter,
+.dragSortList.-horizontal.-rtl .dragSortItem.-placeholderBefore {
+  padding: 0 25px 0 0;
+}
+
+.dragSortItem.-placeholderBefore:before,
+.dragSortItem.-placeholderAfter:before{
+  content: '🡢';
+  position: absolute;
+  line-height: 25px;
+  left: 0;
+}
+
+.dragSortItem.-placeholderBefore:before {
+  /*bottom: 100%;*/
+  top: 0;
+}
+
+.dragSortItem.-placeholderAfter:before {
+  /*top: 100%;*/
+  bottom: 0;
+}
+
+.dragSortList.-horizontal {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.dragSortList.-horizontal .dragSortItem.-placeholderBefore:before,
+.dragSortList.-horizontal .dragSortItem.-placeholderAfter:before {
+  width: 25px;
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+.dragSortList.-horizontal .dragSortItem.-placeholderBefore:before,
+.dragSortList.-horizontal.-rtl .dragSortItem.-placeholderAfter:before {
+  /* right: 100%; */
+  left: 0;
+  right: auto;
+}
+
+.dragSortList.-horizontal .dragSortItem.-placeholderAfter:before,
+.dragSortList.-horizontal.-rtl .dragSortItem.-placeholderBefore:before {
+  /* left: 100%; */
+  left: auto;
+  right: 0;
+}
+
+
+
+.dragSortList.-rtl {
+  direction: rtl;
+}
