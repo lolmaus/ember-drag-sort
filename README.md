@@ -786,9 +786,11 @@ This command will deploy the app to https://kaliber5/ember-drag-sort.github.io/e
 
 Built by [@lolmaus](https://github.com/lolmaus) and [contributors](https://github.com/kaliber5/ember-drag-sort/graphs/contributors).
 
-Notable contributors: [@frysch](https://github.com/frysch).
+Notable contributors: [@frysch](https://github.com/frysch), [@rwwagner90](https://github.com/rwwagner90).
 
-Initially developed in [Deveo](https://github.com/Deveo)/[Perforce](https://www.perforce.com/deveo-customer-info).
+Conceieved in [Firecracker](https://github.com/firecracker).
+
+Reimplemented in [Deveo](https://github.com/Deveo)/[Perforce](https://www.perforce.com/deveo-customer-info).
 
 Currently developed and maintained by [kaliber5](https://kaliber5.de).
 
