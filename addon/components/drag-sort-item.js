@@ -154,7 +154,7 @@ export default Component.extend({
 
     // Required for Firefox. http://stackoverflow.com/a/32592759/901944
     if (event.dataTransfer) {
-      if (event.dataTransfer.setData) event.dataTransfer.setData('text', 'anything')
+      if (event.dataTransfer.setData) event.dataTransfer.setData('text', '')
       if (event.dataTransfer.setDragImage) event.dataTransfer.setDragImage(this.element, 0, 0)
     }
 
