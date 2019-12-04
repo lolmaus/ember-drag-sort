@@ -21,6 +21,7 @@
     - [Basic usage](#basic-usage)
     - [The drag end action](#the-drag-end-action)
     - [The determine foreign position action](#the-determine-foreign-position-action)
+    - [Passing additional arguments](#passing-additional-arguments)
     - [drag-sort-list arguments reference](#drag-sort-list-arguments-reference)
     - [HTML classes](#html-classes)
     - [CSS concerns](#css-concerns)
@@ -188,7 +189,7 @@ Here's the reference implementation of the `dragEndAction` action:
 
 ```js
   actions: {
-    dragEndAction ({sourceArgs, sourceList, sourceIndex, targetArgs, targetList, targetIndex}) {
+    dragEndAction ({sourceList, sourceIndex, targetList, targetIndex/* , sourceArgs, targetArgs */}) {
       if (sourceList === targetList && sourceIndex === targetIndex) return
 
       const item = sourceList.objectAt(sourceIndex)
@@ -273,6 +274,48 @@ Incorrect:
 
 
 
+### Passing additional arguments
+
+When using `drag-sort-list` in a template, you can pass additional arguments to it. These arguments will be passed into the `dragEndAction`.
+
+Here's a case where this is useful. Say, you have `parent` and `child` models, with a many-to-many relationship between the two. When you reorder a list of children, the new order must be persisted by calling `.save()` on the parent. But the `dragEndAction` does not have access to the parent by default!
+
+To resolve this problem, pass the parent into the `drag-sort-list` component via the `additionalArgs` argument:
+
+```handlebars
+{{#each parents as |parent|}}
+  {{#drag-sort-list
+    items          = parent.children
+    additionalArgs = (hash parent=parent foo="bar")
+    dragEndAction  = (action 'dragEnd')
+    as |child|
+  }}
+    {{child.name}}
+  {{/drag-sort-list}}
+{{/each}}
+```
+
+Now you can access the parent of both source and target lists in the `dragEndAction`. The value of `additionalArgs` will be exposed as `sourceArgs` and `targetArgs`:
+
+```js
+dragEndAction({ sourceList, sourceIndex, sourceArgs, targetList, targetIndex, targetArgs }) {
+  if (sourceModel === targetModel && sourceIndex === targetIndex) return;
+
+  const item = sourceList.objectAt(sourceIndex);
+  sourceList.removeAt(sourceIndex);
+  targetList.insertAt(targetIndex, item);
+
+  // Access the parent via `sourceArgs` and `targetArgs`
+  sourceArgs.parent.save();
+  targetArgs.parent.save();
+
+  console.log(sourceArgs.foo); // => "bar"
+  console.log(targetArgs.foo); // => "bar"
+}
+```
+
+
+
 
 ### drag-sort-list arguments reference
 
@@ -286,9 +329,9 @@ Incorrect:
 | `childClass`                     | String                                       | `""`          | HTML class applied to list item components.                                                                                                                                                     |
 | `childTagName`                   | String                                       | `"div"`       | `tagName` applied to list item components.                                                                                                                                                      |
 | `handle`                         | String, typically `"[draggable]"`, or `null` | `null`        | Selector of the drag handle element. When provided, items can only be dragged by handle. :warning: The handle element *must* have `draggable="true"` attribute.                                 |
-| `isHorizontal`                   | Boolean                                      | `false`       | Displays the list horizontally. :warning: Horizontal lists don't work well when nested.   |
-| `isRtl`                          | Boolean                                      | `false`       | RTL - Right to left. Might be useful for certain languages. :warning: Has no effect on vertical lists. |
-| `additionalArgs`                 | <any>                                        | `undefined`   | A catch all for additional arguments you may want to access in the `dragEndAction`. Can be used for things like passing the parent of the list in for saving `hasMany` relationships. |
+| `isHorizontal`                   | Boolean                                      | `false`       | Displays the list horizontally. :warning: Horizontal lists don't work well when nested.                                                                                                         |
+| `isRtl`                          | Boolean                                      | `false`       | RTL - Right to left. Might be useful for certain languages. :warning: Has no effect on vertical lists.                                                                                          |
+| `additionalArgs`                 | <any>                                        | `undefined`   | A catch-all for additional arguments you may want to access in the `dragEndAction`. Can be used for things like passing the parent of the list in for saving `hasMany` relationships.           |
 
 
 
