@@ -47,6 +47,7 @@
   },
   "devDependencies": {
     "@ember/optional-features": "^0.6.3",
+    "@html-next/vertical-collection": "^1.0.0",
     "broccoli-asset-rev": "^2.7.0",
     "ember-auto-import": "^1.2.21",
     "ember-cli": "~3.8.1",

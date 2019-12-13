@@ -23,14 +23,14 @@ export default Component.extend({
   childClass      : '',
   childTagName    : 'div',
   handle          : null,
+  estimateHeight  : 50,
 
   isHorizontal : false,
   isRtl        : false,
 
   dragEndAction                  : undefined,
   determineForeignPositionAction : undefined,
-
-
+  lazyRenderEnabled              : false,
 
   // ----- Services -----
   dragSort : service(),
@@ -67,6 +67,12 @@ export default Component.extend({
 
 
   // ----- Computed properties -----
+  lazyRenderDisabled : computed('lazyRenderEnabled', 'isHorizontal', function () {
+    const lazyRenderEnabled = this.get('lazyRenderEnabled')
+    const isHorizontal      = this.get('isHorizontal')
+    return !lazyRenderEnabled || isHorizontal
+  }),
+
   isDragging : computed('dragSort.{isDragging,group}', 'group', function () {
     const isDragging       = this.get('dragSort.isDragging')
     const group            = this.get('group')

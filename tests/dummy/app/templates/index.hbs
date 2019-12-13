@@ -374,3 +374,48 @@
     <p>Warning: Nested lists doesn't work well with horizontal lists.</p>
   </div>
 </div>
+
+<div class="list-groups">
+
+  <div class="list-group-wrapper">
+    <h2>Occlusion Rendering</h2>
+
+    <p>
+      Sort lists, drag between lists. Won't let you drag items from/to other groups.
+    </p>
+
+    <section class="list-group">
+      <article class="list">
+        <h4>List with Occlusion Rendering</h4>
+        {{#drag-sort-list
+          items             = items15
+          dragEndAction     = (action 'dragEnd')
+          lazyRenderEnabled = true
+          class             = "height--400"
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+
+      <article class="list">
+        <h4>List without occlusion render</h4>
+
+        {{#drag-sort-list
+          items         = items15
+          handle        = '.handle'
+          class         = "height--400"
+          dragEndAction = (action 'dragEnd')
+          as |item|
+        }}
+          <div class="the-item">
+            <span class="handle" draggable="true">☰</span>
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+    </section>
+  </div>
+</div>
