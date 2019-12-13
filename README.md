@@ -285,7 +285,7 @@ This list would be marked as source only:
 {{#drag-sort-list
   items         = items1
   dragEndAction = (action 'dragEnd')
-  sourceOnly=true
+  sourceOnly    = true
   as |item|
 }}
   {{item.name}}

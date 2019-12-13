@@ -178,6 +178,49 @@
   </div>
 
   <div class="list-group-wrapper">
+    <h2>Source only list</h2>
+
+    <p>
+      Use `sourceOnly` to prevent the user from rearranging or dragging into the list. 
+      Effectively, it is marked as immutable, and only used as a source bucket for other lists.
+    </p>
+
+    <section class="list-group">
+      <article class="list">
+        <h4>Source list</h4>
+
+        {{#drag-sort-list
+          classNames    = 'source-only-list'
+          items         = sourceOnlyItems
+          group         = 'sourceOnly'
+          dragEndAction = (action 'sourceOnlyDragEnd')
+          sourceOnly    = true
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+
+      <article class="list">
+        <h4>Target list</h4>
+
+        {{#drag-sort-list
+          items         = sourceOnlyTargetItems
+          group         = 'sourceOnly'
+          dragEndAction = (action 'sourceOnlyDragEnd')
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+    </section>
+  </div>
+
+  <div class="list-group-wrapper">
     <h2>Create copies of items by dragging out, delete by dragging in</h2>
 
     <p>
@@ -352,6 +395,7 @@
     </section>
   </div>
 </div>
+
 
 <div class="list-groups">
   <div class="list-group-wrapper">

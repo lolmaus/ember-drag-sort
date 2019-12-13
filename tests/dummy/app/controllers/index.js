@@ -179,6 +179,18 @@ export default Controller.extend({
     }
   )),
 
+  sourceOnlyItems : computed(() =>
+    A([
+      {name : 'Foo'},
+      {name : 'Bar'},
+      {name : 'Baz'},
+    ])
+  ),
+
+  sourceOnlyTargetItems : computed(() =>
+    A()
+  ),
+
   networkFailure : false,
 
   actions : {
@@ -213,6 +225,18 @@ export default Controller.extend({
 
     determineForeignPosition2 ({/*draggedItem, */items}) {
       return items.length
+    },
+
+    sourceOnlyDragEnd ({sourceList, sourceIndex, targetList, targetIndex}) {
+      if (sourceList === targetList && sourceIndex === targetIndex) return
+
+      const sourceOnlyList = this.get('sourceOnlyItems')
+
+      let item = sourceList.objectAt(sourceIndex)
+
+      if (sourceList === sourceOnlyList) item = {...item} // shallow clone
+
+      if (targetList !== sourceOnlyList) targetList.insertAt(targetIndex, item)
     },
   },
 
