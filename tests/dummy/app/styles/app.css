@@ -162,3 +162,7 @@ tr.dragSortItem.-placeholderAfter td {
 table .the-item {
   margin: 0;
 }
+
+.height--400 {
+  height: 400px;
+}
