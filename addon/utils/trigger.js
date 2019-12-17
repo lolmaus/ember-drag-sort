@@ -66,7 +66,7 @@ export async function sort (sourceList, sourceIndex, targetIndex, above, handleS
 
 
 export async function move (sourceList, sourceIndex, targetList, targetIndex, above, handleSelector) {
-  let sourceItem       = sourceList.children[sourceIndex]
+  let sourceItem = sourceList.children[sourceIndex]
 
   assert(`source item not exist at index ${sourceIndex}`, sourceItem)
 

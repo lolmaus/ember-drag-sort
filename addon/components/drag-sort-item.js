@@ -234,7 +234,7 @@ export default Component.extend({
   },
 
   draggingOver (event) {
-    const sourceOnly          = this.get('sourceOnly')
+    const sourceOnly = this.get('sourceOnly')
 
     if (sourceOnly) {
       event.preventDefault()
