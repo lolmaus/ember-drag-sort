@@ -4599,6 +4599,11 @@ eslint-module-utils@^2.3.0:
     debug "^2.6.8"
     pkg-dir "^2.0.0"
 
+eslint-plugin-align-assignments@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-align-assignments/-/eslint-plugin-align-assignments-1.1.2.tgz#83e1a8a826d4adf29e82b52d0bb39c88b301b576"
+  integrity sha512-I1ZJgk9EjHfGVU9M2Ex8UkVkkjLL5Y9BS6VNnQHq79eHj2H4/Cgxf36lQSUTLgm2ntB03A2NtF+zg9fyi5vChg==
+
 eslint-plugin-ember@^5.2.0:
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-ember/-/eslint-plugin-ember-5.4.0.tgz#2980a4389119b37d0450fff8e82d59c9aab126d0"

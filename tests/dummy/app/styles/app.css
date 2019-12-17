@@ -36,11 +36,19 @@ h6:last-child
   display: flex;
   flex-wrap: wrap;
   margin-top: 30px;
+
+  margin-right: -100px;
+  margin-bottom: -100px;
+}
+
+.list-groups .list-group-wrapper {
+  margin-right: 100px;
+  margin-bottom: 100px;
 }
 
 .list-group-wrapper {
   flex-grow: 1;
-  min-width: 600px;
+  flex-basis: 600px;
   margin-bottom: 30px;
 }
 
