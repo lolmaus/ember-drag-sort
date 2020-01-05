@@ -23,6 +23,7 @@ export default Component.extend({
   childClass      : '',
   childTagName    : 'div',
   handle          : null,
+  sourceOnly      : false,
 
   isHorizontal : false,
   isRtl        : false,

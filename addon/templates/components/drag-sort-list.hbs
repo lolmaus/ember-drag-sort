@@ -1,20 +1,22 @@
-{{#each items as |item index|}}
-  {{#drag-sort-item
-    additionalArgs                 = additionalArgs
-    item                           = item
-    index                          = index
-    items                          = items
-    group                          = group
-    handle                         = handle
-    class                          = childClass
-    tagName                        = childTagName
-    isHorizontal                   = isHorizontal
-    isRtl                          = isRtl
-    draggingEnabled                = draggingEnabled
-    dragEndAction                  = dragEndAction
-    determineForeignPositionAction = determineForeignPositionAction
-    sourceOnly                     = sourceOnly
-  }}
+{{#each this.items as |item index|}}
+  <DragSortItem
+    @additionalArgs                 = {{this.additionalArgs}}
+    @item                           = {{item}}
+    @index                          = {{index}}
+    @items                          = {{this.items}}
+    @group                          = {{this.group}}
+    @handle                         = {{this.handle}}
+    @tagName                        = {{this.childTagName}}
+    @isHorizontal                   = {{this.isHorizontal}}
+    @isRtl                          = {{this.isRtl}}
+    @draggingEnabled                = {{this.draggingEnabled}}
+    @dragEndAction                  = {{this.dragEndAction}}
+    @determineForeignPositionAction = {{this.determineForeignPositionAction}}
+    @sourceOnly                     = {{this.sourceOnly}}
+
+
+    class = {{this.childClass}}
+  >
     {{yield item index}}
-  {{/drag-sort-item}}
+  </DragSortItem>
 {{/each}}

@@ -1,3 +1,5 @@
+/* eslint-disable ember/no-arrow-function-computed-properties */
+
 import Controller from '@ember/controller'
 import {A} from '@ember/array'
 
