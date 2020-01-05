@@ -85,7 +85,7 @@
 
     <p>
       <label>
-        <Input @type="checkbox" @checked={{this.networkFailure}}/>
+        <input type="checkbox" checked={{this.networkFailure}} onclick={{action (mut this.networkFailure) value="target.checked"}}>
         Simulate network failure.
       </label>
     </p>
