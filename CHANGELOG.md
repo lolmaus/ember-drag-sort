@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
+## [0.0.0-beta.0] - 2020-01-05
+
+### Changed
+* ⚠ Dropped support for Ember CLI below 3.12.
+
+### Maintenance
+* Upgraded Ember CLI to 3.15 and dependencies.
+
+
+
 ## [2.0.0-beta.2] - 2020-01-05
 
 ### Added

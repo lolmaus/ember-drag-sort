@@ -4,9 +4,9 @@
 [![Ember Observer Score](http://emberobserver.com/badges/ember-drag-sort.svg?cache_bust=1)](http://emberobserver.com/addons/ember-drag-sort)
 [![npm package version](https://img.shields.io/npm/v/ember-drag-sort.svg)](https://www.npmjs.com/package/ember-drag-sort)
 [![license MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/kaliber5/ember-drag-sort/blob/gen-1/LICENSE.md)
-![ember-versions 1.13+](https://img.shields.io/badge/ember--versions-1.13%2B-yellowgreen.svg)
+![ember-versions 3.12+](https://img.shields.io/badge/ember--versions-3.12%2B-yellowgreen.svg)
 ![node-versions 8+](https://img.shields.io/badge/node--versions-8%2B-yellowgreen.svg)
-![ember-cli 3.8.1](https://img.shields.io/badge/uses%20ember--cli-3.8.1-blue.svg)
+![ember-cli 3.15.1](https://img.shields.io/badge/uses%20ember--cli-3.15.1-blue.svg)
 
 - [ember-drag-sort](#ember-drag-sort)
   - [Support](#support)
@@ -82,8 +82,9 @@ https://kaliber5.github.io/ember-drag-sort/
 
 ## Versions, branches and jQuery
 
-* Version 1.x, `gen-0` branch is based on jQuery.
-* Version 2.x, `gen-1` branch (current development head) has got rid of jQuery. Except for page objects which [still import](https://github.com/san650/ember-cli-page-object/blob/v1.15.2/index.js#L23-L28) jQuery in test env.
+* Version 1.x, `gen-0` branch is based on jQuery. Supports Ember CLI 1.13+.
+* Version 2.x, `gen-1` branch (current development head) has got rid of jQuery. Except for page objects which [still import](https://github.com/san650/ember-cli-page-object/blob/v1.15.2/index.js#L23-L28) jQuery in test env. Supports Ember CLI 3.8+.
+* Version 3.x, `gen-2` branch supports Ember CLI 3.12+.
 
 
 
