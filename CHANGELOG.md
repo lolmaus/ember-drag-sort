@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
+## [2.0.0-beta.2] - 2020-01-05
+
+### Added
+* `sourceOnly` option for an immutable drag-from list by [@rwwagner90](https://github.com/rwwagner90).
+
+### Maintenance
+* Brush up demo, tests and linting.
+
+
+
 ## [2.0.0-beta.1] - 2019-12-04
 
 ### Added
@@ -16,6 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Avoid redirects to anything.com in Firefox by [@anlumo](https://github.com/anlumo).
 * Remove `'anything'` text from `dataTransfer.setData` by [@mateusalexandre](https://github.com/mateusalexandre).
+
 
 
 ## [2.0.0-beta.0] - 2019-09-17
