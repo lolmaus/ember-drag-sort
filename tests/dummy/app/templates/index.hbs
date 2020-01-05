@@ -1,8 +1,12 @@
+{{! template-lint-disable no-action}}
+
 {{fork-me "https://github.com/kaliber5/ember-drag-sort/"}}
 
 <h1>ember-drag-sort demo</h1>
 
 <p>
+  {{! template-lint-disable no-implicit-this }}
+
   See
 
   <a href="https://github.com/kaliber5/ember-drag-sort/blob/gen-0/tests/dummy/app/templates/index.hbs">
@@ -35,35 +39,35 @@
       <article class="list">
         <h4>List without drag handles</h4>
 
-        {{#drag-sort-list
-          id            = "simple-1"
-          items         = simple1
-          group         = "simple"
-          dragEndAction = (action "dragEnd")
+        <DragSortList
+          id             = "simple-1"
+          @items         = {{this.simple1}}
+          @group         = "simple"
+          @dragEndAction = {{action "dragEnd"}}
           as |item|
-        }}
+        >
           <div class="the-item">
             {{item.name}}
           </div>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
 
       <article class="list">
         <h4>List with drag handles</h4>
 
-        {{#drag-sort-list
-          id            = "simple-2"
-          items         = simple2
-          group         = "simple"
-          handle        = ".handle"
-          dragEndAction = (action "dragEnd")
+        <DragSortList
+          id             = "simple-2"
+          @items         = {{this.simple2}}
+          @group         = "simple"
+          @handle        = ".handle"
+          @dragEndAction = {{action "dragEnd"}}
           as |item|
-        }}
+        >
           <div class="the-item">
             <span class="handle" draggable="true">☰</span>
             {{item.name}}
           </div>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
     </section>
   </div>
@@ -81,7 +85,7 @@
 
     <p>
       <label>
-        {{input type="checkbox" checked=networkFailure}}
+        <Input @type="checkbox" @checked={{this.networkFailure}}/>
         Simulate network failure.
       </label>
     </p>
@@ -90,10 +94,10 @@
     <p>
       Status:
 
-      {{#if dragEndTask.isRunning}}
+      {{#if this.dragEndTask.isRunning}}
         Updating...
-      {{else if dragEndTask.last.error}}
-        {{dragEndTask.last.error.message}}
+      {{else if this.dragEndTask.last.error}}
+        {{this.dragEndTask.last.error.message}}
       {{else}}
         Idle.
       {{/if}}
@@ -103,36 +107,36 @@
       <article class="list">
         <h4>List 1</h4>
 
-        {{#drag-sort-list
-          id              = "async-1"
-          items           = async1
-          group           = "async"
-          draggingEnabled = dragEndTask.isIdle
-          dragEndAction   = (action (perform dragEndTask))
+        <DragSortList
+          id               = "async-1"
+          @items           = {{this.async1}}
+          @group           = "async"
+          @draggingEnabled = {{this.dragEndTask.isIdle}}
+          @dragEndAction   = {{action (perform this.dragEndTask)}}
           as |item|
-        }}
+        >
           <div class="the-item">
             {{item.name}}
           </div>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
 
 
       <article class="list">
         <h4>List 2</h4>
 
-        {{#drag-sort-list
-          id              = "async-2"
-          items           = async2
-          group           = "async"
-          draggingEnabled = (not dragEndTask.isRunning)
-          dragEndAction   = (action (perform dragEndTask))
+        <DragSortList
+          id               = "async-2"
+          @items           = {{this.async2}}
+          @group           = "async"
+          @draggingEnabled = {{not this.dragEndTask.isRunning}}
+          @dragEndAction   = {{action (perform this.dragEndTask)}}
           as |item|
-        }}
+        >
           <div class="the-item">
             {{item.name}}
           </div>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
     </section>
   </div>
@@ -150,35 +154,35 @@
       <article class="list">
         <h4>List 1 (always sorted alphabetically)</h4>
 
-        {{#drag-sort-list
-          id    = "foreign-1"
-          items = foreign1
-          group = "foreign"
+        <DragSortList
+          id     = "foreign-1"
+          @items = {{this.foreign1}}
+          @group = "foreign"
 
-          dragEndAction                  = (action "dragEnd")
-          determineForeignPositionAction = (action "determineForeignPosition")
+          @dragEndAction                  = {{action "dragEnd"}}
+          @determineForeignPositionAction = {{action "determineForeignPosition"}}
           as |item|
-        }}
+        >
           <div class="the-item">
             {{item.name}}
           </div>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
 
       <article class="list">
         <h4>List 2 (sorted by user)</h4>
 
-        {{#drag-sort-list
-          id            = "foreign-2"
-          items         = foreign2
-          group         = "foreign"
-          dragEndAction = (action "dragEnd")
+        <DragSortList
+          id             = "foreign-2"
+          @items         = {{this.foreign2}}
+          @group         = "foreign"
+          @dragEndAction = {{action "dragEnd"}}
           as |item|
-        }}
+        >
           <div class="the-item">
             {{item.name}}
           </div>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
     </section>
   </div>
@@ -196,51 +200,51 @@
       <article class="list">
         <h4>List 1 (source, always sorted alphabetically)</h4>
 
-        {{#drag-sort-list
-          id    = "copies-1"
-          items = copies1
-          group = "copies"
+        <DragSortList
+          id     = "copies-1"
+          @items = {{this.copies1}}
+          @group = "copies"
 
-          dragEndAction                  = (action "dragEnd2")
-          determineForeignPositionAction = (action "determineForeignPosition2")
+          @dragEndAction                  = {{action "dragEnd2"}}
+          @determineForeignPositionAction = {{action "determineForeignPosition2"}}
           as |item|
-        }}
+        >
           <div class="the-item">
             {{item.name}}
           </div>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
 
       <article class="list">
         <h4>List 2 (target, sorted by user)</h4>
 
-        {{#drag-sort-list
-          id            = "copies-2"
-          items         = copies2
-          group         = "copies"
-          dragEndAction = (action "dragEnd2")
+        <DragSortList
+          id             = "copies-2"
+          @items         = {{this.copies2}}
+          @group         = "copies"
+          @dragEndAction = {{action "dragEnd2"}}
           as |item|
-        }}
+        >
           <div class="the-item">
             {{item.name}}
           </div>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
 
       <article class="list">
         <h4>List 3 (target, sorted by user)</h4>
 
-        {{#drag-sort-list
-          id            = "copies-3"
-          items         = copies3
-          group         = "copies"
-          dragEndAction = (action "dragEnd2")
+        <DragSortList
+          id             = "copies-3"
+          @items         = {{this.copies3}}
+          @group         = "copies"
+          @dragEndAction = {{action "dragEnd2"}}
           as |item|
-        }}
+        >
           <div class="the-item">
             {{item.name}}
           </div>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
     </section>
   </div>
@@ -263,34 +267,34 @@
       <article class="list">
         <h4>Source list</h4>
 
-        {{#drag-sort-list
-          id            = "source-only-1"
-          items         = sourceOnly1
-          group         = "source-only"
-          dragEndAction = (action "sourceOnlyDragEnd")
-          sourceOnly    = true
+        <DragSortList
+          id             = "source-only-1"
+          @items         = {{this.sourceOnly1}}
+          @group         = "source-only"
+          @dragEndAction = {{action "sourceOnlyDragEnd"}}
+          @sourceOnly    = {{true}}
           as |item|
-        }}
+        >
           <div class="the-item">
             {{item.name}}
           </div>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
 
       <article class="list">
         <h4>Target list</h4>
 
-        {{#drag-sort-list
-          id            = "source-only-2"
-          items         = sourceOnly2
-          group         = "source-only"
-          dragEndAction = (action "sourceOnlyDragEnd")
+        <DragSortList
+          id             = "source-only-2"
+          @items         = {{this.sourceOnly2}}
+          @group         = "source-only"
+          @dragEndAction = {{action "sourceOnlyDragEnd"}}
           as |item|
-        }}
+        >
           <div class="the-item">
             {{item.name}}
           </div>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
     </section>
   </div>
@@ -320,41 +324,41 @@
       <article class="list">
         <h4>Table 1</h4>
 
-        {{#drag-sort-list
-          id            = "table-1"
-          items         = table1
-          tagName       = "table"
-          childTagName  = "tr"
-          group         = "table"
-          dragEndAction = (action "dragEnd")
+        <DragSortList
+          id             = "table-1"
+          @items         = {{this.table1}}
+          @tagName       = "table"
+          @childTagName  = "tr"
+          @group         = "table"
+          @dragEndAction = {{action "dragEnd"}}
           as |item|
-        }}
+        >
           <td>
             <div class="the-item">
               {{item.name}}
             </div>
           </td>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
 
       <article class="list">
         <h4>Table 2</h4>
 
-        {{#drag-sort-list
-          id            = "table-2"
-          items         = table2
-          tagName       = "table"
-          childTagName  = "tr"
-          group         = "table"
-          dragEndAction = (action "dragEnd")
+        <DragSortList
+          id             = "table-2"
+          @items         = {{this.table2}}
+          @tagName       = "table"
+          @childTagName  = "tr"
+          @group         = "table"
+          @dragEndAction = {{action "dragEnd"}}
           as |item|
-        }}
+        >
           <td>
             <div class="the-item">
               {{item.name}}
             </div>
           </td>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
     </section>
   </div>
@@ -372,34 +376,34 @@
       <article class="horizontal-list list">
         <h4>List 1</h4>
 
-        {{#drag-sort-list
-          id            = "horizontal-1"
-          items         = horizontal1
-          group         = "horizontal"
-          dragEndAction = (action "dragEnd")
-          isHorizontal  = true
+        <DragSortList
+          id             = "horizontal-1"
+          @items         = {{this.horizontal1}}
+          @group         = "horizontal"
+          @dragEndAction = {{action "dragEnd"}}
+          @isHorizontal  = {{true}}
           as |item|
-        }}
+        >
           <div class="the-item">
             {{item.name}}
           </div>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
 
       <article class="list">
         <h4>List 2</h4>
 
-        {{#drag-sort-list
-          id            = "horizontal-2"
-          items         = horizontal2
-          group         = "horizontal"
-          dragEndAction = (action "dragEnd")
+        <DragSortList
+          id             = "horizontal-2"
+          @items         = {{this.horizontal2}}
+          @group         = "horizontal"
+          @dragEndAction = {{action "dragEnd"}}
           as |item|
-        }}
+        >
           <div class="the-item">
             {{item.name}}
           </div>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
     </section>
   </div>
@@ -413,19 +417,19 @@
 
     <section class="list-group list-groups">
       <article class="horizontal-list list">
-        {{#drag-sort-list
-          id            = "rtl"
-          items         = rtl
-          group         = "rtl"
-          dragEndAction = (action "dragEnd")
-          isHorizontal  = true
-          isRtl         = true
+        <DragSortList
+          id             = "rtl"
+          @items         = {{this.rtl}}
+          @group         = "rtl"
+          @isHorizontal  = {{true}}
+          @isRtl         = {{true}}
+          @dragEndAction = {{action "dragEnd"}}
           as |item|
-        }}
+        >
           <div class="the-item">
             {{item.name}}
           </div>
-        {{/drag-sort-list}}
+        </DragSortList>
       </article>
     </section>
   </div>
@@ -438,6 +442,7 @@
     <h2>Nested list</h2>
 
     <p>
+      {{! template-lint-disable no-implicit-this }}
       See
       <a href="https://github.com/kaliber5/ember-drag-sort/blob/gen-0/tests/dummy/app/templates/components/nested-item.hbs">
         {{~concat~}}
@@ -446,12 +451,12 @@
       </a>.
     </p>
 
-    {{nested-item
-      id            = "nested"
-      item          = nestedItem
-      group         = "nested"
-      dragEndAction = (action "dragEnd")
-    }}
+    <NestedItem
+      id             = "nested"
+      @item          = {{this.nestedItem}}
+      @group         = "nested"
+      @dragEndAction = {{action "dragEnd"}}
+    />
 
     <p>Warning: Nested lists don't work well with horizontal lists.</p>
   </div>

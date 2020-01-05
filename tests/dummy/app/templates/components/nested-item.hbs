@@ -1,16 +1,16 @@
 <p class = "nestedItem-title">
-  {{item.name}}
+  {{this.item.name}}
 </p>
 
-{{#drag-sort-list
-  items               = item.children
-  group               = group
-  dragEndAction       = dragEndAction
+<DragSortList
+  @items         = {{this.item.children}}
+  @group         = {{this.group}}
+  @dragEndAction = {{this.dragEndAction}}
   as |child|
-}}
-  {{nested-item
-    item          = child
-    group         = group
-    dragEndAction = dragEndAction
-  }}
-{{/drag-sort-list}}
+>
+  <NestedItem
+    @item          = {{this.child}}
+    @group         = {{this.group}}
+    @dragEndAction = {{this.dragEndAction}}
+  />
+</DragSortList>
