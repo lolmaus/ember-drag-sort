@@ -156,13 +156,13 @@ The `drag-sort-list` component accepts two mandatory arguments:
 The component accepts a block representing an individual item (the block is rendered multiple times, one per list item). It yields `item` and `index`.
 
 ```handlebars
-{{#drag-sort-list
-  items         = items1
-  dragEndAction = (action 'dragEnd')
+<DragSortList
+  @items         = {{this.items1}}
+  @dragEndAction = {{this.dragEnd}}
   as |item|
-}}
+>
   {{item.name}}
-{{/drag-sort-list}}
+</DragSortList>
 ```
 
 ### The drag end action
@@ -189,27 +189,16 @@ When sorting within one list, `targetIndex` assumes that the dragged item is not
 Here's the reference implementation of the `dragEndAction` action:
 
 ```js
-  actions: {
-    dragEndAction ({sourceList, sourceIndex, targetList, targetIndex/* , sourceArgs, targetArgs */}) {
-      if (sourceList === targetList && sourceIndex === targetIndex) return
+  @action
+  dragEndAction ({sourceList, sourceIndex, targetList, targetIndex/* , sourceArgs, targetArgs */}) {
+    if (sourceList === targetList && sourceIndex === targetIndex) return
 
-      const item = sourceList.objectAt(sourceIndex)
+    const item = sourceList.objectAt(sourceIndex)
 
-      sourceList.removeAt(sourceIndex)
-      targetList.insertAt(targetIndex, item)
-    }
+    sourceList.removeAt(sourceIndex)
+    targetList.insertAt(targetIndex, item)
   }
 ```
-
-The `dragEndAction` action *must* be a closure action.
-
-Correct:
-
-    dragEndAction = (action 'dragEnd')
-
-Incorrect:
-
-    dragEndAction = 'dragEnd'
 
 
 
@@ -237,6 +226,7 @@ This action must return an **integer** -- the desired position of the item.
 The simplest implementation is to always put the item into the end of the list:
 
 ```js
+@action
 determineForeignPosition ({/* draggedItem,  */items}) {
   return items.length
 }
@@ -245,6 +235,7 @@ determineForeignPosition ({/* draggedItem,  */items}) {
 To sort items alphabetically, you  can use lodash:
 
 ```js
+@action
 determineForeignPosition ({draggedItem, items}) {
   return _.sortedIndex(items.toArray(), draggedItem)
 }
@@ -253,6 +244,7 @@ determineForeignPosition ({draggedItem, items}) {
 Or do it by hand:
 
 ```js
+@action
 determineForeignPosition ({draggedItem, items}) {
     return Ember.A(items.slice()) // make sure not to mutate the list; `Ember.A()` is typically redundant
       .addObject(draggedItem)
@@ -263,15 +255,7 @@ determineForeignPosition ({draggedItem, items}) {
 
 **`determineForeignPositionAction` must not actually sort the list**. It's only purpose is to suggest desired item position, which is necessary to display the placeholder.
 
-**`determineForeignPositionAction` must passed as a closure action**.
 
-Correct:
-
-    determineForeignPositionAction = (action 'determineForeignPosition')
-
-Incorrect:
-
-    determineForeignPositionAction = 'determineForeignPosition'
 
 ### Marking a list as a source only bucket
 
@@ -282,27 +266,19 @@ reordered or modified by dragging items out of it. It is only a source to drag t
 This list would be marked as source only:
 
 ```hbs
-{{#drag-sort-list
-  items         = items1
-  dragEndAction = (action 'dragEnd')
-  sourceOnly    = true
+<DragSortList
+  @items         = {{this.items1}}
+  @dragEndAction = {{this.dragEnd}}
+  @sourceOnly    = {{true}}
   as |item|
-}}
+>
   {{item.name}}
-{{/drag-sort-list}}
+</DragSortList>
 ```
 
 You could then have one or more other lists which you could drag the items from the source list into.
 
-```hbs
-{{#drag-sort-list
-  items         = items2
-  dragEndAction = (action 'dragEnd')
-  as |item|
-}}
-  {{item.name}}
-{{/drag-sort-list}}
-```
+
 
 ### Passing additional arguments
 
@@ -314,20 +290,21 @@ To resolve this problem, pass the parent into the `drag-sort-list` component via
 
 ```handlebars
 {{#each parents as |parent|}}
-  {{#drag-sort-list
-    items          = parent.children
-    additionalArgs = (hash parent=parent foo="bar")
-    dragEndAction  = (action 'dragEnd')
+  <DragSortList
+    @items          = {{this.parent.children}}
+    @additionalArgs = {{hash parent=parent foo="bar"}}
+    @dragEndAction  = {{this.dragEnd}}
     as |child|
   }}
     {{child.name}}
-  {{/drag-sort-list}}
+  </DragSortList>
 {{/each}}
 ```
 
 Now you can access the parent of both source and target lists in the `dragEndAction`. The value of `additionalArgs` will be exposed as `sourceArgs` and `targetArgs`:
 
 ```js
+@action
 dragEndAction({ sourceList, sourceIndex, sourceArgs, targetList, targetIndex, targetArgs }) {
   if (sourceModel === targetModel && sourceIndex === targetIndex) return;
 
@@ -638,15 +615,15 @@ export default create({
 You can not provide a custom descriptor for `dragSortItem`, but you can describe its content. For example, you can describe the following template:
 
 ```handlebars
-{{#drag-sort-list
-  items         = items
-  dragEndAction = (action 'dragEndAction')
+<DragSortList
+  @items         = {{this.items}}
+  @dragEndAction = {{this.dragEndAction}}
   as |item|
-}}
+>
   <div class = 'drag-sort-item-content'>
     {{item.name}}
   </div>
-{{/drag-sort-list}}
+</DragSortList>
 ```
 
 ...by importing the page object component factory from `{dragSortList}` and passing your item description into it like this:
