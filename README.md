@@ -21,6 +21,7 @@
     - [Basic usage](#basic-usage)
     - [The drag end action](#the-drag-end-action)
     - [The determine foreign position action](#the-determine-foreign-position-action)
+    - [Marking a list as a source only bucket](#marking-a-list-as-a-source-only-bucket)
     - [Passing additional arguments](#passing-additional-arguments)
     - [drag-sort-list arguments reference](#drag-sort-list-arguments-reference)
     - [HTML classes](#html-classes)
@@ -272,7 +273,36 @@ Incorrect:
 
     determineForeignPositionAction = 'determineForeignPosition'
 
+### Marking a list as a source only bucket
 
+Sometimes you may have a need to define a bucket of items that is "source only". This means
+that you can only grab items from it to add to other buckets. The source bucket can never be
+reordered or modified by dragging items out of it. It is only a source to drag to other lists.
+
+This list would be marked as source only:
+
+```hbs
+{{#drag-sort-list
+  items         = items1
+  dragEndAction = (action 'dragEnd')
+  sourceOnly    = true
+  as |item|
+}}
+  {{item.name}}
+{{/drag-sort-list}}
+```
+
+You could then have one or more other lists which you could drag the items from the source list into.
+
+```hbs
+{{#drag-sort-list
+  items         = items2
+  dragEndAction = (action 'dragEnd')
+  as |item|
+}}
+  {{item.name}}
+{{/drag-sort-list}}
+```
 
 ### Passing additional arguments
 

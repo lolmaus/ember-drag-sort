@@ -3,7 +3,20 @@ import { currentURL, settled } from '@ember/test-helpers'
 import { setupApplicationTest } from 'ember-qunit'
 import page from 'dummy/tests/pages/index'
 
-let m
+
+
+function assertListItems (list, expectedTitles, assert, message) {
+  const m = `${message}: items count`
+  assert.equal(list.items().count, expectedTitles.length, m)
+
+  // List with disabled sorting
+  expectedTitles.forEach((expectedTitle, i) => {
+    const m = `${message}: List #0 item #${i} content title`
+    assert.equal(list.items(i).content.title, expectedTitle, m)
+  })
+}
+
+
 
 module('Acceptance | index', function (hooks) {
   setupApplicationTest(hooks)
@@ -11,156 +24,56 @@ module('Acceptance | index', function (hooks) {
   test('visiting /index', async function (assert) {
     await page.visit()
 
-    m = 'Current URL'
-    assert.equal(currentURL(), '/', m)
-
-    const firstGroup = page.listGroups(0)
-
-    const expectedTitleGroups = [
-      ['Foo',  'Bar', 'Baz', 'Quux'],
-      ['☰ Zomg', '☰ Lol'],
-    ]
-
-    expectedTitleGroups.forEach((expectedTitles, i) => {
-      const list = firstGroup.lists(i)
-
-      m = `List #${i} item count`
-      assert.equal(list.items().count, expectedTitles.length, m)
-
-      expectedTitles.forEach((expectedTitle, k) => {
-        m = `List #${i} item #${k} content title`
-        assert.equal(list.items(k).content.title, expectedTitle, m)
-      })
-    })
+    assert.equal(currentURL(), '/', 'Current URL')
+    assertListItems(page.simple1, ['Foo', 'Bar', 'Baz', 'Quux'], assert, 'Simple 1')
+    assertListItems(page.simple2, ['☰ Zomg', '☰ Lol'], assert, 'Simple 2')
   })
+
+
 
   test('sorting a list', async function (assert) {
     await page.visit()
+    await page.simple1.sort(0, 1, false)
 
-    const list = page.listGroups(0).lists(0)
-
-    await list.sort(0, 1, false)
-
-    const expectedTitles = ['Bar', 'Foo', 'Baz', 'Quux']
-
-    m = 'List #0 items count'
-    assert.equal(list.items().count, 4, m)
-
-    expectedTitles.forEach((expectedTitle, k) => {
-      m = `List #0 item #${k} content title`
-      assert.equal(list.items(k).content.title, expectedTitle, m)
-    })
+    assertListItems(page.simple1, ['Bar', 'Foo', 'Baz', 'Quux'], assert, 'Simple 1')
   })
 
 
   test('sorting between lists', async function (assert) {
     await page.visit()
+    await page.simple1.move(0, page.simple2, 1, false)
 
-    const list0 = page.listGroups(0).lists(0)
-    const list1 = page.listGroups(0).lists(1)
-
-    await list0.move(0, list1, 1, false)
-
-    const expectedTitles0 = ['Bar',  'Baz', 'Quux']
-    const expectedTitles1 = ['☰ Zomg', '☰ Lol', '☰ Foo']
-
-    m = 'List #0 items count'
-    assert.equal(list0.items().count, 3, m)
-
-    expectedTitles0.forEach((expectedTitle, k) => {
-      m = `List #0 item #${k} content title`
-      assert.equal(list0.items(k).content.title, expectedTitle, m)
-    })
-
-    m = 'List #1 items count'
-    assert.equal(list1.items().count, 3, m)
-
-    expectedTitles1.forEach((expectedTitle, k) => {
-      m = `List #1 item #${k} content title`
-      assert.equal(list1.items(k).content.title, expectedTitle, m)
-    })
+    assertListItems(page.simple1, ['Bar', 'Baz', 'Quux'], assert, 'Simple 1')
+    assertListItems(page.simple2, ['☰ Zomg', '☰ Lol', '☰ Foo'], assert, 'Simple 2')
   })
 
 
 
   test('disable sorting within a list when the determineForeignPositionAction parameter is given', async function (assert) {
     await page.visit()
+    await page.foreign1.sort(0, 1, false)
 
-    const list0 = page.listGroups(2).lists(0)
-
-    await list0.sort(0, 1, false)
-
-    const expectedTitles0 = ['Bar', 'Baz', 'Foo', 'Quux']
-
-    // List with disabled sorting
-    expectedTitles0.forEach((expectedTitle, k) => {
-      m = `List #0 item #${k} content title`
-      assert.equal(list0.items(k).content.title, expectedTitle, m)
-    })
+    assertListItems(page.foreign1, ['Bar', 'Baz', 'Foo', 'Quux'], assert, 'Foreign 1')
   })
 
 
 
   test('dragging into a sortable list when the sourcelist has the determineForeignPositionAction parameter', async function (assert) {
     await page.visit()
+    await page.foreign1.move(0, page.foreign2, 0, true)
 
-    const list0 = page.listGroups(2).lists(0)
-    const list1 = page.listGroups(2).lists(1)
-
-    await list0.move(0, list1, 0, true)
-
-    const expectedTitles0 = ['Baz', 'Foo', 'Quux']
-    const expectedTitles1 = ['Bar', 'Zomg', 'Lol']
-
-    // List with disabled sorting
-    m = 'List #0 items count'
-    assert.equal(list0.items().count, 3, m)
-
-    // List with disabled sorting
-    expectedTitles0.forEach((expectedTitle, k) => {
-      m = `List #0 item #${k} content title`
-      assert.equal(list0.items(k).content.title, expectedTitle, m)
-    })
-
-    m = 'List #1 items count'
-    assert.equal(list1.items().count, 3, m)
-
-    expectedTitles1.forEach((expectedTitle, k) => {
-      m = `List #1 item #${k} content title`
-      assert.equal(list1.items(k).content.title, expectedTitle, m)
-    })
+    assertListItems(page.foreign1, ['Baz', 'Foo', 'Quux'], assert, 'Foreign 1')
+    assertListItems(page.foreign2, ['Bar', 'Zomg', 'Lol'], assert, 'Foreign 2')
   })
 
 
 
   test('sort into a list that has the determineForeignPositionAction parameter', async function (assert) {
     await page.visit()
+    await page.foreign2.move(0, page.foreign1, 0, false)
 
-    const list0 = page.listGroups(2).lists(0)
-    const list1 = page.listGroups(2).lists(1)
-
-    await list1.move(0, list0, 0, false)
-
-    const expectedTitles0 = ['Bar', 'Baz', 'Foo', 'Quux', 'Zomg']
-    const expectedTitles1 = ['Lol']
-
-    // List with disabled sorting
-    m = 'List #0 items count'
-    assert.equal(list0.items().count, 5, m)
-
-    // List with disabled sorting
-    expectedTitles0.forEach((expectedTitle, k) => {
-      m = `List #0 item #${k} content title`
-      assert.equal(list0.items(k).content.title, expectedTitle, m)
-    })
-
-    m = 'List #1 items count'
-    assert.equal(list1.items().count, 1, m)
-
-    expectedTitles1.forEach((expectedTitle, k) => {
-      m = `List #1 item #${k} content title`
-      assert.equal(list1.items(k).content.title, expectedTitle, m)
-    })
+    assertListItems(page.foreign1, ['Bar', 'Baz', 'Foo', 'Quux', 'Zomg'], assert, 'Foreign 1')
+    assertListItems(page.foreign2, ['Lol'], assert, 'Foreign 2')
   })
 
 
@@ -168,42 +81,21 @@ module('Acceptance | index', function (hooks) {
   test('sorting from an unsortable list to a sortable list, and then back into an unsortable list, should not change the position', async function (assert) {
     await page.visit()
 
-    const list0 = page.listGroups(2).lists(0)
-    const list1 = page.listGroups(2).lists(1)
-
-    const item0_0 = list0.items(0)
-    const item0_3 = list0.items(3)
-    const item1_0 = list1.items(0)
+    const item0_0 = page.foreign1.items(0)
+    const item0_3 = page.foreign1.items(3)
+    const item1_0 = page.foreign2.items(0)
 
     await item0_3.dragStart()
-    await list1.dragEnter()
+    await page.foreign2.dragEnter()
     await item1_0.dragOver(false)
-    await list0.dragEnter()
+    await page.foreign1.dragEnter()
     await item0_0.dragOver(false)
     await item0_3.dragEnd()
 
     await settled()
 
-    const expectedTitles0 = ['Bar', 'Baz', 'Foo', 'Quux']
-    const expectedTitles1 = ['Zomg', 'Lol']
-
-    // List with disabled sorting
-    m = 'List #0 items count'
-    assert.equal(list0.items().count, expectedTitles0.length, m)
-
-    // List with disabled sorting
-    expectedTitles0.forEach((expectedTitle, k) => {
-      m = `List #0 item #${k} content title`
-      assert.equal(list0.items(k).content.title, expectedTitle, m)
-    })
-
-    m = 'List #1 items count'
-    assert.equal(list1.items().count, expectedTitles1.length, m)
-
-    expectedTitles1.forEach((expectedTitle, k) => {
-      m = `List #1 item #${k} content title`
-      assert.equal(list1.items(k).content.title, expectedTitle, m)
-    })
+    assertListItems(page.foreign1, ['Bar', 'Baz', 'Foo', 'Quux'], assert, 'Foreign 1')
+    assertListItems(page.foreign2, ['Zomg', 'Lol'], assert, 'Foreign 2')
   })
 
 
@@ -211,68 +103,69 @@ module('Acceptance | index', function (hooks) {
   test('sorting from an sortable list to an unsortable list should position alphabetically', async function (assert) {
     await page.visit()
 
-    const list0 = page.listGroups(2).lists(0)
-    const list1 = page.listGroups(2).lists(1)
-
-    const item0_0 = list0.items(0)
-    let item1_0   = list1.items(0)
+    const item0_0 = page.foreign1.items(0)
+    let item1_0   = page.foreign2.items(0)
 
     await item1_0.dragStart()
-    await list0.dragEnter()
+    await page.foreign1.dragEnter()
     await item0_0.dragOver(true)
     await item1_0.dragEnd()
 
     await settled()
 
-    let expectedTitles0 = ['Bar', 'Baz', 'Foo', 'Quux', 'Zomg']
-    let expectedTitles1 = ['Lol']
+    assertListItems(page.foreign1, ['Bar', 'Baz', 'Foo', 'Quux', 'Zomg'], assert, 'Foreign 1')
+    assertListItems(page.foreign2, ['Lol'], assert, 'Foreign 2')
 
-    // List with disabled sorting
-    m = 'List #0 items count'
-    assert.equal(list0.items().count, expectedTitles0.length, m)
-
-    // List with disabled sorting
-    expectedTitles0.forEach((expectedTitle, k) => {
-      m = `List #0 item #${k} content title`
-      assert.equal(list0.items(k).content.title, expectedTitle, m)
-    })
-
-    m = 'List #1 items count'
-    assert.equal(list1.items().count, expectedTitles1.length, m)
-
-    expectedTitles1.forEach((expectedTitle, k) => {
-      m = `List #1 item #${k} content title`
-      assert.equal(list1.items(k).content.title, expectedTitle, m)
-    })
-
-    item1_0 = list1.items(0)
+    item1_0 = page.foreign2.items(0)
 
     await item1_0.dragStart()
-    await list0.dragEnter()
+    await page.foreign1.dragEnter()
     await item0_0.dragOver(true)
     await item1_0.dragEnd()
 
     await settled()
 
-    expectedTitles0 = ['Bar', 'Baz', 'Foo', 'Lol', 'Quux', 'Zomg']
-    expectedTitles1 = []
+    assertListItems(page.foreign1, ['Bar', 'Baz', 'Foo', 'Lol', 'Quux', 'Zomg'], assert, 'Foreign 1')
+    assertListItems(page.foreign2, [], assert, 'Foreign 2')
+  })
 
-    // List with disabled sorting
-    m = 'List #0 items count'
-    assert.equal(list0.items().count, expectedTitles0.length, m)
 
-    // List with disabled sorting
-    expectedTitles0.forEach((expectedTitle, k) => {
-      m = `List #0 item #${k} content title`
-      assert.equal(list0.items(k).content.title, expectedTitle, m)
-    })
 
-    m = 'List #1 items count'
-    assert.equal(list1.items().count, expectedTitles1.length, m)
+  test('foreign position: create a copy by dragging out', async function (assert) {
+    await page.visit()
+    await page.copies1.move(0, page.copies2, 0, false)
 
-    expectedTitles1.forEach((expectedTitle, k) => {
-      m = `List #1 item #${k} content title`
-      assert.equal(list1.items(k).content.title, expectedTitle, m)
-    })
+    assertListItems(page.copies1, ['Foo', 'Bar', 'Baz'], assert, 'Copies 1')
+    assertListItems(page.copies2, ['Quux', 'Foo'], assert, 'Copies 2')
+  })
+
+
+
+  test('foreign position: remove a copy by dragging in', async function (assert) {
+    await page.visit()
+    await page.copies2.move(0, page.copies1, 0, false)
+
+    assertListItems(page.copies1, ['Foo', 'Bar', 'Baz'], assert, 'Copies 1')
+    assertListItems(page.copies2, [], assert, 'Copies 2')
+  })
+
+
+
+  test('source only: create a copy by dragging out', async function (assert) {
+    await page.visit()
+    await page.sourceOnly1.move(0, page.sourceOnly2, 0, false)
+
+    assertListItems(page.sourceOnly1, ['Foo', 'Bar', 'Baz'], assert, 'Source only 1')
+    assertListItems(page.sourceOnly2, ['Quux', 'Foo'], assert, 'Source only 2')
+  })
+
+
+
+  test('source only: does nothing when dragging in', async function (assert) {
+    await page.visit()
+    await page.sourceOnly2.move(0, page.sourceOnly1, 0, false)
+
+    assertListItems(page.sourceOnly1, ['Foo', 'Bar', 'Baz'], assert, 'Source only 1')
+    assertListItems(page.sourceOnly2, ['Quux'], assert, 'Source only 2')
   })
 })

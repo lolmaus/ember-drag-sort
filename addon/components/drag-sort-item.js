@@ -32,6 +32,7 @@ export default Component.extend({
   handle          : null,
   isHorizontal    : false,
   isRtl           : false,
+  sourceOnly      : false,
 
   dragEndAction                  : undefined,
   determineForeignPositionAction : undefined,
@@ -98,15 +99,16 @@ export default Component.extend({
     return isDragging && items === sourceList && index === sourceIndex
   }),
 
-  isDraggingOver : computed('dragSort.isDragging', 'items', 'targetList', 'index', 'targetIndex', 'isDragged', function () {
+  isDraggingOver : computed('dragSort.isDragging', 'items', 'targetList', 'index', 'targetIndex', 'isDragged', 'sourceOnly', function () {
     const isDragging  = this.get('dragSort.isDragging')
     const items       = this.get('items')
     const targetList  = this.get('targetList')
     const index       = this.get('index')
     const targetIndex = this.get('targetIndex')
     const isDragged   = this.get('isDragged')
+    const sourceOnly  = this.get('sourceOnly')
 
-    return isDragging && items === targetList && index === targetIndex && !isDragged
+    return !sourceOnly && isDragging && items === targetList && index === targetIndex && !isDragged
   }),
 
   isLast : computed('index', 'items.[]', function () {
@@ -116,18 +118,20 @@ export default Component.extend({
     return index === count - 1
   }),
 
-  shouldShowPlaceholderBefore : computed('isDraggingOver', 'isDraggingUp', function () {
+  shouldShowPlaceholderBefore : computed('isDraggingOver', 'isDraggingUp', 'sourceOnly', function () {
     const isDraggingOver = this.get('isDraggingOver')
     const isDraggingUp   = this.get('isDraggingUp')
+    const sourceOnly     = this.get('sourceOnly')
 
-    return isDraggingOver && isDraggingUp
+    return !sourceOnly && isDraggingOver && isDraggingUp
   }),
 
-  shouldShowPlaceholderAfter : computed('isDraggingOver', 'isDraggingUp', function () {
+  shouldShowPlaceholderAfter : computed('isDraggingOver', 'isDraggingUp', 'sourceOnly', function () {
     const isDraggingOver = this.get('isDraggingOver')
     const isDraggingUp   = this.get('isDraggingUp')
+    const sourceOnly     = this.get('sourceOnly')
 
-    return isDraggingOver && !isDraggingUp
+    return !sourceOnly && isDraggingOver && !isDraggingUp
   }),
 
 
@@ -181,6 +185,7 @@ export default Component.extend({
     if (
       !this.get('dragSort.isDragging')
       || this.get('determineForeignPositionAction')
+      || this.get('sourceOnly')
     ) return
 
     const group       = this.get('group')
@@ -229,6 +234,13 @@ export default Component.extend({
   },
 
   draggingOver (event) {
+    const sourceOnly = this.get('sourceOnly')
+
+    if (sourceOnly) {
+      event.preventDefault()
+      return
+    }
+
     const group               = this.get('group')
     const index               = this.get('index')
     const items               = this.get('items')

@@ -33,6 +33,10 @@
   display: none;
 }
 
+.dragSortList.-sourceOnlyList .dragSortItem.-isDragged {
+  display: block;
+}
+
 .dragSortItem.-placeholderBefore {
   /*margin-top: 25px;*/
   padding-top: 25px;

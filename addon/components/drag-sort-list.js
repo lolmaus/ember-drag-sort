@@ -49,6 +49,7 @@ export default Component.extend({
     'isDraggingOver:-isDraggingOver',
     'isExpanded2:-isExpanded',
     'isEmpty:-isEmpty',
+    'sourceOnly:-sourceOnlyList',
   ],
 
 

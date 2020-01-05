@@ -9,7 +9,7 @@ import { computed } from '@ember/object'
 
 export default Controller.extend({
 
-  items1 : computed(() =>
+  simple1 : computed(() =>
     A([
       {name : 'Foo'},
       {name : 'Bar'},
@@ -18,14 +18,14 @@ export default Controller.extend({
     ])
   ),
 
-  items2 : computed(() =>
+  simple2 : computed(() =>
     A([
       {name : 'Zomg'},
       {name : 'Lol'},
     ])
   ),
 
-  items3 : computed(() =>
+  async1 : computed(() =>
     A([
       {name : 'Foo'},
       {name : 'Bar'},
@@ -34,14 +34,14 @@ export default Controller.extend({
     ])
   ),
 
-  items4 : computed(() =>
+  async2 : computed(() =>
     A([
       {name : 'Zomg'},
       {name : 'Lol'},
     ])
   ),
 
-  items5 : computed(() =>
+  foreign1 : computed(() =>
     A([
       {name : 'Bar'},
       {name : 'Baz'},
@@ -50,14 +50,14 @@ export default Controller.extend({
     ])
   ),
 
-  items6 : computed(() =>
+  foreign2 : computed(() =>
     A([
       {name : 'Zomg'},
       {name : 'Lol'},
     ])
   ),
 
-  items7 : computed(() =>
+  copies1 : computed(() =>
     A([
       {name : 'Foo'},
       {name : 'Bar'},
@@ -65,15 +65,17 @@ export default Controller.extend({
     ])
   ),
 
-  items8 : computed(() =>
+  copies2 : computed(() =>
+    A([
+      {name : 'Quux'},
+    ]),
+  ),
+
+  copies3 : computed(() =>
     A()
   ),
 
-  items9 : computed(() =>
-    A()
-  ),
-
-  items10 : computed(() =>
+  table1 : computed(() =>
     A([
       {name : 'Foo'},
       {name : 'Bar'},
@@ -82,14 +84,14 @@ export default Controller.extend({
     ])
   ),
 
-  items11 : computed(() =>
+  table2 : computed(() =>
     A([
       {name : 'Zomg'},
       {name : 'Lol'},
     ])
   ),
 
-  items12 : computed(() =>
+  horizontal1 : computed(() =>
     A([
       {name : 'Foo'},
       {name : 'Bar'},
@@ -103,7 +105,7 @@ export default Controller.extend({
     ])
   ),
 
-  items13 : computed(() =>
+  horizontal2 : computed(() =>
     A([
       {name : 'Foo'},
       {name : 'Bar'},
@@ -112,7 +114,7 @@ export default Controller.extend({
     ])
   ),
 
-  items14 : computed(() =>
+  rtl : computed(() =>
     A([
       {name : 'حلقة واحدة للحكم عليهم جميعان'},
       {name : 'حلقة واحدة للعثور عليهم'},
@@ -179,6 +181,20 @@ export default Controller.extend({
     }
   )),
 
+  sourceOnly1 : computed(() =>
+    A([
+      {name : 'Foo'},
+      {name : 'Bar'},
+      {name : 'Baz'},
+    ])
+  ),
+
+  sourceOnly2 : computed(() =>
+    A([
+      {name : 'Quux'},
+    ])
+  ),
+
   networkFailure : false,
 
   actions : {
@@ -201,7 +217,7 @@ export default Controller.extend({
     dragEnd2 ({sourceList, sourceIndex, targetList, targetIndex}) {
       if (sourceList === targetList && sourceIndex === targetIndex) return
 
-      const unsortableList = this.get('items7')
+      const unsortableList = this.get('copies1')
 
       let item = sourceList.objectAt(sourceIndex)
 
@@ -213,6 +229,18 @@ export default Controller.extend({
 
     determineForeignPosition2 ({/*draggedItem, */items}) {
       return items.length
+    },
+
+    sourceOnlyDragEnd ({sourceList, sourceIndex, targetList, targetIndex}) {
+      if (sourceList === targetList && sourceIndex === targetIndex) return
+
+      const sourceOnlyList = this.get('sourceOnly1')
+
+      let item = sourceList.objectAt(sourceIndex)
+
+      if (sourceList === sourceOnlyList) item = {...item} // shallow clone
+
+      if (targetList !== sourceOnlyList) targetList.insertAt(targetIndex, item)
     },
   },
 

@@ -33,11 +33,13 @@
 
     <section class="list-group">
       <article class="list">
-        <h4>List 1</h4>
+        <h4>List without drag handles</h4>
 
         {{#drag-sort-list
-          items         = items1
-          dragEndAction = (action 'dragEnd')
+          id            = "simple-1"
+          items         = simple1
+          group         = "simple"
+          dragEndAction = (action "dragEnd")
           as |item|
         }}
           <div class="the-item">
@@ -47,12 +49,14 @@
       </article>
 
       <article class="list">
-        <h4>List 2 with drag handles</h4>
+        <h4>List with drag handles</h4>
 
         {{#drag-sort-list
-          items         = items2
-          handle        = '.handle'
-          dragEndAction = (action 'dragEnd')
+          id            = "simple-2"
+          items         = simple2
+          group         = "simple"
+          handle        = ".handle"
+          dragEndAction = (action "dragEnd")
           as |item|
         }}
           <div class="the-item">
@@ -97,11 +101,12 @@
 
     <section class="list-group">
       <article class="list">
-        <h4>List 3</h4>
+        <h4>List 1</h4>
 
         {{#drag-sort-list
-          items           = items3
-          group           = 2
+          id              = "async-1"
+          items           = async1
+          group           = "async"
           draggingEnabled = dragEndTask.isIdle
           dragEndAction   = (action (perform dragEndTask))
           as |item|
@@ -114,11 +119,12 @@
 
 
       <article class="list">
-        <h4>List 4</h4>
+        <h4>List 2</h4>
 
         {{#drag-sort-list
-          items           = items4
-          group           = 2
+          id              = "async-2"
+          items           = async2
+          group           = "async"
           draggingEnabled = (not dragEndTask.isRunning)
           dragEndAction   = (action (perform dragEndTask))
           as |item|
@@ -130,10 +136,8 @@
       </article>
     </section>
   </div>
-</div>
 
 
-<div class="list-groups">
 
   <div class="list-group-wrapper">
     <h2>Unsortable list</h2>
@@ -144,14 +148,15 @@
 
     <section class="list-group">
       <article class="list">
-        <h4>List 5 (always sorted alphabetically)</h4>
+        <h4>List 1 (always sorted alphabetically)</h4>
 
         {{#drag-sort-list
-          items = items5
-          group = 3
+          id    = "foreign-1"
+          items = foreign1
+          group = "foreign"
 
-          dragEndAction                  = (action 'dragEnd')
-          determineForeignPositionAction = (action 'determineForeignPosition')
+          dragEndAction                  = (action "dragEnd")
+          determineForeignPositionAction = (action "determineForeignPosition")
           as |item|
         }}
           <div class="the-item">
@@ -161,12 +166,13 @@
       </article>
 
       <article class="list">
-        <h4>List 6 (sorted by user)</h4>
+        <h4>List 2 (sorted by user)</h4>
 
         {{#drag-sort-list
-          items                           = items6
-          group                           = 3
-          dragEndAction                   = (action 'dragEnd')
+          id            = "foreign-2"
+          items         = foreign2
+          group         = "foreign"
+          dragEndAction = (action "dragEnd")
           as |item|
         }}
           <div class="the-item">
@@ -177,6 +183,8 @@
     </section>
   </div>
 
+
+
   <div class="list-group-wrapper">
     <h2>Create copies of items by dragging out, delete by dragging in</h2>
 
@@ -186,14 +194,15 @@
 
     <section class="list-group">
       <article class="list">
-        <h4>List 7 (source, always sorted alphabetically)</h4>
+        <h4>List 1 (source, always sorted alphabetically)</h4>
 
         {{#drag-sort-list
-          items = items7
-          group = 4
+          id    = "copies-1"
+          items = copies1
+          group = "copies"
 
-          dragEndAction                  = (action 'dragEnd2')
-          determineForeignPositionAction = (action 'determineForeignPosition2')
+          dragEndAction                  = (action "dragEnd2")
+          determineForeignPositionAction = (action "determineForeignPosition2")
           as |item|
         }}
           <div class="the-item">
@@ -203,12 +212,13 @@
       </article>
 
       <article class="list">
-        <h4>List 8 (target, sorted by user)</h4>
+        <h4>List 2 (target, sorted by user)</h4>
 
         {{#drag-sort-list
-          items         = items8
-          group         = 4
-          dragEndAction = (action 'dragEnd2')
+          id            = "copies-2"
+          items         = copies2
+          group         = "copies"
+          dragEndAction = (action "dragEnd2")
           as |item|
         }}
           <div class="the-item">
@@ -218,12 +228,63 @@
       </article>
 
       <article class="list">
-        <h4>List 9 (target, sorted by user)</h4>
+        <h4>List 3 (target, sorted by user)</h4>
 
         {{#drag-sort-list
-          items         = items9
-          group         = 4
-          dragEndAction = (action 'dragEnd2')
+          id            = "copies-3"
+          items         = copies3
+          group         = "copies"
+          dragEndAction = (action "dragEnd2")
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+    </section>
+  </div>
+
+
+
+  <div class="list-group-wrapper">
+    <h2>Source only list</h2>
+
+    <p>
+      Use `sourceOnly` to prevent the user from rearranging or dragging into the list.
+      Effectively, it is marked as immutable, and only used as a source bucket for other lists.
+    </p>
+
+    <p>
+      This example is similar to the previous one, except that the source list remains absolutely static.
+    </p>
+
+    <section class="list-group">
+      <article class="list">
+        <h4>Source list</h4>
+
+        {{#drag-sort-list
+          id            = "source-only-1"
+          items         = sourceOnly1
+          group         = "source-only"
+          dragEndAction = (action "sourceOnlyDragEnd")
+          sourceOnly    = true
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+
+      <article class="list">
+        <h4>Target list</h4>
+
+        {{#drag-sort-list
+          id            = "source-only-2"
+          items         = sourceOnly2
+          group         = "source-only"
+          dragEndAction = (action "sourceOnlyDragEnd")
           as |item|
         }}
           <div class="the-item">
@@ -260,11 +321,12 @@
         <h4>Table 1</h4>
 
         {{#drag-sort-list
-          items         = items10
-          tagName       = 'table'
-          childTagName  = 'tr'
-          group         = 'table'
-          dragEndAction = (action 'dragEnd')
+          id            = "table-1"
+          items         = table1
+          tagName       = "table"
+          childTagName  = "tr"
+          group         = "table"
+          dragEndAction = (action "dragEnd")
           as |item|
         }}
           <td>
@@ -279,11 +341,12 @@
         <h4>Table 2</h4>
 
         {{#drag-sort-list
-          items         = items11
-          tagName       = 'table'
-          childTagName  = 'tr'
-          group         = 'table'
-          dragEndAction = (action 'dragEnd')
+          id            = "table-2"
+          items         = table2
+          tagName       = "table"
+          childTagName  = "tr"
+          group         = "table"
+          dragEndAction = (action "dragEnd")
           as |item|
         }}
           <td>
@@ -296,6 +359,8 @@
     </section>
   </div>
 
+
+
   <div class="list-group-wrapper">
     <h2>Horizontal list</h2>
 
@@ -305,10 +370,13 @@
 
     <section class="list-group">
       <article class="horizontal-list list">
-        <h4>List 10</h4>
+        <h4>List 1</h4>
+
         {{#drag-sort-list
-          items         = items12
-          dragEndAction = (action 'dragEnd')
+          id            = "horizontal-1"
+          items         = horizontal1
+          group         = "horizontal"
+          dragEndAction = (action "dragEnd")
           isHorizontal  = true
           as |item|
         }}
@@ -319,11 +387,13 @@
       </article>
 
       <article class="list">
-        <h4>List 11</h4>
+        <h4>List 2</h4>
 
         {{#drag-sort-list
-          items         = items13
-          dragEndAction = (action 'dragEnd')
+          id            = "horizontal-2"
+          items         = horizontal2
+          group         = "horizontal"
+          dragEndAction = (action "dragEnd")
           as |item|
         }}
           <div class="the-item">
@@ -332,14 +402,22 @@
         {{/drag-sort-list}}
       </article>
     </section>
+  </div>
+
+  <div class="list-group-wrapper">
+    <h2>Horizontal list wwith RTL</h2>
+
+    <p>
+      Use `isRtl=true` if you're using a language which is read right to left. Has no effect on vertical lists.
+    </p>
+
     <section class="list-group list-groups">
       <article class="horizontal-list list">
-        <h4>List 12 - Right to left</h4>
-
-        <p>Use `isRtl=true` if you're using a language which is read right to left. Has no effect when not using a horizontal list.</p>
         {{#drag-sort-list
-          items         = items14
-          dragEndAction = (action 'dragEnd')
+          id            = "rtl"
+          items         = rtl
+          group         = "rtl"
+          dragEndAction = (action "dragEnd")
           isHorizontal  = true
           isRtl         = true
           as |item|
@@ -352,6 +430,8 @@
     </section>
   </div>
 </div>
+
+
 
 <div class="list-groups">
   <div class="list-group-wrapper">
@@ -367,8 +447,10 @@
     </p>
 
     {{nested-item
+      id            = "nested"
       item          = nestedItem
-      dragEndAction = (action 'dragEnd')
+      group         = "nested"
+      dragEndAction = (action "dragEnd")
     }}
 
     <p>Warning: Nested lists doesn't work well with horizontal lists.</p>
