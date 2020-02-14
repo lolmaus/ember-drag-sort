@@ -1,6 +1,6 @@
 import { module, test } from 'qunit'
 import { setupRenderingTest } from 'ember-qunit'
-import { find, findAll, render, settled } from '@ember/test-helpers'
+import { find, findAll, render, settled, triggerEvent } from '@ember/test-helpers'
 import hbs from 'htmlbars-inline-precompile'
 import trigger from 'ember-drag-sort/utils/trigger'
 import sinon from 'sinon'
@@ -211,5 +211,53 @@ module('Integration | Component | drag-sort-list', function (hooks) {
       sourceIndex : 0,
       targetIndex : 1,
     }))
+  })
+
+  test('drag start action', async function (assert) {
+    const items = A([
+      {name : 'foo'},
+      {name : 'bar'},
+      {name : 'baz'},
+    ])
+
+    const dragEndCallback   = sinon.spy()
+    const dragStartCallback = sinon.stub()
+
+    dragStartCallback.callsFake(({ event, element }) => {
+      event.dataTransfer.setDragImage(element.querySelector('.item-wrapper'), 20, 30)
+    })
+
+    this.setProperties({items, dragEndCallback, dragStartCallback})
+
+    await render(hbs`
+      {{#drag-sort-list
+        items           = items
+        dragEndAction   = (action dragEndCallback)
+        dragStartAction = (action dragStartCallback)
+        as |item|
+      }}
+        <div class="item-wrapper">
+          {{item.name}}
+        </div>
+      {{/drag-sort-list}}
+    `)
+
+
+    const itemElements = findAll('.dragSortItem')
+    const [item0]      = itemElements
+
+    let dataTransfer = new DataTransfer()
+    sinon.spy(dataTransfer, 'setDragImage')
+
+    await triggerEvent(item0, 'dragstart', { dataTransfer })
+
+    assert.ok(dragStartCallback.calledOnce)
+
+    assert.ok(dragStartCallback.calledWithMatch({
+      draggedItem : items.objectAt(0),
+      element     : item0,
+    }))
+    assert.ok(dataTransfer.setDragImage.called)
+    assert.ok(dataTransfer.setDragImage.lastCall.calledWithExactly(item0.querySelector('.item-wrapper'), 20, 30))
   })
 })

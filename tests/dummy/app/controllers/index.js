@@ -123,6 +123,15 @@ export default Controller.extend({
     ])
   ),
 
+  dragImage : computed(() =>
+    A([
+      {name : 'Foo'},
+      {name : 'Bar'},
+      {name : 'Baz'},
+      {name : 'Quux'},
+    ])
+  ),
+
   nestedItem : computed(() => (
     {
       name     : 'Foo',
@@ -241,6 +250,14 @@ export default Controller.extend({
       if (sourceList === sourceOnlyList) item = {...item} // shallow clone
 
       if (targetList !== sourceOnlyList) targetList.insertAt(targetIndex, item)
+    },
+
+    setDragImage ({ event, element }) {
+      let target   = element.querySelector('.the-item')
+      let { x, y } = element.getBoundingClientRect()
+      console.log(x, y, event.clientX, event.clientY, x - event.clientX, y - event.clientY)
+      // Set drag image, positioning it to align with `.the-item`'s position
+      event.dataTransfer.setDragImage(target, event.clientX - x, event.clientY - y)
     },
   },
 

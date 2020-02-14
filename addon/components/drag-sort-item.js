@@ -35,6 +35,7 @@ export default Component.extend({
   sourceOnly      : false,
 
   dragEndAction                  : undefined,
+  dragStartAction                : undefined,
   determineForeignPositionAction : undefined,
 
 
@@ -160,6 +161,19 @@ export default Component.extend({
     if (event.dataTransfer) {
       if (event.dataTransfer.setData) event.dataTransfer.setData('text', '')
       if (event.dataTransfer.setDragImage) event.dataTransfer.setDragImage(this.element, 0, 0)
+    }
+
+    const dragStartAction = this.get('dragStartAction')
+
+    if (dragStartAction) {
+      const element = this.get('element')
+      const item    = this.get('item')
+
+      dragStartAction({
+        event,
+        element,
+        draggedItem : item,
+      })
     }
 
     this.startDragging(event)

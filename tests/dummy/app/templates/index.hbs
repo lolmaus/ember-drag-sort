@@ -429,6 +429,31 @@
       </article>
     </section>
   </div>
+
+  <div class="list-group-wrapper">
+    <h2>Custom</h2>
+
+    <p>
+      Note that the drag image does not contain the gray margins around the boxes
+    </p>
+
+    <section class="list-group">
+      <article class="list">
+        {{#drag-sort-list
+          id              = "drag-image"
+          items           = dragImage
+          group           = "dragImage"
+          dragStartAction = (action "setDragImage")
+          dragEndAction   = (action "dragEnd")
+          as |item|
+        }}
+          <div class="the-item">
+            {{item.name}}
+          </div>
+        {{/drag-sort-list}}
+      </article>
+    </section>
+  </div>
 </div>
 
 
