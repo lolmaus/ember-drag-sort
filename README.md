@@ -223,16 +223,16 @@ This can be used to put margins around the list items without those margins bein
 ```
 
 ```handlebars
-{{#drag-sort-list
-  items           = items1
-  dragStartAction = (action 'dragStart')
-  dragEndAction   = (action 'dragEnd')
+<DragSortList
+  items           = {{this.items1}}
+  dragStartAction = {{action "dragStart"}}
+  dragEndAction   = {{action "dragEnd"}}
   as |item|
-}}
+>
   <div class="the-item">
     {{item.name}}
   </div>
-{{/drag-sort-list}}
+</DragSortList>
 ```
 
 ```javascript
