@@ -20,6 +20,7 @@
   - [Usage](#usage)
     - [Basic usage](#basic-usage)
     - [The drag end action](#the-drag-end-action)
+    - [The drag start action](#the-drag-start-action)
     - [The determine foreign position action](#the-determine-foreign-position-action)
     - [Marking a list as a source only bucket](#marking-a-list-as-a-source-only-bucket)
     - [Passing additional arguments](#passing-additional-arguments)
@@ -213,6 +214,50 @@ Incorrect:
 
 
 
+### The drag start action
+
+This action is called when a drag is beginning, and can be used to customize the drag image, or otherwise modify the data transfer. It's called with a single argument -- an object with the following properties:
+
+| Property       | Type         | Description                                       |
+|:---------------|:-------------|:--------------------------------------------------|
+| `event`        | Event        | The `dragstart` event.                            |
+| `element`      | DOMElement   | The DOM element being dragged.                    |
+| `draggedItem`  | <any>        | The list item being dragged.                      |
+
+This can be used to put margins around the list items without those margins being included in the drag image:
+
+```css
+.the-item {
+  margin: 20px;
+}
+```
+
+```handlebars
+{{#drag-sort-list
+  items           = items1
+  dragStartAction = (action 'dragStart')
+  dragEndAction   = (action 'dragEnd')
+  as |item|
+}}
+  <div class="the-item">
+    {{item.name}}
+  </div>
+{{/drag-sort-list}}
+```
+
+```javascript
+actions: {
+  dragStart({ event, element }) {
+    let target = element.querySelector('.the-item');
+    let { x, y } = element.getBoundingClientRect();
+    // Set drag image, positioning it to align with `.the-item`'s position
+    event.dataTransfer.setDragImage(target, event.clientX - x, event.clientY - y);
+  }
+}
+```
+
+
+
 ### The determine foreign position action
 
 You may want to let the user drag items in and out of a list, without letting him rearrange items within a list. In that case the order of items is determined by the app.
@@ -353,6 +398,7 @@ dragEndAction({ sourceList, sourceIndex, sourceArgs, targetList, targetIndex, ta
 |:---------------------------------|:---------------------------------------------|:--------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `items`                          | Ember Array                                  | <required>    | An array of items to display and offer sorting.                                                                                                                                                 |
 | `dragEndAction`                  | Closure action                               | <required>    | This callback will be called on source list when sorting is complete. See above for details.                                                                                                    |
+| `dragStartAction`                | Closure action                               | <required>    | This callback will be called on source list when dragging is starting. See above for details.                                                                                                    |
 | `determineForeignPositionAction` | Closure action or `undefined`                | `undefined`   | When provided, used to determine the position of the placeholder when dragging a foreign item into the list. When not provided, the user is able to determine the order. See above for details. |
 | `group`                          | <any>                                        | `undefined`   | Used to restrict dragging between multiple lists to only some of those lists. Typically a string.                                                                                               |
 | `draggingEnabled`                | Boolean                                      | `true`        | Disables sorting. Useful when `dragEndAction` is an async operation.                                                                                                                            |
