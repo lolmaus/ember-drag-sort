@@ -7,13 +7,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
-## [0.0.0-beta.0] - 2020-01-05
+## [3.0.0] - 2020-08-17
+
+### Added
+* `dragStartAction` allows updating drag image, by [@bendemboski](https://github.com/bendemboski).
+
+
+
+## [3.0.0-beta.0] - 2020-01-05
 
 ### Changed
 * ⚠ Dropped support for Ember CLI below 3.12.
 
 ### Maintenance
 * Upgraded Ember CLI to 3.15 and dependencies.
+* Converted templates to angle brackets.
+* Minor maintenance changes.
 
 
 

@@ -29,6 +29,7 @@ export default Component.extend({
   isRtl        : false,
 
   dragEndAction                  : undefined,
+  dragStartAction                : undefined,
   determineForeignPositionAction : undefined,
 
 
