@@ -220,19 +220,17 @@ module('Integration | Component | drag-sort-list', function (hooks) {
       {name : 'baz'},
     ])
 
-    const dragEndCallback   = sinon.spy()
     const dragStartCallback = sinon.stub()
 
     dragStartCallback.callsFake(({ event, element }) => {
       event.dataTransfer.setDragImage(element.querySelector('.item-wrapper'), 20, 30)
     })
 
-    this.setProperties({items, dragEndCallback, dragStartCallback})
+    this.setProperties({items, dragStartCallback})
 
     await render(hbs`
       {{#drag-sort-list
         items           = items
-        dragEndAction   = (action dragEndCallback)
         dragStartAction = (action dragStartCallback)
         as |item|
       }}
