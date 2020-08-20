@@ -126,26 +126,6 @@ Install the addon:
 
     ember i ember-drag-sort
 
-You'll also need to install a dependency with either npm:
-
-    npm i -D babel-plugin-transform-object-rest-spread
-
- or Yarn:
-
-    yarn add -D babel-plugin-transform-object-rest-spread
-
-Finally, add this to your `ember-cli-build.js`:
-
-```js
-  babel: {
-    plugins: [
-      'transform-object-rest-spread'
-    ]
-  }
-```
-
-
-
 ## Usage
 
 ### Basic usage
