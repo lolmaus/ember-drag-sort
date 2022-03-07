@@ -1,7 +1,7 @@
 import {
   attribute,
   hasClass,
-} from '../../page-object'
+} from 'ember-cli-page-object'
 
 import component from './_component'
 import trigger from 'ember-drag-sort/utils/trigger'

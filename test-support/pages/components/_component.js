@@ -3,7 +3,7 @@ import {
   findElement,
   isVisible,
   text,
-} from '../../page-object'
+} from 'ember-cli-page-object'
 
 
 
