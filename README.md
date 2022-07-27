@@ -766,9 +766,17 @@ See this addon's acceptance test for example.
 
 ## Development
 
+### Use Volta
+
+Use [Volta](https://volta.sh) to automatically pick correct Node and Yarn versions.
+
+
+
 ### Do not use npm, use yarn
 
 This project uses [Yarn](https://yarnpkg.com/) to lock dependencies. You can install yarn with `npm i -g yarn`.
+
+
 
 ### Installation for development
 
